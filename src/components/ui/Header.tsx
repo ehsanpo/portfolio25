@@ -6,7 +6,19 @@ import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
 import { LocaleToggle } from "./LocaleToggle";
 import { Badge } from "./Badge";
-import { Menu, X, Home, User, Briefcase, FileText, Mail } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  User,
+  Briefcase,
+  FileText,
+  Mail,
+  ChevronDown,
+  Palette,
+  Phone,
+  Settings,
+} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface HeaderProps {
@@ -18,12 +30,142 @@ interface HeaderProps {
   className?: string;
 }
 
-const navigationItems = [
+interface NavItem {
+  id: string;
+  name: string;
+  icon: any;
+  href: string;
+  children?: NavItem[];
+}
+
+const navigationItems: NavItem[] = [
   { id: "home", name: "Home", icon: Home, href: "/" },
-  { id: "about", name: "About", icon: User, href: "/about" },
-  { id: "portfolio", name: "Portfolio", icon: Briefcase, href: "/portfolio" },
-  { id: "blog", name: "Blog", icon: FileText, href: "/blog" },
-  { id: "contact", name: "Contact", icon: Mail, href: "/contact" },
+  {
+    id: "about",
+    name: "About",
+    icon: User,
+    href: "/about",
+    children: [
+      {
+        id: "about-overview",
+        name: "Overview",
+        icon: User,
+        href: "/about/overview",
+      },
+      {
+        id: "about-highlights",
+        name: "Highlights",
+        icon: Briefcase,
+        href: "/about/highlights",
+      },
+    ],
+  },
+  {
+    id: "portfolio",
+    name: "Portfolio",
+    icon: Briefcase,
+    href: "/portfolio",
+    children: [
+      {
+        id: "portfolio-tags",
+        name: "Tags",
+        icon: Settings,
+        href: "/portfolio/tags",
+      },
+      {
+        id: "portfolio-categories",
+        name: "Categories",
+        icon: Settings,
+        href: "/portfolio/categories",
+      },
+    ],
+  },
+  { id: "services", name: "Services", icon: Settings, href: "/services" },
+  { id: "skills", name: "Skills", icon: Settings, href: "/skills" },
+  {
+    id: "design-system",
+    name: "Design System",
+    icon: Palette,
+    href: "/design-system",
+    children: [
+      {
+        id: "ds-colors",
+        name: "Colors",
+        icon: Palette,
+        href: "/design-system/colors",
+      },
+      {
+        id: "ds-typography",
+        name: "Typography",
+        icon: FileText,
+        href: "/design-system/typography",
+      },
+      {
+        id: "ds-spacing",
+        name: "Spacing",
+        icon: Settings,
+        href: "/design-system/spacing",
+      },
+      {
+        id: "ds-icons",
+        name: "Icons",
+        icon: Settings,
+        href: "/design-system/icons",
+      },
+      {
+        id: "ds-components",
+        name: "Components",
+        icon: Settings,
+        href: "/design-system/components",
+        children: [
+          {
+            id: "ds-buttons",
+            name: "Buttons",
+            icon: Settings,
+            href: "/design-system/components/buttons",
+          },
+          {
+            id: "ds-cards",
+            name: "Cards",
+            icon: Settings,
+            href: "/design-system/components/cards",
+          },
+          {
+            id: "ds-forms",
+            name: "Forms",
+            icon: Settings,
+            href: "/design-system/components/forms",
+          },
+          {
+            id: "ds-media",
+            name: "Media",
+            icon: Settings,
+            href: "/design-system/components/media",
+          },
+        ],
+      },
+      {
+        id: "ds-patterns",
+        name: "Patterns",
+        icon: Settings,
+        href: "/design-system/patterns",
+      },
+      {
+        id: "ds-effects",
+        name: "Effects",
+        icon: Settings,
+        href: "/design-system/effects",
+      },
+    ],
+  },
+  {
+    id: "case-studies",
+    name: "Case Studies",
+    icon: FileText,
+    href: "/case-studies",
+  },
+  { id: "music", name: "Music", icon: Settings, href: "/music" },
+  { id: "contact", name: "Contact", icon: Phone, href: "/contact" },
 ];
 
 export function Header({
@@ -36,6 +178,7 @@ export function Header({
 }: Readonly<HeaderProps>) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   // Handle scroll effect
   useEffect(() => {
@@ -54,15 +197,19 @@ export function Header({
       if (isMobileMenuOpen && !target.closest(".mobile-menu-container")) {
         setIsMobileMenuOpen(false);
       }
+      if (openDropdown && !target.closest(".dropdown-container")) {
+        setOpenDropdown(null);
+      }
     };
 
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, openDropdown]);
 
   const handleNavigation = (sectionId: string) => {
     onSectionChange?.(sectionId);
     setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
   };
 
   const getVariantClasses = () => {
@@ -75,6 +222,171 @@ export function Header({
         return "bg-background border-b border-border";
       default:
         return "glass-card border-b border-border/50";
+    }
+  };
+
+  const renderNavItem = (item: NavItem, isDesktop: boolean = true) => {
+    const Icon = item.icon;
+    const hasChildren = item.children && item.children.length > 0;
+    const isDropdownOpen = openDropdown === item.id;
+
+    if (isDesktop) {
+      return (
+        <div key={item.id} className="relative dropdown-container">
+          {hasChildren ? (
+            <button
+              onClick={() => setOpenDropdown(isDropdownOpen ? null : item.id)}
+              className={cn(
+                "flex items-center px-4 py-2 rounded-lg text-sm font-medium font-kabel transition-all duration-300 group relative overflow-hidden cursor-pointer",
+                "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Icon className="w-4 h-4 mr-2 relative z-10" />
+              <span className="relative z-10">{item.name}</span>
+              <ChevronDown
+                className={cn(
+                  "w-3 h-3 ml-1 relative z-10 transition-transform duration-200",
+                  isDropdownOpen && "rotate-180"
+                )}
+              />
+            </button>
+          ) : (
+            <Link href={item.href}>
+              <div
+                className={cn(
+                  "flex items-center px-4 py-2 rounded-lg text-sm font-medium font-kabel transition-all duration-300 group relative overflow-hidden cursor-pointer",
+                  "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                )}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <Icon className="w-4 h-4 mr-2 relative z-10" />
+                <span className="relative z-10">{item.name}</span>
+              </div>
+            </Link>
+          )}
+
+          {/* Desktop Dropdown */}
+          {hasChildren && isDropdownOpen && (
+            <div className="absolute top-full left-0 mt-1 w-48 bg-background border border-border rounded-lg shadow-lg glass-card z-50">
+              <div className="py-2">
+                <Link href={item.href}>
+                  <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200">
+                    {item.name} Overview
+                  </div>
+                </Link>
+                {item.children?.map((child) => (
+                  <div key={child.id}>
+                    {child.children ? (
+                      <div className="relative group">
+                        <Link href={child.href}>
+                          <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 flex items-center justify-between">
+                            {child.name}
+                            <ChevronDown className="w-3 h-3 -rotate-90" />
+                          </div>
+                        </Link>
+                        {/* Nested dropdown */}
+                        <div className="absolute left-full top-0 ml-1 w-48 bg-background border border-border rounded-lg shadow-lg glass-card opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                          <div className="py-2">
+                            <Link href={child.href}>
+                              <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200">
+                                {child.name} Overview
+                              </div>
+                            </Link>
+                            {child.children?.map((nestedChild) => (
+                              <Link
+                                key={nestedChild.id}
+                                href={nestedChild.href}
+                              >
+                                <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200">
+                                  {nestedChild.name}
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <Link href={child.href}>
+                        <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200">
+                          {child.name}
+                        </div>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      // Mobile navigation
+      const isActive = activeSection === item.id;
+      return (
+        <div key={item.id}>
+          <button
+            onClick={() => {
+              if (hasChildren) {
+                setOpenDropdown(isDropdownOpen ? null : item.id);
+              } else {
+                handleNavigation(item.id);
+              }
+            }}
+            className={cn(
+              "w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium font-kabel transition-all duration-300 group relative overflow-hidden",
+              isActive
+                ? "bg-gradient-to-r from-primary-500/20 to-secondary-500/20 text-primary-400 border border-primary-500/30"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+            )}
+          >
+            <div className="flex items-center">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Icon className="w-4 h-4 mr-3 relative z-10" />
+              <span className="relative z-10">{item.name}</span>
+            </div>
+            {hasChildren && (
+              <ChevronDown
+                className={cn(
+                  "w-3 h-3 relative z-10 transition-transform duration-200",
+                  isDropdownOpen && "rotate-180"
+                )}
+              />
+            )}
+          </button>
+
+          {/* Mobile submenu */}
+          {hasChildren && isDropdownOpen && (
+            <div className="ml-4 mt-2 space-y-1">
+              <Link href={item.href}>
+                <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/30 rounded-lg transition-all duration-200">
+                  {item.name} Overview
+                </div>
+              </Link>
+              {item.children?.map((child) => (
+                <div key={child.id}>
+                  <Link href={child.href}>
+                    <div className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/30 rounded-lg transition-all duration-200">
+                      {child.name}
+                    </div>
+                  </Link>
+                  {child.children && (
+                    <div className="ml-4 space-y-1">
+                      {child.children.map((nestedChild) => (
+                        <Link key={nestedChild.id} href={nestedChild.href}>
+                          <div className="px-4 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/20 rounded-lg transition-all duration-200">
+                            {nestedChild.name}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
     }
   };
 
@@ -134,26 +446,7 @@ export function Header({
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <Link key={item.id} href={item.href}>
-                  <div
-                    className={cn(
-                      "flex items-center px-4 py-2 rounded-lg text-sm font-medium font-kabel transition-all duration-300 group relative overflow-hidden cursor-pointer",
-                      "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                    )}
-                  >
-                    {/* Glossy effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                    <Icon className="w-4 h-4 mr-2 relative z-10" />
-                    <span className="relative z-10">{item.name}</span>
-                  </div>
-                </Link>
-              );
-            })}
+            {navigationItems.map((item) => renderNavItem(item, true))}
           </nav>
 
           {/* Right Side Actions */}
@@ -192,33 +485,11 @@ export function Header({
         <div
           className={cn(
             "lg:hidden overflow-hidden transition-all duration-300 mobile-menu-container",
-            isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
           )}
         >
           <nav className="py-4 space-y-2">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeSection === item.id;
-
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavigation(item.id)}
-                  className={cn(
-                    "w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium font-kabel transition-all duration-300 group relative overflow-hidden",
-                    isActive
-                      ? "bg-gradient-to-r from-primary-500/20 to-secondary-500/20 text-primary-400 border border-primary-500/30"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                  )}
-                >
-                  {/* Glossy effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                  <Icon className="w-4 h-4 mr-3 relative z-10" />
-                  <span className="relative z-10">{item.name}</span>
-                </button>
-              );
-            })}
+            {navigationItems.map((item) => renderNavItem(item, false))}
 
             {/* Mobile CTA */}
             <div className="pt-4 border-t border-border/50">
