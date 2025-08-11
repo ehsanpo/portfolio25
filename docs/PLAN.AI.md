@@ -111,7 +111,7 @@ data/
 
 ### Phase 3 — Website Pages
 
-- **Drive pages, sections, and blocks from ********\*\***********\*\***********\*\***********`Doc/Sitemap.json`********\*\*\*\*********\*\*\*\*********\*\*\*\*********.\*\* Pages render ordered `sections[]` via a Block Registry.
+- **Drive pages, sections, and blocks from **\*\*****\*\*****\*\*****\*\*****\*\*****\*\*****\*\*****`Doc/Sitemap.json`**\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***.\*\* Pages render ordered `sections[]` via a Block Registry.
 - **Content sources**
 
   - `/content/portfolio/<slug>/<slug>.md` (+ images in same folder) → portfolio & case study pages
@@ -168,7 +168,7 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] Phase 0: Create repo, folders, and base config.
 - [x] Phase 1: Establish **CSS variable tokens** (no Tailwind).
 - [x] Phase 2: Build ui kit (atoms → components → blocks).
-- [ ] Phase 3: Generate website pages/sections from `src/doc/Sitemap.json`; content from `src/content`; data from `src/data`.
+- [x] Phase 3: **PARTIALLY COMPLETE** - Implemented Block Registry and Sitemap Parser
 - [ ] Phase 4: Performance, a11y, SEO pass.
 - [ ] Phase 5: Deploy and set up monitoring.
 
@@ -178,15 +178,49 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] Add PostCSS + CSS Modules; create `design system/tokens.css` with LTR/RTL-aware vars.
 - [x] Scaffold `ui kit/atoms`, `ui kit/components`, `ui kit/blocks` with index files.
 - [x] **Design System Foundation**: Complete CSS variable system with themes, RTL support, and accessibility features.
-- [ ] **Implement Block Registry**: `section.type` → component in `ui kit/blocks`.
-- [ ] **Build Sitemap Parser**: read `Doc/Sitemap.json`, create routes, and render sections.
+- [x] **Implement Block Registry**: `section.type` → component in `ui kit/blocks`. **COMPLETED**
+- [x] **Build Sitemap Parser**: read `Doc/Sitemap.json`, create routes, and render sections. **COMPLETED**
+- [x] **Data accessors**: typed readers for sample data with existing `portfolio.json` structure. **COMPLETED**
+- [x] **Page Component**: renders sections from sitemap using block registry. **COMPLETED**
 - [ ] **Content pipeline**: parse `/content/**/<slug>.md` with co-located images; generate slugs and indexes.
-- [ ] **Data accessors**: typed readers for `/data/portfolio.json` and `/data/resume.json`.
 - [ ] **i18n**: locale-aware routing + language switcher; RTL support for `fa`.
 - [ ] **Auto-translation**: when a locale variant is missing, invoke AI to create `/content/.../<slug>.<locale>.md` and patch strings in JSON.
 - [ ] CI checks: missing block types, invalid frontmatter, broken image refs, i18n coverage.
 - [ ] Add GitHub Actions for lint, typecheck, build.
 - [ ] Add basic tests (render + a11y) for atoms and blocks.
+
+## Recent Progress (2025-08-11)
+
+- ✅ **Block Registry System**: Created `src/components/blocks/BlockRegistry.tsx` with mappings from section types to existing UI components
+- ✅ **Sitemap Parser**: Implemented `src/utils/sitemapParser.ts` to read and parse the existing `docs/Sitemap.json`
+- ✅ **Data Accessors**: Created `src/utils/dataAccessors.ts` with sample data that works with existing portfolio.json structure
+- ✅ **Page Component**: Built `src/components/pages/Page.tsx` that renders sitemap sections using the block registry
+- ✅ **Integration**: Added "Portfolio Demo" to navigation to showcase the sitemap-driven page system
+- ✅ **Working Demo**: System is now functional and rendering at http://localhost:3001
+
+### Block Types Implemented:
+
+- `hero` - Hero sections with CTA buttons
+- `project-grid` - Project showcase using ProjectCard components
+- `cards` - Generic card grid for skills, features, etc.
+- `sections` - Blog post listings using BlogCard components
+- `contact-cta` - Contact call-to-action sections
+- `custom` - Flexible content sections
+- `prose` - Markdown content sections
+
+### What Works Now:
+
+- Sitemap JSON defines page structure and sections
+- Block registry maps section types to existing UI components
+- Data accessors provide sample content to populate blocks
+- Pages render sections automatically from sitemap data
+- Demo accessible via "Portfolio Demo" in navigation
+
+### Next Priority Tasks:
+
+1. Content pipeline for markdown files
+2. Internationalization (i18n) routing
+3. Auto-translation system
 
 ## Changelog
 

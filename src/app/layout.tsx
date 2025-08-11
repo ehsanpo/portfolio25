@@ -1,18 +1,21 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../index.css';
+import { Header } from '../components/ui/Header';
+import { Footer } from '../components/ui/Footer';
+import { I18nProvider } from '../hooks/useI18n';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Design System Portfolio',
-  description: 'A comprehensive, production-ready design system built with React, TypeScript, and Tailwind CSS',
+  title: 'Ehsan Pourhadi - Design System Portfolio',
+  description: 'Full-stack developer and design system architect',
 };
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -22,7 +25,20 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
-        {children}
+        <I18nProvider>
+          <div className="min-h-screen bg-background text-foreground">
+            <div className="fixed inset-0 bg-gradient-to-br from-primary-500/10 via-background to-secondary-500/10 animate-gradient" />
+            <div className="relative z-10 flex flex-col min-h-screen">
+              <Header />
+              
+              <main className="flex-1">
+                {children}
+              </main>
+              
+              <Footer />
+            </div>
+          </div>
+        </I18nProvider>
       </body>
     </html>
   );

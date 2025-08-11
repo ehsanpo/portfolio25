@@ -1,0 +1,32 @@
+{
+  "portfolio": [
+    {
+      "slug": "design-system",
+      "meta": {
+        "title": "Design System Portfolio",
+        "description": "A comprehensive design system built with React, TypeScript, and Tailwind CSS",
+        "publishDate": "2024-03-15",
+        "category": "Design Systems",
+        "tags": ["React", "TypeScript", "Design Systems", "Tailwind CSS"],
+        "featured": true,
+        "image": "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg"
+      },
+      "excerpt": "A comprehensive, production-ready design system built with React, TypeScript, and Tailwind CSS. This project showcases modern web development practices with beautiful glassmorphism effects, gradient animations, and a complete component library."
+    }
+  ],
+  "blog": [
+    {
+      "slug": "building-design-systems",
+      "meta": {
+        "title": "Building Scalable Design Systems",
+        "excerpt": "Learn how to create design systems that scale with your team and product. This comprehensive guide covers tokens, components, and documentation strategies.",
+        "publishDate": "2024-03-15",
+        "readTime": "8 min",
+        "category": "Design Systems",
+        "tags": ["Design Systems", "React", "Frontend", "Architecture"],
+        "featured": true,
+        "image": "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg"
+      }
+    }
+  ]
+}
