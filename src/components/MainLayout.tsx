@@ -18,11 +18,9 @@ export function MainLayout({ children }: Readonly<MainLayoutProps>) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         <Header />
-        
-        <main className="flex-1 p-6 lg:p-8">
-          {children}
-        </main>
-        
+
+        <main className="flex-1 p-6 lg:p-8">{children}</main>
+
         <Footer />
       </div>
     </div>

@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import '../index.css';
-import { Header } from '../components/ui/Header';
-import { Footer } from '../components/ui/Footer';
-import { I18nProvider } from '../hooks/useI18n';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "../index.css";
+import { Header } from "../components/ui/Header";
+import { Footer } from "../components/ui/Footer";
+import { I18nProvider } from "../hooks/useI18n";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Ehsan Pourhadi - Design System Portfolio',
-  description: 'Full-stack developer and design system architect',
+  title: "Ehsan Pourhadi - Design System Portfolio",
+  description: "Full-stack developer and design system architect",
 };
 
 export default function RootLayout({
@@ -21,8 +21,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className={inter.className}>
         <I18nProvider>
@@ -30,11 +37,9 @@ export default function RootLayout({
             <div className="fixed inset-0 bg-gradient-to-br from-primary-500/10 via-background to-secondary-500/10 animate-gradient" />
             <div className="relative z-10 flex flex-col min-h-screen">
               <Header />
-              
-              <main className="flex-1">
-                {children}
-              </main>
-              
+
+              <main className="flex-1">{children}</main>
+
               <Footer />
             </div>
           </div>

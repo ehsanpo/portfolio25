@@ -34,13 +34,17 @@ export default function HomePage() {
         <div>
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Featured Work</h2>
-            <p className="text-muted-foreground">Recent projects and achievements</p>
+            <p className="text-muted-foreground">
+              Recent projects and achievements
+            </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="group">
               <div className="aspect-video bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Enterprise Design System</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Enterprise Design System
+              </h3>
               <p className="text-muted-foreground mb-4">
                 Comprehensive component library serving 50+ applications
               </p>
@@ -56,7 +60,9 @@ export default function HomePage() {
 
             <Card className="group">
               <div className="aspect-video bg-gradient-to-br from-secondary-500 to-accent-500 rounded-lg mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Component Documentation</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Component Documentation
+              </h3>
               <p className="text-muted-foreground mb-4">
                 Interactive documentation with live code examples
               </p>
@@ -72,7 +78,9 @@ export default function HomePage() {
 
             <Card className="group">
               <div className="aspect-video bg-gradient-to-br from-accent-500 to-primary-500 rounded-lg mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Brand Identity System</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Brand Identity System
+              </h3>
               <p className="text-muted-foreground mb-4">
                 Complete visual identity with design tokens and guidelines
               </p>
