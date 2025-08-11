@@ -1,0 +1,55 @@
+{
+  "site": {
+    "title": "Portfolio",
+    "description": "A modern portfolio website",
+    "author": "Ehsan Pourhadi",
+    "baseUrl": "https://your-domain.com"
+  },
+  "navigation": {
+    "main": [
+      {
+        "label": "Home",
+        "href": "/",
+        "active": true
+      },
+      {
+        "label": "Portfolio",
+        "href": "/portfolio"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "About",
+        "href": "/about"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ]
+  },
+  "hero": {
+    "title": "Building Digital Experiences",
+    "subtitle": "Full-stack developer & designer creating meaningful web applications",
+    "cta": {
+      "primary": {
+        "label": "View My Work",
+        "href": "/portfolio"
+      },
+      "secondary": {
+        "label": "Get In Touch",
+        "href": "/contact"
+      }
+    }
+  },
+  "contact": {
+    "email": "hello@example.com",
+    "social": {
+      "github": "https://github.com/ehsanpo",
+      "linkedin": "https://linkedin.com/in/ehsanpo",
+      "twitter": "https://twitter.com/ehsanpo"
+    }
+  }
+}

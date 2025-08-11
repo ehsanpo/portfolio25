@@ -1,0 +1,334 @@
+{
+  "home": {
+    "path": "/",
+    "title": "Home",
+    "description": "Landing page with brief intro and featured content",
+    "sections": [
+      { "title": "Introduction", "type": "custom" },
+      { "title": "Featured Work", "type": "custom" },
+      { "title": "Stacks", "type": "cards" },
+      { "title": "Certifications", "type": "cards" },
+      { "title": "What People Say", "type": "cards" },
+      { "title": "Awards", "type": "cards" },
+      { "title": "Trusted By", "type": "cards" },
+      { "title": "Latest Blog Posts", "type": "sections" }
+    ]
+  },
+  "about": {
+    "path": "/about",
+    "title": "About",
+    "description": "Personal background, values, career philosophy, and approach",
+    "sections": [
+      { "title": "Overview", "type": "custom" },
+      { "title": "Work Highlights", "type": "sections" }
+    ],
+    "children": [
+      {
+        "path": "/about/overview",
+        "title": "Overview",
+        "description": "Broad intro: self-taught journey, general background, and philosophy",
+        "sections": [
+          { "title": "About Me", "type": "custom" },
+          { "title": "Background", "type": "sections" },
+          { "title": "Philosophy", "type": "sections" },
+          { "title": "Motivators", "type": "sections" },
+          { "title": "It's Always Time for Tea", "type": "sections" }
+        ]
+      },
+      {
+        "path": "/about/highlights",
+        "title": "Work Highlights",
+        "description": "Visual fullwidth timeline of key roles and contributions",
+        "sections": [
+          {
+            "title": "My Work Story (with example projects)",
+            "type": "custom"
+          },
+          { "title": "Timeline", "type": "custom" },
+          { "title": "Projects & Roles", "type": "cards" }
+        ]
+      }
+    ]
+  },
+  "portfolio": {
+    "path": "/portfolio",
+    "title": "Portfolio",
+    "description": "Filterable project list with case studies",
+    "sections": [
+      { "title": "Project Filters", "type": "custom" },
+      { "title": "Projects", "type": "cards" }
+    ],
+    "children": [
+      {
+        "path": "/portfolio/project-slug",
+        "title": "Project Detail",
+        "description": "Detailed page per project",
+        "sections": [
+          { "title": "Project Overview", "type": "custom" },
+          { "title": "Gallery", "type": "cards" }
+        ]
+      },
+      {
+        "path": "/portfolio/tags",
+        "title": "Portfolio Tags",
+        "description": "Tag index for portfolio projects",
+        "sections": [{ "title": "All Tags", "type": "cards" }],
+        "children": [
+          {
+            "path": "/portfolio/tags/:slug",
+            "title": "Tag Detail",
+            "description": "Detail page for each portfolio tag",
+            "sections": [{ "title": "Tag Projects", "type": "cards" }]
+          }
+        ]
+      },
+      {
+        "path": "/portfolio/categories",
+        "title": "Portfolio Categories",
+        "description": "Category index for portfolio projects",
+        "sections": [{ "title": "All Categories", "type": "cards" }],
+        "children": [
+          {
+            "path": "/portfolio/categories/:slug",
+            "title": "Category Detail",
+            "description": "Detail page for each portfolio category",
+            "sections": [{ "title": "Category Projects", "type": "cards" }]
+          }
+        ]
+      }
+    ]
+  },
+  "services": {
+    "path": "/services",
+    "title": "Services",
+    "description": "Professional offerings, specialties, and consulting services",
+    "sections": [
+      { "title": "Service Offerings", "type": "cards" },
+      { "title": "Consulting Details", "type": "custom" }
+    ]
+  },
+  "skills": {
+    "path": "/skills",
+    "title": "Skills",
+    "description": "Technical skills, stacks, and proficiency levels",
+    "sections": [
+      { "title": "Stacks", "type": "cards" },
+      { "title": "Skill Chart", "type": "custom" },
+      { "title": "Tech Timeline", "type": "custom" },
+      { "title": "Development Process", "type": "sections" },
+      { "title": "Certifications", "type": "cards" },
+      { "title": "GitHub Wrapped", "type": "custom" },
+      { "title": "Work Experience Timeline", "type": "custom" },
+      { "title": "Education Timeline", "type": "custom" },
+      { "title": "Stats Dashboard", "type": "custom" }
+    ]
+  },
+  "blog": {
+    "path": "/blog",
+    "title": "Blog",
+    "description": "Articles, technical deep dives, design/dev philosophy",
+    "sections": [
+      { "title": "Recent Articles", "type": "cards" },
+      { "title": "Categories", "type": "sections" }
+    ]
+  },
+  "toolbox": {
+    "path": "/toolbox",
+    "title": "Toolbox",
+    "description": "Tools, configs, and resources used regularly",
+    "sections": [
+      { "title": "Tools List", "type": "cards" },
+      { "title": "Development Tools", "type": "cards" },
+      { "title": "Configurations", "type": "custom" }
+    ]
+  },
+  "design_system": {
+    "path": "/design-system",
+    "title": "Design System",
+    "description": "Unified brand and UI guidelines with reusable components",
+    "sections": [
+      { "title": "Overview", "type": "custom" },
+      { "title": "Brand Values", "type": "sections" }
+    ],
+    "children": [
+      {
+        "path": "/design-system/overview",
+        "title": "Overview",
+        "type": "custom"
+      },
+      {
+        "path": "/design-system/brand-values",
+        "title": "Brand Values",
+        "type": "sections"
+      },
+      { "path": "/design-system/logo", "title": "Logo", "type": "custom" },
+      {
+        "path": "/design-system/colors",
+        "title": "Colors",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/typography",
+        "title": "Typography",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/iconography",
+        "title": "Iconography",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/components",
+        "title": "Components",
+        "type": "sections",
+        "children": [
+          {
+            "path": "/design-system/components/buttons",
+            "title": "Buttons",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/cards",
+            "title": "Cards",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/forms",
+            "title": "Forms",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/media",
+            "title": "Media",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/effects-layouts",
+            "title": "Effects & Layouts",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/portfolio",
+            "title": "Portfolio",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/sections-charts",
+            "title": "Sections & Charts",
+            "type": "sections"
+          },
+          {
+            "path": "/design-system/components/professional-timeline",
+            "title": "Professional Timeline",
+            "type": "sections"
+          }
+        ]
+      },
+      {
+        "path": "/design-system/design-tokens",
+        "title": "Design Tokens",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/spacing",
+        "title": "Spacing",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/motion",
+        "title": "Motion",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/animations",
+        "title": "Animations",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/tone-of-voice",
+        "title": "Tone of Voice",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/data-visualization",
+        "title": "Data Visualization",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/accessibility",
+        "title": "Accessibility",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/sounds",
+        "title": "Sounds",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/design-guidelines",
+        "title": "Design Guidelines",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/audio-player-demo",
+        "title": "Audio Player Demo",
+        "type": "sections"
+      },
+      {
+        "path": "/design-system/section-dividers",
+        "title": "Section Dividers",
+        "type": "sections"
+      }
+    ]
+  },
+  "case_studies": {
+    "path": "/case-studies",
+    "title": "Case Studies",
+    "description": "In-depth analyses of impactful projects and processes",
+    "sections": [{ "title": "All Case Studies", "type": "cards" }],
+    "children": [
+      {
+        "path": "/case-studies/:slug",
+        "title": "Case Study Detail",
+        "description": "Detailed page for each case study",
+        "sections": [
+          { "title": "Case Study Overview", "type": "custom" },
+          { "title": "Related Media", "type": "cards" }
+        ]
+      }
+    ]
+  },
+  "music": {
+    "path": "/music",
+    "title": "Music",
+    "description": "Personal music creations, playlists, or collaborations",
+    "sections": [
+      { "title": "Featured Music", "type": "cards" },
+      { "title": "Playlists", "type": "sections" }
+    ]
+  },
+  "contact": {
+    "path": "/contact",
+    "title": "Contact",
+    "description": "Contact form or direct contact options",
+    "sections": [
+      { "title": "Contact Form", "type": "custom" },
+      { "title": "Contact Info", "type": "sections" }
+    ]
+  },
+  "resume_api": {
+    "path": "/resume.json",
+    "title": "Resume JSON",
+    "description": "API endpoint serving machine-readable resume",
+    "sections": [{ "title": "Resume Data", "type": "custom" }]
+  },
+  "404": {
+    "path": "/404",
+    "title": "404 Not Found",
+    "description": "Custom not found page",
+    "sections": [
+      { "title": "Error Message", "type": "custom" },
+      { "title": "Suggested Links", "type": "sections" }
+    ]
+  }
+}
