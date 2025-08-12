@@ -1,15 +1,18 @@
-"use client";
-
 import React from "react";
-import { useTranslations } from "@/hooks/useTranslations";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, Star, Users, Award } from "lucide-react";
 
-export default function HomePage() {
-  const t = useTranslations("hero");
-  const nav = useTranslations("navigation");
+interface HomePageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale } = await params;
+  const t = await getTranslations("hero");
+  const nav = await getTranslations("navigation");
   return (
     <div className="min-h-screen p-6 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-16">

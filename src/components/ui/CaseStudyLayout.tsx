@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardTitle } from './Card';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { ShareButtons } from './ShareButtons';
-import { ImageGallery } from './ImageGallery';
-import { 
-  ExternalLink, 
-  Github, 
-  Calendar, 
-  Users, 
+"use client";
+
+import React, { useState } from "react";
+import { Card, CardContent, CardDescription, CardTitle } from "./Card";
+import { Button } from "./Button";
+import { Badge } from "./Badge";
+import { ShareButtons } from "./ShareButtons";
+import { ImageGallery } from "./ImageGallery";
+import {
+  ExternalLink,
+  Github,
+  Calendar,
+  Users,
   Clock,
   Target,
   Lightbulb,
@@ -20,9 +22,9 @@ import {
   Smartphone,
   Database,
   ChevronDown,
-  ChevronUp
-} from 'lucide-react';
-import { cn } from '../../utils/cn';
+  ChevronUp,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface CaseStudySection {
   id: string;
@@ -50,7 +52,7 @@ interface CaseStudyLayoutProps {
   team?: string[];
   technologies: string[];
   category: string;
-  status: 'completed' | 'in-progress' | 'concept';
+  status: "completed" | "in-progress" | "concept";
   demoUrl?: string;
   githubUrl?: string;
   figmaUrl?: string;
@@ -63,7 +65,7 @@ interface CaseStudyLayoutProps {
   challenges?: string[];
   learnings?: string[];
   nextSteps?: string[];
-  variant?: 'default' | 'glass' | 'gradient';
+  variant?: "default" | "glass" | "gradient";
   className?: string;
 }
 
@@ -87,28 +89,28 @@ export function CaseStudyLayout({
   challenges = [],
   learnings = [],
   nextSteps = [],
-  variant = 'default',
+  variant = "default",
   className,
 }: CaseStudyLayoutProps) {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const toggleSection = (sectionId: string) => {
-    setExpandedSections(prev => 
-      prev.includes(sectionId) 
-        ? prev.filter(id => id !== sectionId)
+    setExpandedSections((prev) =>
+      prev.includes(sectionId)
+        ? prev.filter((id) => id !== sectionId)
         : [...prev, sectionId]
     );
   };
 
   const getCategoryIcon = () => {
     switch (category.toLowerCase()) {
-      case 'web':
+      case "web":
         return <Code className="w-5 h-5 text-blue-500" />;
-      case 'mobile':
+      case "mobile":
         return <Smartphone className="w-5 h-5 text-green-500" />;
-      case 'design':
+      case "design":
         return <Palette className="w-5 h-5 text-purple-500" />;
-      case 'backend':
+      case "backend":
         return <Database className="w-5 h-5 text-orange-500" />;
       default:
         return <Zap className="w-5 h-5 text-primary-500" />;
@@ -117,25 +119,33 @@ export function CaseStudyLayout({
 
   const getStatusBadge = () => {
     switch (status) {
-      case 'completed':
+      case "completed":
         return <Badge variant="success">Completed</Badge>;
-      case 'in-progress':
+      case "in-progress":
         return <Badge variant="warning">In Progress</Badge>;
-      case 'concept':
+      case "concept":
         return <Badge variant="neutral">Concept</Badge>;
     }
   };
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className={cn("space-y-8", className)}>
       {/* Hero Section */}
-      <Card variant="gradient" padding="lg" className="relative overflow-hidden">
+      <Card
+        variant="gradient"
+        padding="lg"
+        className="relative overflow-hidden"
+      >
         {heroImage && (
           <div className="absolute inset-0 opacity-20">
-            <img src={heroImage} alt={title} className="w-full h-full object-cover" />
+            <img
+              src={heroImage}
+              alt={title}
+              className="w-full h-full object-cover"
+            />
           </div>
         )}
-        
+
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center space-x-3">
@@ -147,18 +157,20 @@ export function CaseStudyLayout({
                   <Badge variant="glass">{category}</Badge>
                   {getStatusBadge()}
                 </div>
-                <h1 className="text-4xl font-bold font-basement text-white mb-2">{title}</h1>
+                <h1 className="text-4xl font-bold font-basement text-white mb-2">
+                  {title}
+                </h1>
                 {subtitle && (
                   <p className="text-xl text-white/80 font-kabel">{subtitle}</p>
                 )}
               </div>
             </div>
           </div>
-          
+
           <p className="text-lg text-white/90 font-kabel leading-relaxed mb-8 max-w-3xl">
             {description}
           </p>
-          
+
           <div className="flex flex-wrap gap-3">
             {demoUrl && (
               <Button variant="glass" className="flex items-center gap-2">
@@ -200,7 +212,9 @@ export function CaseStudyLayout({
               <Clock className="w-6 h-6 text-secondary-400" />
             </div>
             <h3 className="font-basement text-foreground mb-1">Duration</h3>
-            <p className="text-sm text-muted-foreground font-kabel">{duration}</p>
+            <p className="text-sm text-muted-foreground font-kabel">
+              {duration}
+            </p>
           </div>
         </Card>
 
@@ -211,7 +225,9 @@ export function CaseStudyLayout({
                 <Target className="w-6 h-6 text-accent-400" />
               </div>
               <h3 className="font-basement text-foreground mb-1">Client</h3>
-              <p className="text-sm text-muted-foreground font-kabel">{client}</p>
+              <p className="text-sm text-muted-foreground font-kabel">
+                {client}
+              </p>
             </div>
           </Card>
         )}
@@ -223,7 +239,7 @@ export function CaseStudyLayout({
             </div>
             <h3 className="font-basement text-foreground mb-1">Team</h3>
             <p className="text-sm text-muted-foreground font-kabel">
-              {team.length > 0 ? `${team.length} members` : 'Solo project'}
+              {team.length > 0 ? `${team.length} members` : "Solo project"}
             </p>
           </div>
         </Card>
@@ -246,7 +262,11 @@ export function CaseStudyLayout({
       {/* Case Study Sections */}
       <div className="space-y-6">
         {sections.map((section, index) => (
-          <Card key={section.id} variant={index % 2 === 0 ? 'default' : 'glass'} padding="lg">
+          <Card
+            key={section.id}
+            variant={index % 2 === 0 ? "default" : "glass"}
+            padding="lg"
+          >
             <div className="flex items-center justify-between mb-4">
               <CardTitle className="font-basement">{section.title}</CardTitle>
               <Button
@@ -268,33 +288,39 @@ export function CaseStudyLayout({
                 )}
               </Button>
             </div>
-            
+
             <CardContent>
               <div className="space-y-6">
                 <p className="text-muted-foreground font-kabel leading-relaxed">
                   {section.content}
                 </p>
-                
+
                 {section.highlights && section.highlights.length > 0 && (
                   <div>
-                    <h4 className="font-medium font-basement text-foreground mb-3">Key Highlights</h4>
+                    <h4 className="font-medium font-basement text-foreground mb-3">
+                      Key Highlights
+                    </h4>
                     <ul className="space-y-2">
                       {section.highlights.map((highlight, idx) => (
                         <li key={idx} className="flex items-start space-x-2">
                           <CheckCircle className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-muted-foreground font-kabel">{highlight}</span>
+                          <span className="text-sm text-muted-foreground font-kabel">
+                            {highlight}
+                          </span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 )}
-                
+
                 {expandedSections.includes(section.id) && (
                   <div className="space-y-6">
                     {section.images && section.images.length > 0 && (
                       <div>
-                        <h4 className="font-medium font-basement text-foreground mb-3">Visual Examples</h4>
-                        <ImageGallery 
+                        <h4 className="font-medium font-basement text-foreground mb-3">
+                          Visual Examples
+                        </h4>
+                        <ImageGallery
                           images={section.images}
                           variant="grid"
                           columns={3}
@@ -303,10 +329,12 @@ export function CaseStudyLayout({
                         />
                       </div>
                     )}
-                    
+
                     {section.code && (
                       <div>
-                        <h4 className="font-medium font-basement text-foreground mb-3">Code Example</h4>
+                        <h4 className="font-medium font-basement text-foreground mb-3">
+                          Code Example
+                        </h4>
                         <div className="bg-muted/50 p-4 rounded-lg">
                           <code className="text-sm font-mono text-foreground whitespace-pre-wrap">
                             {section.code}
@@ -325,10 +353,15 @@ export function CaseStudyLayout({
       {/* Outcomes */}
       {outcomes.length > 0 && (
         <Card variant="gradient" padding="lg">
-          <CardTitle className="font-basement text-white mb-4">Project Outcomes</CardTitle>
+          <CardTitle className="font-basement text-white mb-4">
+            Project Outcomes
+          </CardTitle>
           <div className="grid md:grid-cols-3 gap-6">
             {outcomes.map((outcome, index) => (
-              <div key={index} className="text-center p-4 glass-card rounded-lg border border-white/20">
+              <div
+                key={index}
+                className="text-center p-4 glass-card rounded-lg border border-white/20"
+              >
                 <div className="text-3xl font-bold font-basement text-white mb-2">
                   {outcome.value}
                 </div>
@@ -354,7 +387,9 @@ export function CaseStudyLayout({
                 {challenges.map((challenge, index) => (
                   <li key={index} className="flex items-start space-x-3">
                     <Lightbulb className="w-5 h-5 text-warning-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-muted-foreground font-kabel">{challenge}</span>
+                    <span className="text-sm text-muted-foreground font-kabel">
+                      {challenge}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -370,7 +405,9 @@ export function CaseStudyLayout({
                 {learnings.map((learning, index) => (
                   <li key={index} className="flex items-start space-x-3">
                     <CheckCircle className="w-5 h-5 text-success-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-muted-foreground font-kabel">{learning}</span>
+                    <span className="text-sm text-muted-foreground font-kabel">
+                      {learning}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -388,7 +425,9 @@ export function CaseStudyLayout({
               {nextSteps.map((step, index) => (
                 <li key={index} className="flex items-start space-x-3">
                   <ArrowRight className="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground font-kabel">{step}</span>
+                  <span className="text-sm text-muted-foreground font-kabel">
+                    {step}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -398,12 +437,14 @@ export function CaseStudyLayout({
 
       {/* Share Section */}
       <Card variant="gradient" padding="lg">
-        <CardTitle className="font-basement text-white mb-4">Share This Case Study</CardTitle>
+        <CardTitle className="font-basement text-white mb-4">
+          Share This Case Study
+        </CardTitle>
         <ShareButtons
           title={title}
           description={description}
-          hashtags={['portfolio', 'casestudy', category.toLowerCase()]}
-          platforms={['twitter', 'linkedin', 'copy']}
+          hashtags={["portfolio", "casestudy", category.toLowerCase()]}
+          platforms={["twitter", "linkedin", "copy"]}
           variant="minimal"
         />
       </Card>

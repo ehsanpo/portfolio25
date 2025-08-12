@@ -177,7 +177,7 @@ export function Header({
   showBadge = true,
   className,
 }: Readonly<HeaderProps>) {
-  const t = useTranslations('navigation');
+  const t = useTranslations("navigation");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -188,7 +188,9 @@ export function Header({
       ...item,
       name: t(item.id) || item.name, // Use translation if available, fallback to original
       href: item.href,
-      children: item.children ? buildLocalizedNavItems(item.children) : undefined,
+      children: item.children
+        ? buildLocalizedNavItems(item.children)
+        : undefined,
     }));
   };
 
@@ -512,7 +514,7 @@ export function Header({
                 <LanguageSwitcher />
                 <ThemeToggle />
               </div>
-              
+
               <Button
                 variant="gradient"
                 className="w-full flex items-center justify-center gap-2"

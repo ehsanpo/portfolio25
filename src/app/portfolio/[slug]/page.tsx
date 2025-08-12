@@ -3,8 +3,39 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { ArrowLeft, Calendar, Clock, Share, Bookmark } from "lucide-react";
-import { getPortfolioContent, parseMarkdownFile } from "@/utils/contentParser";
+import { CaseStudyLayout } from "@/components/ui/CaseStudyLayout";
+import { ArrowLeft } from "lucide-react";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+
+interface ContentMeta {
+  title: string;
+  description?: string;
+  excerpt?: string;
+  publishDate?: string;
+  readTime?: string;
+  category?: string;
+  tags?: string[];
+  featured?: boolean;
+  image?: string;
+  date?: string;
+  author?: string;
+  agency?: string;
+  client?: string;
+  background_image?: string;
+  logo?: string;
+  tagline?: string;
+  case_link_url?: string;
+  [key: string]: string | number | boolean | string[] | undefined;
+}
+
+interface PortfolioItem {
+  slug: string;
+  meta: ContentMeta;
+  content: string;
+  filePath: string;
+}
 
 interface PortfolioPageProps {
   params: {
@@ -12,20 +43,100 @@ interface PortfolioPageProps {
   };
 }
 
-export default function PortfolioPage({ params }: PortfolioPageProps) {
-  const portfolioItems = getPortfolioContent();
-  const project = portfolioItems.find((item) => item.slug === params.slug);
+// Server-side data fetching - direct file system access
+async function getPortfolioItem(slug: string): Promise<PortfolioItem | null> {
+  try {
+    const contentDir = path.join(process.cwd(), "src", "content", "portfolio");
+    const projectDir = path.join(contentDir, slug);
+    const projectFile = path.join(projectDir, `${slug}.md`);
+
+    if (!fs.existsSync(projectFile)) {
+      return null;
+    }
+
+    const fileContent = fs.readFileSync(projectFile, "utf8");
+    const { data, content } = matter(fileContent);
+
+    return {
+      slug,
+      meta: data as ContentMeta,
+      content,
+      filePath: projectFile,
+    };
+  } catch (error) {
+    console.error("Error fetching portfolio item:", error);
+    return null;
+  }
+}
+
+export default async function PortfolioPage({ params }: PortfolioPageProps) {
+  const { slug } = await params;
+  const project = await getPortfolioItem(slug);
 
   if (!project) {
     notFound();
   }
 
-  // Parse the full markdown content
-  const fullContent = parseMarkdownFile(`content/portfolio/${params.slug}.md`);
+  // Prepare image URLs using optimized images or fallback to placeholders
+  const getImageUrl = (imageName: string, size: 'thumbnail' | 'medium' | 'large' | 'hero' = 'medium') => {
+    // In development, use placeholder images
+    // In production, this would use the optimized images from build process
+    if (process.env.NODE_ENV === 'development') {
+      const dimensions = {
+        thumbnail: 'w=300&h=200',
+        medium: 'w=800&h=600',
+        large: 'w=1200&h=900',
+        hero: 'w=1600&h=900'
+      };
+      return `https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&${dimensions[size]}`;
+    }
+    
+    // TODO: Use imageUtils.getOptimizedImageUrl in production
+    return `/optimized/portfolio/${slug}/${imageName.replace(/\.[^/.]+$/, '')}-${size}.webp`;
+  };
+
+  // Get current locale from context for content localization
+  // Note: URLs remain clean, language affects content rendering only
+
+  // Prepare hero image
+  const heroImage = project.meta.background_image
+    ? getImageUrl(project.meta.background_image, 'hero')
+    : undefined;
+
+  // Prepare gallery images
+  const galleryImages =
+    project.meta.images && Array.isArray(project.meta.images)
+      ? project.meta.images.map((imageName: string, index: number) => ({
+          id: `image-${index}`,
+          src: getImageUrl(imageName, 'large'),
+          alt: `${project.meta.title} - Image ${index + 1}`,
+          title: `${project.meta.title} - Image ${index + 1}`,
+          description: `Project image ${index + 1}`,
+        }))
+      : [];
+
+  // Prepare sections from content
+  const sections = [
+    {
+      id: "overview",
+      title: "Project Overview",
+      content:
+        project.content ||
+        project.meta.description ||
+        "No description available.",
+      images: galleryImages.length > 0 ? galleryImages : undefined,
+    },
+  ];
+
+  // Prepare technologies from tags
+  const technologies =
+    project.meta.tag && Array.isArray(project.meta.tag)
+      ? project.meta.tag
+      : project.meta.tags || [];
 
   return (
     <div className="min-h-screen p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Back Button */}
         <Link href="/portfolio">
           <Button variant="ghost" className="flex items-center gap-2 mb-6">
@@ -34,163 +145,138 @@ export default function PortfolioPage({ params }: PortfolioPageProps) {
           </Button>
         </Link>
 
-        {/* Project Header */}
-        <article className="space-y-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Badge variant="secondary">
-                {project.meta.category || "Project"}
-              </Badge>
-              {project.meta.featured && (
-                <Badge variant="primary">Featured</Badge>
-              )}
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              {project.meta.title}
-            </h1>
-
-            {project.meta.excerpt && (
-              <p className="text-xl text-muted-foreground">
-                {project.meta.excerpt}
-              </p>
-            )}
-
-            {/* Project Meta */}
-            <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground py-4 border-y border-border">
-              {project.meta.publishDate && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(project.meta.publishDate).toLocaleDateString(
-                    "en-US",
-                    {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    }
-                  )}
-                </div>
-              )}
-              {project.meta.readTime && (
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  {project.meta.readTime}
-                </div>
-              )}
-              {project.meta.client && <div>Client: {project.meta.client}</div>}
-            </div>
-
-            {/* Project Actions */}
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                <Share className="w-4 h-4" />
-                Share
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                <Bookmark className="w-4 h-4" />
-                Save
-              </Button>
-            </div>
-          </div>
-
-          {/* Project Content */}
-          <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-code:text-primary-500 prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border">
-            {fullContent ? (
-              <div dangerouslySetInnerHTML={{ __html: fullContent.content }} />
-            ) : (
-              <p className="text-muted-foreground">Content not available.</p>
-            )}
-          </div>
-
-          {/* Tags */}
-          {project.meta.tags && (
-            <div className="space-y-3 pt-8 border-t border-border">
-              <h3 className="text-lg font-semibold">Tags</h3>
-              <div className="flex flex-wrap gap-2">
-                {project.meta.tags.map((tag: string) => (
-                  <Badge key={tag} variant="neutral">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Project Footer */}
-          <div className="flex justify-between items-center pt-8 border-t border-border">
-            <Link href="/portfolio">
-              <Button variant="outline" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                All Projects
-              </Button>
-            </Link>
-            <div className="flex gap-3">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Share className="w-4 h-4" />
-                Share Project
-              </Button>
-            </div>
-          </div>
-        </article>
+        {/* Case Study Layout */}
+        <CaseStudyLayout
+          title={project.meta.title}
+          subtitle={project.meta.tagline}
+          description={
+            project.meta.description ||
+            project.content ||
+            "No description available."
+          }
+          heroImage={heroImage}
+          client={project.meta.client || project.meta.agency}
+          role="Designer & Developer"
+          duration={project.meta.date || "N/A"}
+          technologies={technologies}
+          category={
+            Array.isArray(project.meta.category)
+              ? project.meta.category[0]
+              : project.meta.category || "Project"
+          }
+          status="completed"
+          demoUrl={project.meta.case_link_url}
+          sections={sections}
+        />
 
         {/* Related Projects Section */}
-        <div className="space-y-6 pt-12 border-t border-border">
-          <h2 className="text-2xl font-bold">Related Projects</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {portfolioItems
-              .filter((item) => item.slug !== params.slug)
-              .slice(0, 2)
-              .map((relatedProject) => (
-                <Link
-                  key={relatedProject.slug}
-                  href={`/portfolio/${relatedProject.slug}`}
-                  className="group"
-                >
-                  <div className="p-6 border border-border rounded-lg hover:border-primary-500/50 transition-colors">
-                    <Badge variant="secondary" className="mb-3">
-                      {relatedProject.meta.category || "Project"}
-                    </Badge>
-                    <h3 className="font-semibold mb-2 group-hover:text-primary-500 transition-colors">
-                      {relatedProject.meta.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {relatedProject.meta.excerpt ||
-                        relatedProject.meta.description}
-                    </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      {relatedProject.meta.publishDate && (
-                        <span>
-                          {new Date(
-                            relatedProject.meta.publishDate
-                          ).toLocaleDateString()}
-                        </span>
-                      )}
-                      {relatedProject.meta.readTime && (
-                        <span>{relatedProject.meta.readTime}</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </div>
+        <RelatedProjects currentSlug={slug} />
       </div>
     </div>
   );
 }
 
+// Related Projects Component
+async function RelatedProjects({ currentSlug }: { currentSlug: string }) {
+  try {
+    const contentDir = path.join(process.cwd(), "src", "content", "portfolio");
+    const files = fs.readdirSync(contentDir);
+    const portfolioItems: PortfolioItem[] = [];
+
+    for (const file of files) {
+      const filePath = path.join(contentDir, file);
+      const stat = fs.statSync(filePath);
+
+      if (stat.isDirectory() && file !== currentSlug) {
+        const projectFile = path.join(filePath, `${file}.md`);
+        if (fs.existsSync(projectFile)) {
+          const fileContent = fs.readFileSync(projectFile, "utf8");
+          const { data, content } = matter(fileContent);
+          portfolioItems.push({
+            slug: file,
+            meta: data as ContentMeta,
+            content,
+            filePath: projectFile,
+          });
+        }
+      }
+    }
+
+    const relatedProjects = portfolioItems.slice(0, 2);
+
+    if (relatedProjects.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-6 pt-12 border-t border-border">
+        <h2 className="text-2xl font-bold">Related Projects</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {relatedProjects.map((relatedProject: PortfolioItem) => (
+            <Link
+              key={relatedProject.slug}
+              href={`/portfolio/${relatedProject.slug}`}
+              className="group"
+            >
+              <div className="p-6 border border-border rounded-lg hover:border-primary-500/50 transition-colors">
+                <Badge variant="secondary" className="mb-3">
+                  {relatedProject.meta.category || "Project"}
+                </Badge>
+                <h3 className="font-semibold mb-2 group-hover:text-primary-500 transition-colors">
+                  {relatedProject.meta.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {relatedProject.meta.excerpt ||
+                    relatedProject.meta.description}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  {relatedProject.meta.publishDate && (
+                    <span>
+                      {new Date(
+                        relatedProject.meta.publishDate
+                      ).toLocaleDateString()}
+                    </span>
+                  )}
+                  {relatedProject.meta.readTime && (
+                    <span>{relatedProject.meta.readTime}</span>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  } catch (error) {
+    console.error("Error fetching related projects:", error);
+    return null;
+  }
+}
+
 // Generate static params for all portfolio projects
 export async function generateStaticParams() {
-  const portfolioItems = getPortfolioContent();
-  return portfolioItems.map((item) => ({
-    slug: item.slug,
-  }));
+  try {
+    const contentDir = path.join(process.cwd(), "src", "content", "portfolio");
+    const files = fs.readdirSync(contentDir);
+    const slugs: string[] = [];
+
+    for (const file of files) {
+      const filePath = path.join(contentDir, file);
+      const stat = fs.statSync(filePath);
+
+      if (stat.isDirectory()) {
+        const projectFile = path.join(filePath, `${file}.md`);
+        if (fs.existsSync(projectFile)) {
+          slugs.push(file);
+        }
+      }
+    }
+
+    return slugs.map((slug: string) => ({
+      slug: slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }

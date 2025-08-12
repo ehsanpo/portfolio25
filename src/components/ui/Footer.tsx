@@ -117,14 +117,14 @@ export function Footer({
   onSectionChange,
   className,
 }: Readonly<FooterProps>) {
-  const t = useTranslations('navigation');
+  const t = useTranslations("navigation");
   const buildLocalizedNavSections = () => {
-    return navigationSections.map(section => ({
+    return navigationSections.map((section) => ({
       ...section,
-      links: section.links.map(link => {
-        if ('href' in link) {
+      links: section.links.map((link) => {
+        if ("href" in link) {
           // Handle external links (keep as is)
-          if (link.href.startsWith('http') || link.href.startsWith('mailto:')) {
+          if (link.href.startsWith("http") || link.href.startsWith("mailto:")) {
             return link;
           }
           // Handle internal links (no locale prefix needed)
@@ -132,7 +132,7 @@ export function Footer({
         }
         // Handle id-based navigation (keep as is for section navigation)
         return link;
-      })
+      }),
     }));
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useState, useEffect } from 'react';
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
 
 interface Messages {
   [key: string]: any;
@@ -14,16 +14,21 @@ export function useTranslations(namespace: string) {
   useEffect(() => {
     const loadMessages = async () => {
       try {
-        const messageModule = await import(`../../messages/${currentLocale}.json`);
+        const messageModule = await import(
+          `../../messages/${currentLocale}.json`
+        );
         setMessages(messageModule.default);
       } catch (error) {
-        console.error(`Failed to load messages for locale ${currentLocale}:`, error);
+        console.error(
+          `Failed to load messages for locale ${currentLocale}:`,
+          error
+        );
         // Fallback to English
         try {
           const fallbackModule = await import(`../../messages/en.json`);
           setMessages(fallbackModule.default);
         } catch (fallbackError) {
-          console.error('Failed to load fallback messages:', fallbackError);
+          console.error("Failed to load fallback messages:", fallbackError);
         }
       }
     };
@@ -32,18 +37,18 @@ export function useTranslations(namespace: string) {
   }, [currentLocale]);
 
   return function t(key: string): string {
-    const keys = key.split('.');
+    const keys = key.split(".");
     let value = messages[namespace];
-    
+
     for (const k of keys) {
-      if (value && typeof value === 'object') {
+      if (value && typeof value === "object") {
         value = value[k];
       } else {
         value = undefined;
         break;
       }
     }
-    
-    return typeof value === 'string' ? value : key;
+
+    return typeof value === "string" ? value : key;
   };
 }

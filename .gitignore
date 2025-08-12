@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .env
 .next
+
+# Optimized images (generated during build)
+public/optimized/

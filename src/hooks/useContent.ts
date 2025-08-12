@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export interface ContentMeta {
   title: string;
@@ -22,7 +22,7 @@ export interface ContentItem {
   filePath: string;
 }
 
-export function useContent(type: 'portfolio' | 'blog') {
+export function useContent(type: "portfolio" | "blog") {
   const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,15 +32,15 @@ export function useContent(type: 'portfolio' | 'blog') {
       try {
         setLoading(true);
         const response = await fetch(`/api/content?type=${type}`);
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch ${type} content`);
         }
-        
+
         const data = await response.json();
         setContent(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        setError(err instanceof Error ? err.message : "Unknown error");
         console.error(`Error fetching ${type} content:`, err);
       } finally {
         setLoading(false);
@@ -55,9 +55,9 @@ export function useContent(type: 'portfolio' | 'blog') {
 
 // Convenience hooks for specific content types
 export function usePortfolioContent() {
-  return useContent('portfolio');
+  return useContent("portfolio");
 }
 
 export function useBlogContent() {
-  return useContent('blog');
+  return useContent("blog");
 }

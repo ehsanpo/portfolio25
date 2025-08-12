@@ -1,39 +1,22 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { useTranslations } from "@/hooks/useTranslations";
-import { useBlogContent } from "@/hooks/useContent";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Clock, Calendar } from "lucide-react";
+import { getBlogContent } from "@/utils/contentParser";
 
-export default function BlogPage() {
-  const t = useTranslations("blog");
-  const { content: posts, loading, error } = useBlogContent();
+interface BlogPageProps {
+  params: Promise<{ locale: string }>;
+}
 
-  if (loading) {
-    return (
-      <div className="min-h-screen p-6 lg:p-8 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading blog posts...</p>
-        </div>
-      </div>
-    );
-  }
+export default async function BlogPage({ params }: BlogPageProps) {
+  const { locale } = await params;
+  const t = await getTranslations("blog");
 
-  if (error) {
-    return (
-      <div className="min-h-screen p-6 lg:p-8 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-500 mb-4">Error loading blog: {error}</p>
-          <Button onClick={() => window.location.reload()}>Try Again</Button>
-        </div>
-      </div>
-    );
-  }
+  // Get blog content from markdown files
+  const posts = getBlogContent();
 
   const categories = [
     "All",

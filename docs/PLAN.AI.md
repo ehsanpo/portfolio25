@@ -111,7 +111,7 @@ data/
 
 ### Phase 3 — Website Pages
 
-- **Drive pages, sections, and blocks from **\*\*****\*\*****\*\*****\*\*****\*\*****\*\*****\*\*****`Doc/Sitemap.json`**\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***.\*\* Pages render ordered `sections[]` via a Block Registry.
+- **Drive pages, sections, and blocks from **\*\*\***\*\*\*\*\***\*\*\***\*\*\*\*\***\*\*\***\*\*\*\*\***\*\*\***\*`Doc/Sitemap.json`**\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\***\*\*\*\*\*\*.\*\* Pages render ordered `sections[]` via a Block Registry.
 - **Content sources**
 
   - `/content/portfolio/<slug>/<slug>.md` (+ images in same folder) → portfolio & case study pages
@@ -168,7 +168,7 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] Phase 0: Create repo, folders, and base config.
 - [x] Phase 1: Establish **CSS variable tokens** (no Tailwind).
 - [x] Phase 2: Build ui kit (atoms → components → blocks).
-- [x] Phase 3: **PARTIALLY COMPLETE** - Implemented Block Registry and Sitemap Parser
+- [x] Phase 3: **COMPLETE** - Content pipeline, portfolio/blog pages, CaseStudyLayout integration
 - [ ] Phase 4: Performance, a11y, SEO pass.
 - [ ] Phase 5: Deploy and set up monitoring.
 
@@ -182,14 +182,47 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] **Build Sitemap Parser**: read `Doc/Sitemap.json`, create routes, and render sections. **COMPLETED**
 - [x] **Data accessors**: typed readers for sample data with existing `portfolio.json` structure. **COMPLETED**
 - [x] **Page Component**: renders sections from sitemap using block registry. **COMPLETED**
-- [ ] **Content pipeline**: parse `/content/**/<slug>.md` with co-located images; generate slugs and indexes.
-- [ ] **i18n**: locale-aware routing + language switcher; RTL support for `fa`.
+- [x] **Content pipeline**: parse `/content/**/<slug>.md` with co-located images; generate slugs and indexes.
+- [x] **i18n**: locale-aware routing + language switcher; RTL support for `fa`.
 - [ ] **Auto-translation**: when a locale variant is missing, invoke AI to create `/content/.../<slug>.<locale>.md` and patch strings in JSON.
 - [ ] CI checks: missing block types, invalid frontmatter, broken image refs, i18n coverage.
 - [ ] Add GitHub Actions for lint, typecheck, build.
 - [ ] Add basic tests (render + a11y) for atoms and blocks.
 
-## Recent Progress (2025-08-11)
+## Recent Progress (2025-08-12)
+
+- ✅ **Image Build Process Complete**: Implemented comprehensive image optimization system
+  - Created `scripts/build-images.mjs` for automated image processing during build
+  - Built `src/utils/imageUtils.ts` for optimized image URL generation
+  - Generates multiple sizes: thumbnail (300x200), medium (800x600), large (1200x900), hero (1600x900)
+  - Creates both JPEG and WebP formats for better performance
+  - Integrated into build process with `npm run build:images`
+  - Updated portfolio pages to use optimized images in production
+- ✅ **i18n System Complete**: Implemented context-based internationalization system
+  - Clean URLs without language codes (e.g., `/portfolio/040-fm` not `/en/portfolio/040-fm`)
+  - Context-based language switching with LanguageProvider
+  - Support for English (en), Swedish (sv), and Persian (fa) with RTL support
+  - Localized content resolution strategy: try `<slug>.<locale>.md` first, fallback to `<slug>.md`
+  - Language switcher component with flags and locale names
+- ✅ **Content Pipeline Complete**: Implemented full markdown content parsing system
+  - Created `/src/app/api/content/route.ts` for content API
+  - Built `/src/app/portfolio/[slug]/page.tsx` for individual portfolio pages
+  - Added `/src/app/portfolio/page.tsx` for portfolio listing
+  - Content reads directly from `/src/content/portfolio/` and `/src/content/blog/`
+- ✅ **CaseStudyLayout Integration**: Enhanced portfolio pages with rich visual layout
+  - Added `CaseStudyLayout` component for portfolio detail pages
+  - Implemented image gallery support with placeholder system
+  - Added proper metadata handling (background_image, logo, images array)
+- ✅ **Image Handling Strategy**: Optimized approach for production
+  - Images remain in `/src/content/portfolio/<slug>/` during development
+  - Build process copies and optimizes images to `/public/optimized/`
+  - Development uses placeholder images, production uses optimized assets
+- ✅ **Portfolio System Working**: Full portfolio browsing and detail pages functional
+  - Portfolio listing at `/portfolio` shows all projects
+  - Individual pages at `/portfolio/<slug>` with rich layouts
+  - Real content loading from markdown files with frontmatter
+
+### Previous Progress (2025-08-11)
 
 - ✅ **Block Registry System**: Created `src/components/blocks/BlockRegistry.tsx` with mappings from section types to existing UI components
 - ✅ **Sitemap Parser**: Implemented `src/utils/sitemapParser.ts` to read and parse the existing `docs/Sitemap.json`
@@ -210,17 +243,21 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 
 ### What Works Now:
 
-- Sitemap JSON defines page structure and sections
-- Block registry maps section types to existing UI components
-- Data accessors provide sample content to populate blocks
-- Pages render sections automatically from sitemap data
-- Demo accessible via "Portfolio Demo" in navigation
+- **Content System**: Full markdown parsing for portfolio and blog content
+- **Portfolio Pages**: Individual portfolio pages with CaseStudyLayout
+- **API Integration**: Content API serves markdown files with frontmatter
+- **Image Strategy**: Placeholder system with build-time optimization plan
+- **Sitemap System**: JSON-defined page structure and sections
+- **Block Registry**: Maps section types to existing UI components
+- **Data Accessors**: Sample content to populate blocks
+- **Page Rendering**: Sections automatically rendered from sitemap data
+- **Demo Access**: Available via "Portfolio Demo" in navigation
 
 ### Next Priority Tasks:
 
-1. Content pipeline for markdown files
-2. Internationalization (i18n) routing
-3. Auto-translation system
+1. **Performance & SEO** - Lighthouse optimization pass, meta tags, sitemap.xml
+2. **Testing & CI** - Add automated tests and GitHub Actions
+3. **Auto-translation System** - AI-powered content translation (deferred)
 
 ## Changelog
 

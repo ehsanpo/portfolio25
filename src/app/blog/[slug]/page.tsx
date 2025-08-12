@@ -4,7 +4,27 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { ArrowLeft, Calendar, Clock, Share, Bookmark } from "lucide-react";
-import { getBlogContent, parseMarkdownFile } from "@/utils/contentParser";
+
+interface ContentMeta {
+  title: string;
+  description?: string;
+  excerpt?: string;
+  publishDate?: string;
+  readTime?: string;
+  category?: string;
+  tags?: string[];
+  featured?: boolean;
+  image?: string;
+  author?: string;
+  [key: string]: string | number | boolean | string[] | undefined;
+}
+
+interface BlogItem {
+  slug: string;
+  meta: ContentMeta;
+  content: string;
+  filePath: string;
+}
 
 interface BlogPageProps {
   params: {
@@ -12,17 +32,35 @@ interface BlogPageProps {
   };
 }
 
-export default function BlogPage({ params }: BlogPageProps) {
-  // Get all blog content to find the specific item
-  const blogItems = getBlogContent();
-  const post = blogItems.find((post) => post.slug === params.slug);
+// Server-side data fetching
+async function getBlogItem(slug: string): Promise<BlogItem | null> {
+  try {
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+      }/api/content?type=blog`,
+      { cache: "force-cache" }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch blog content");
+    }
+
+    const data: BlogItem[] = await response.json();
+    return data.find((item: BlogItem) => item.slug === slug) || null;
+  } catch (error) {
+    console.error("Error fetching blog item:", error);
+    return null;
+  }
+}
+
+export default async function BlogPage({ params }: BlogPageProps) {
+  const { slug } = await params;
+  const post = await getBlogItem(slug);
 
   if (!post) {
     notFound();
   }
-
-  // Parse the full markdown content
-  const fullContent = parseMarkdownFile(`content/blog/${params.slug}.md`);
 
   return (
     <div className="min-h-screen p-6 lg:p-8">
@@ -99,8 +137,8 @@ export default function BlogPage({ params }: BlogPageProps) {
 
           {/* Article Content */}
           <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-code:text-primary-500 prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border">
-            {fullContent ? (
-              <div dangerouslySetInnerHTML={{ __html: fullContent.content }} />
+            {post.content ? (
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
             ) : (
               <p className="text-muted-foreground">Content not available.</p>
             )}
@@ -139,55 +177,99 @@ export default function BlogPage({ params }: BlogPageProps) {
         </article>
 
         {/* Related Articles Section */}
-        <div className="space-y-6 pt-12 border-t border-border">
-          <h2 className="text-2xl font-bold">Related Articles</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {blogItems
-              .filter((item) => item.slug !== params.slug)
-              .slice(0, 2)
-              .map((relatedPost) => (
-                <Link
-                  key={relatedPost.slug}
-                  href={`/blog/${relatedPost.slug}`}
-                  className="group"
-                >
-                  <div className="p-6 border border-border rounded-lg hover:border-primary-500/50 transition-colors">
-                    <Badge variant="secondary" className="mb-3">
-                      {relatedPost.meta.category || "Article"}
-                    </Badge>
-                    <h3 className="font-semibold mb-2 group-hover:text-primary-500 transition-colors">
-                      {relatedPost.meta.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {relatedPost.meta.excerpt || relatedPost.meta.description}
-                    </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      {relatedPost.meta.publishDate && (
-                        <span>
-                          {new Date(
-                            relatedPost.meta.publishDate
-                          ).toLocaleDateString()}
-                        </span>
-                      )}
-                      {relatedPost.meta.readTime && (
-                        <span>{relatedPost.meta.readTime}</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </div>
+        <RelatedPosts currentSlug={slug} />
       </div>
     </div>
   );
 }
 
+// Related Posts Component
+async function RelatedPosts({ currentSlug }: { currentSlug: string }) {
+  try {
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+      }/api/content?type=blog`,
+      { cache: "force-cache" }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const blogItems: BlogItem[] = await response.json();
+    const relatedPosts = blogItems
+      .filter((item: BlogItem) => item.slug !== currentSlug)
+      .slice(0, 2);
+
+    if (relatedPosts.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-6 pt-12 border-t border-border">
+        <h2 className="text-2xl font-bold">Related Articles</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {relatedPosts.map((relatedPost: BlogItem) => (
+            <Link
+              key={relatedPost.slug}
+              href={`/blog/${relatedPost.slug}`}
+              className="group"
+            >
+              <div className="p-6 border border-border rounded-lg hover:border-primary-500/50 transition-colors">
+                <Badge variant="secondary" className="mb-3">
+                  {relatedPost.meta.category || "Article"}
+                </Badge>
+                <h3 className="font-semibold mb-2 group-hover:text-primary-500 transition-colors">
+                  {relatedPost.meta.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {relatedPost.meta.excerpt || relatedPost.meta.description}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  {relatedPost.meta.publishDate && (
+                    <span>
+                      {new Date(
+                        relatedPost.meta.publishDate
+                      ).toLocaleDateString()}
+                    </span>
+                  )}
+                  {relatedPost.meta.readTime && (
+                    <span>{relatedPost.meta.readTime}</span>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  } catch (error) {
+    console.error("Error fetching related posts:", error);
+    return null;
+  }
+}
+
 // Generate static params for all blog posts
 export async function generateStaticParams() {
-  const blogItems = getBlogContent();
+  try {
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+      }/api/content?type=blog`,
+      { cache: "force-cache" }
+    );
 
-  return blogItems.map((item) => ({
-    slug: item.slug,
-  }));
+    if (!response.ok) {
+      return [];
+    }
+
+    const blogItems: BlogItem[] = await response.json();
+    return blogItems.map((item: BlogItem) => ({
+      slug: item.slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
