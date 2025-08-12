@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { cn } from '../../utils/cn';
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import { cn } from "../../utils/cn";
 
 interface ParallaxImageProps {
   src: string;
   alt: string;
   speed?: number; // 0.1 to 1.0, where 0.5 is half speed
-  direction?: 'up' | 'down' | 'left' | 'right';
+  direction?: "up" | "down" | "left" | "right";
   overlay?: boolean;
   overlayColor?: string;
   overlayOpacity?: number;
@@ -18,11 +20,11 @@ export function ParallaxImage({
   src,
   alt,
   speed = 0.5,
-  direction = 'up',
+  direction = "up",
   overlay = false,
-  overlayColor = 'black',
+  overlayColor = "black",
   overlayOpacity = 0.4,
-  height = '100vh',
+  height = "100vh",
   className,
   children,
 }: ParallaxImageProps) {
@@ -31,7 +33,7 @@ export function ParallaxImage({
 
   useEffect(() => {
     const handleScroll = () => {
-      if (typeof window === 'undefined') return;
+      if (typeof window === "undefined") return;
       if (!imageRef.current) return;
 
       const rect = imageRef.current.getBoundingClientRect();
@@ -44,21 +46,21 @@ export function ParallaxImage({
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial call
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [speed]);
 
   const getTransform = () => {
     switch (direction) {
-      case 'up':
+      case "up":
         return `translateY(${offset}px)`;
-      case 'down':
+      case "down":
         return `translateY(${-offset}px)`;
-      case 'left':
+      case "left":
         return `translateX(${offset}px)`;
-      case 'right':
+      case "right":
         return `translateX(${-offset}px)`;
       default:
         return `translateY(${offset}px)`;
@@ -68,7 +70,7 @@ export function ParallaxImage({
   return (
     <div
       ref={imageRef}
-      className={cn('relative overflow-hidden', className)}
+      className={cn("relative overflow-hidden", className)}
       style={{ height }}
     >
       {/* Parallax Image */}

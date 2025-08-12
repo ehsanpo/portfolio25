@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Card } from './Card';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Download, Share2, Heart, Grid3X3, Maximize2 } from 'lucide-react';
-import { cn } from '../../utils/cn';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Card } from "./Card";
+import { Button } from "./Button";
+import { Badge } from "./Badge";
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  Download,
+  Share2,
+  Heart,
+  Grid3X3,
+  Maximize2,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface GalleryImage {
   id: string;
@@ -17,7 +30,7 @@ interface GalleryImage {
 
 interface ImageGalleryProps {
   images: GalleryImage[];
-  variant?: 'grid' | 'masonry' | 'carousel';
+  variant?: "grid" | "masonry" | "carousel";
   columns?: 2 | 3 | 4 | 5;
   showTags?: boolean;
   showInfo?: boolean;
@@ -27,7 +40,7 @@ interface ImageGalleryProps {
 
 export function ImageGallery({
   images,
-  variant = 'grid',
+  variant = "grid",
   columns = 3,
   showTags = true,
   showInfo = true,
@@ -66,13 +79,13 @@ export function ImageGallery({
   };
 
   const toggleLike = (imageId: string) => {
-    setIsLiked(prev => ({ ...prev, [imageId]: !prev[imageId] }));
+    setIsLiked((prev) => ({ ...prev, [imageId]: !prev[imageId] }));
   };
 
   const handleDownload = (image: GalleryImage) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = image.src;
-    link.download = `${image.title || 'image'}.jpg`;
+    link.download = `${image.title || "image"}.jpg`;
     link.click();
   };
 
@@ -85,7 +98,7 @@ export function ImageGallery({
           url: image.src,
         });
       } catch (err) {
-        console.log('Error sharing:', err);
+        console.log("Error sharing:", err);
       }
     }
   };
@@ -94,37 +107,37 @@ export function ImageGallery({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isLightboxOpen) return;
-      
+
       switch (e.key) {
-        case 'Escape':
+        case "Escape":
           closeLightbox();
           break;
-        case 'ArrowLeft':
+        case "ArrowLeft":
           prevImage();
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
           nextImage();
           break;
-        case '+':
-        case '=':
-          setZoom(prev => Math.min(prev + 0.25, 3));
+        case "+":
+        case "=":
+          setZoom((prev) => Math.min(prev + 0.25, 3));
           break;
-        case '-':
-          setZoom(prev => Math.max(prev - 0.25, 0.5));
+        case "-":
+          setZoom((prev) => Math.max(prev - 0.25, 0.5));
           break;
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen, selectedImage]);
 
   const getGridClasses = () => {
     const columnClasses = {
-      2: 'grid-cols-1 md:grid-cols-2',
-      3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-      4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
-      5: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+      2: "grid-cols-1 md:grid-cols-2",
+      3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+      4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+      5: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
     };
     return columnClasses[columns];
   };
@@ -141,7 +154,7 @@ export function ImageGallery({
         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         loading="lazy"
       />
-      
+
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
         <div className="flex items-center space-x-2">
@@ -158,10 +171,14 @@ export function ImageGallery({
       {showInfo && (image.title || image.photographer) && (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           {image.title && (
-            <h4 className="font-basement text-sm font-semibold mb-1">{image.title}</h4>
+            <h4 className="font-basement text-sm font-semibold mb-1">
+              {image.title}
+            </h4>
           )}
           {image.photographer && (
-            <p className="text-xs font-kabel opacity-80">by {image.photographer}</p>
+            <p className="text-xs font-kabel opacity-80">
+              by {image.photographer}
+            </p>
           )}
         </div>
       )}
@@ -170,7 +187,11 @@ export function ImageGallery({
       {showTags && image.tags && image.tags.length > 0 && (
         <div className="absolute top-2 left-2 flex flex-wrap gap-1">
           {image.tags.slice(0, 2).map((tag, tagIndex) => (
-            <Badge key={tagIndex} variant="glass" className="text-xs text-white">
+            <Badge
+              key={tagIndex}
+              variant="glass"
+              className="text-xs text-white"
+            >
               {tag}
             </Badge>
           ))}
@@ -186,9 +207,9 @@ export function ImageGallery({
 
   return (
     <>
-      <div className={cn('w-full', className)}>
-        {variant === 'grid' && (
-          <div className={cn('grid gap-4', getGridClasses())}>
+      <div className={cn("w-full", className)}>
+        {variant === "grid" && (
+          <div className={cn("grid gap-4", getGridClasses())}>
             {images.map((image, index) => (
               <div key={image.id} className="aspect-square">
                 {renderImage(image, index)}
@@ -197,11 +218,14 @@ export function ImageGallery({
           </div>
         )}
 
-        {variant === 'masonry' && (
-          <div className={cn('columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4', 
-            columns === 4 && 'lg:columns-4',
-            columns === 5 && 'xl:columns-5'
-          )}>
+        {variant === "masonry" && (
+          <div
+            className={cn(
+              "columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4",
+              columns === 4 && "lg:columns-4",
+              columns === 5 && "xl:columns-5"
+            )}
+          >
             {images.map((image, index) => (
               <div key={image.id} className="break-inside-avoid">
                 {renderImage(image, index)}
@@ -210,7 +234,7 @@ export function ImageGallery({
           </div>
         )}
 
-        {variant === 'carousel' && (
+        {variant === "carousel" && (
           <div className="relative">
             <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
               {images.map((image, index) => (
@@ -264,7 +288,7 @@ export function ImageGallery({
             <Button
               variant="glass"
               size="sm"
-              onClick={() => setZoom(prev => Math.min(prev + 0.25, 3))}
+              onClick={() => setZoom((prev) => Math.min(prev + 0.25, 3))}
               className="text-white"
             >
               <ZoomIn size={16} />
@@ -272,7 +296,7 @@ export function ImageGallery({
             <Button
               variant="glass"
               size="sm"
-              onClick={() => setZoom(prev => Math.max(prev - 0.25, 0.5))}
+              onClick={() => setZoom((prev) => Math.max(prev - 0.25, 0.5))}
               className="text-white"
             >
               <ZoomOut size={16} />
@@ -290,9 +314,13 @@ export function ImageGallery({
               onClick={() => toggleLike(images[selectedImage].id)}
               className="text-white"
             >
-              <Heart 
-                size={16} 
-                className={isLiked[images[selectedImage].id] ? 'fill-current text-error-500' : ''} 
+              <Heart
+                size={16}
+                className={
+                  isLiked[images[selectedImage].id]
+                    ? "fill-current text-error-500"
+                    : ""
+                }
               />
             </Button>
             <Button
@@ -333,27 +361,32 @@ export function ImageGallery({
           </div>
 
           {/* Image Info */}
-          {showInfo && (images[selectedImage].title || images[selectedImage].description) && (
-            <Card variant="glass" className="absolute bottom-20 left-1/2 transform -translate-x-1/2 max-w-md">
-              <div className="p-4 text-center">
-                {images[selectedImage].title && (
-                  <h3 className="font-basement text-white text-lg mb-2">
-                    {images[selectedImage].title}
-                  </h3>
-                )}
-                {images[selectedImage].description && (
-                  <p className="text-white/80 font-kabel text-sm">
-                    {images[selectedImage].description}
-                  </p>
-                )}
-                {images[selectedImage].photographer && (
-                  <p className="text-white/60 font-kabel text-xs mt-2">
-                    Photo by {images[selectedImage].photographer}
-                  </p>
-                )}
-              </div>
-            </Card>
-          )}
+          {showInfo &&
+            (images[selectedImage].title ||
+              images[selectedImage].description) && (
+              <Card
+                variant="glass"
+                className="absolute bottom-20 left-1/2 transform -translate-x-1/2 max-w-md"
+              >
+                <div className="p-4 text-center">
+                  {images[selectedImage].title && (
+                    <h3 className="font-basement text-white text-lg mb-2">
+                      {images[selectedImage].title}
+                    </h3>
+                  )}
+                  {images[selectedImage].description && (
+                    <p className="text-white/80 font-kabel text-sm">
+                      {images[selectedImage].description}
+                    </p>
+                  )}
+                  {images[selectedImage].photographer && (
+                    <p className="text-white/60 font-kabel text-xs mt-2">
+                      Photo by {images[selectedImage].photographer}
+                    </p>
+                  )}
+                </div>
+              </Card>
+            )}
         </div>
       )}
     </>

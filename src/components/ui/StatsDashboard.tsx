@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardTitle } from './Card';
-import { Badge } from './Badge';
-import { Button } from './Button';
-import { Progress } from './Progress';
-import { 
-  Github, 
-  GitBranch, 
-  GitCommit, 
-  Star, 
-  Users, 
+"use client";
+
+import React, { useState } from "react";
+import { Card, CardContent, CardDescription, CardTitle } from "./Card";
+import { Badge } from "./Badge";
+import { Button } from "./Button";
+import { Progress } from "./Progress";
+import {
+  Github,
+  GitBranch,
+  GitCommit,
+  Star,
+  Users,
   Calendar,
   TrendingUp,
   Activity,
@@ -21,9 +23,9 @@ import {
   BarChart3,
   PieChart,
   LineChart,
-  RefreshCw
-} from 'lucide-react';
-import { cn } from '../../utils/cn';
+  RefreshCw,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface GitHubStats {
   totalRepos: number;
@@ -40,7 +42,7 @@ interface GitHubStats {
     color: string;
   }>;
   recentActivity: Array<{
-    type: 'commit' | 'pr' | 'issue' | 'star';
+    type: "commit" | "pr" | "issue" | "star";
     repo: string;
     message: string;
     date: string;
@@ -61,22 +63,24 @@ interface StatsDashboardProps {
   showLanguages?: boolean;
   showActivity?: boolean;
   showContributions?: boolean;
-  variant?: 'default' | 'glass' | 'gradient';
+  variant?: "default" | "glass" | "gradient";
   className?: string;
 }
 
 export function StatsDashboard({
-  githubUsername = 'developer',
+  githubUsername = "developer",
   githubStats,
   customStats = [],
   showGitHub = true,
   showLanguages = true,
   showActivity = true,
   showContributions = true,
-  variant = 'default',
+  variant = "default",
   className,
 }: StatsDashboardProps) {
-  const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('year');
+  const [selectedPeriod, setSelectedPeriod] = useState<
+    "week" | "month" | "year"
+  >("year");
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Default stats if none provided
@@ -90,17 +94,37 @@ export function StatsDashboard({
     contributions: 847,
     streak: 23,
     languages: [
-      { name: 'TypeScript', percentage: 35, color: '#3178c6' },
-      { name: 'JavaScript', percentage: 28, color: '#f7df1e' },
-      { name: 'React', percentage: 20, color: '#61dafb' },
-      { name: 'CSS', percentage: 12, color: '#1572b6' },
-      { name: 'Other', percentage: 5, color: '#6b7280' },
+      { name: "TypeScript", percentage: 35, color: "#3178c6" },
+      { name: "JavaScript", percentage: 28, color: "#f7df1e" },
+      { name: "React", percentage: 20, color: "#61dafb" },
+      { name: "CSS", percentage: 12, color: "#1572b6" },
+      { name: "Other", percentage: 5, color: "#6b7280" },
     ],
     recentActivity: [
-      { type: 'commit', repo: 'design-system', message: 'Add new component variants', date: '2 hours ago' },
-      { type: 'pr', repo: 'portfolio-site', message: 'Update project showcase', date: '1 day ago' },
-      { type: 'star', repo: 'awesome-react', message: 'Starred repository', date: '2 days ago' },
-      { type: 'commit', repo: 'api-server', message: 'Fix authentication bug', date: '3 days ago' },
+      {
+        type: "commit",
+        repo: "design-system",
+        message: "Add new component variants",
+        date: "2 hours ago",
+      },
+      {
+        type: "pr",
+        repo: "portfolio-site",
+        message: "Update project showcase",
+        date: "1 day ago",
+      },
+      {
+        type: "star",
+        repo: "awesome-react",
+        message: "Starred repository",
+        date: "2 days ago",
+      },
+      {
+        type: "commit",
+        repo: "api-server",
+        message: "Fix authentication bug",
+        date: "3 days ago",
+      },
     ],
   };
 
@@ -113,13 +137,13 @@ export function StatsDashboard({
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'commit':
+      case "commit":
         return <GitCommit className="w-4 h-4 text-success-500" />;
-      case 'pr':
+      case "pr":
         return <GitBranch className="w-4 h-4 text-primary-500" />;
-      case 'issue':
+      case "issue":
         return <Target className="w-4 h-4 text-warning-500" />;
-      case 'star':
+      case "star":
         return <Star className="w-4 h-4 text-warning-500" />;
       default:
         return <Activity className="w-4 h-4 text-muted-foreground" />;
@@ -127,44 +151,71 @@ export function StatsDashboard({
   };
 
   const defaultCustomStats = [
-    { label: 'Projects Completed', value: 28, icon: Award, color: 'text-success-500', trend: 12 },
-    { label: 'Coffee Consumed', value: '2.4k', icon: Coffee, color: 'text-warning-500', trend: 8 },
-    { label: 'Lines of Code', value: '47k', icon: Code, color: 'text-primary-500', trend: 15 },
-    { label: 'Happy Clients', value: 15, icon: Users, color: 'text-secondary-500', trend: 25 },
+    {
+      label: "Projects Completed",
+      value: 28,
+      icon: Award,
+      color: "text-success-500",
+      trend: 12,
+    },
+    {
+      label: "Coffee Consumed",
+      value: "2.4k",
+      icon: Coffee,
+      color: "text-warning-500",
+      trend: 8,
+    },
+    {
+      label: "Lines of Code",
+      value: "47k",
+      icon: Code,
+      color: "text-primary-500",
+      trend: 15,
+    },
+    {
+      label: "Happy Clients",
+      value: 15,
+      icon: Users,
+      color: "text-secondary-500",
+      trend: 25,
+    },
   ];
 
-  const allCustomStats = customStats.length > 0 ? customStats : defaultCustomStats;
+  const allCustomStats =
+    customStats.length > 0 ? customStats : defaultCustomStats;
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className={cn("space-y-8", className)}>
       {/* Header */}
       <Card variant="gradient" padding="lg">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="font-basement text-white mb-2">Developer Statistics</CardTitle>
+            <CardTitle className="font-basement text-white mb-2">
+              Developer Statistics
+            </CardTitle>
             <CardDescription className="font-kabel text-white/80">
               Real-time insights into development activity and achievements
             </CardDescription>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-1 bg-white/20 rounded-lg p-1">
-              {(['week', 'month', 'year'] as const).map((period) => (
+              {(["week", "month", "year"] as const).map((period) => (
                 <button
                   key={period}
                   onClick={() => setSelectedPeriod(period)}
                   className={cn(
-                    'px-3 py-1 rounded-md text-sm font-kabel transition-all',
+                    "px-3 py-1 rounded-md text-sm font-kabel transition-all",
                     selectedPeriod === period
-                      ? 'bg-white/30 text-white'
-                      : 'text-white/70 hover:text-white hover:bg-white/20'
+                      ? "bg-white/30 text-white"
+                      : "text-white/70 hover:text-white hover:bg-white/20"
                   )}
                 >
                   {period.charAt(0).toUpperCase() + period.slice(1)}
                 </button>
               ))}
             </div>
-            
+
             <Button
               variant="glass"
               size="sm"
@@ -190,7 +241,9 @@ export function StatsDashboard({
               <div className="text-2xl font-bold font-basement text-foreground mb-1">
                 {stats.totalRepos}
               </div>
-              <div className="text-xs text-muted-foreground font-kabel">Repositories</div>
+              <div className="text-xs text-muted-foreground font-kabel">
+                Repositories
+              </div>
             </div>
           </Card>
 
@@ -202,7 +255,9 @@ export function StatsDashboard({
               <div className="text-2xl font-bold font-basement text-foreground mb-1">
                 {stats.totalCommits.toLocaleString()}
               </div>
-              <div className="text-xs text-muted-foreground font-kabel">Commits</div>
+              <div className="text-xs text-muted-foreground font-kabel">
+                Commits
+              </div>
             </div>
           </Card>
 
@@ -214,7 +269,9 @@ export function StatsDashboard({
               <div className="text-2xl font-bold font-basement text-foreground mb-1">
                 {stats.totalStars}
               </div>
-              <div className="text-xs text-muted-foreground font-kabel">Stars Earned</div>
+              <div className="text-xs text-muted-foreground font-kabel">
+                Stars Earned
+              </div>
             </div>
           </Card>
 
@@ -226,7 +283,9 @@ export function StatsDashboard({
               <div className="text-2xl font-bold font-basement text-foreground mb-1">
                 {stats.totalForks}
               </div>
-              <div className="text-xs text-muted-foreground font-kabel">Forks</div>
+              <div className="text-xs text-muted-foreground font-kabel">
+                Forks
+              </div>
             </div>
           </Card>
 
@@ -238,7 +297,9 @@ export function StatsDashboard({
               <div className="text-2xl font-bold font-basement text-foreground mb-1">
                 {stats.followers}
               </div>
-              <div className="text-xs text-muted-foreground font-kabel">Followers</div>
+              <div className="text-xs text-muted-foreground font-kabel">
+                Followers
+              </div>
             </div>
           </Card>
 
@@ -250,7 +311,9 @@ export function StatsDashboard({
               <div className="text-2xl font-bold font-basement text-foreground mb-1">
                 {stats.streak}
               </div>
-              <div className="text-xs text-muted-foreground font-kabel">Day Streak</div>
+              <div className="text-xs text-muted-foreground font-kabel">
+                Day Streak
+              </div>
             </div>
           </Card>
         </div>
@@ -265,7 +328,7 @@ export function StatsDashboard({
               <Card key={index} variant="default" hover className="text-center">
                 <div className="p-6">
                   <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Icon className={cn('w-6 h-6', stat.color)} />
+                    <Icon className={cn("w-6 h-6", stat.color)} />
                   </div>
                   <div className="text-2xl font-bold font-basement text-foreground mb-1">
                     {stat.value}
@@ -292,25 +355,29 @@ export function StatsDashboard({
       {showLanguages && (
         <Card variant="glass" padding="lg">
           <CardTitle className="font-basement">Language Distribution</CardTitle>
-          <CardDescription className="font-kabel">Programming languages used across all repositories</CardDescription>
+          <CardDescription className="font-kabel">
+            Programming languages used across all repositories
+          </CardDescription>
           <CardContent>
             <div className="space-y-4">
               {stats.languages.map((language, index) => (
                 <div key={index} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <div 
+                      <div
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: language.color }}
                       />
-                      <span className="text-sm font-basement text-foreground">{language.name}</span>
+                      <span className="text-sm font-basement text-foreground">
+                        {language.name}
+                      </span>
                     </div>
                     <span className="text-sm font-kabel text-muted-foreground">
                       {language.percentage}%
                     </span>
                   </div>
-                  <Progress 
-                    value={language.percentage} 
+                  <Progress
+                    value={language.percentage}
                     variant="default"
                     className="h-2"
                   />
@@ -325,7 +392,9 @@ export function StatsDashboard({
       {showContributions && (
         <Card variant="default" padding="lg">
           <CardTitle className="font-basement">Contribution Activity</CardTitle>
-          <CardDescription className="font-kabel">Daily contribution pattern over the past year</CardDescription>
+          <CardDescription className="font-kabel">
+            Daily contribution pattern over the past year
+          </CardDescription>
           <CardContent>
             <div className="space-y-6">
               {/* Contribution Grid */}
@@ -334,19 +403,19 @@ export function StatsDashboard({
                   {Array.from({ length: 365 }, (_, index) => {
                     const intensity = Math.floor(Math.random() * 5);
                     const intensityClasses = [
-                      'bg-muted',
-                      'bg-success-500/20',
-                      'bg-success-500/40',
-                      'bg-success-500/60',
-                      'bg-success-500/80',
-                      'bg-success-500',
+                      "bg-muted",
+                      "bg-success-500/20",
+                      "bg-success-500/40",
+                      "bg-success-500/60",
+                      "bg-success-500/80",
+                      "bg-success-500",
                     ];
-                    
+
                     return (
                       <div
                         key={index}
                         className={cn(
-                          'w-3 h-3 rounded-sm transition-all duration-200 hover:scale-125',
+                          "w-3 h-3 rounded-sm transition-all duration-200 hover:scale-125",
                           intensityClasses[intensity]
                         )}
                         title={`${intensity} contributions`}
@@ -355,7 +424,7 @@ export function StatsDashboard({
                   })}
                 </div>
               </div>
-              
+
               {/* Legend */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2 text-xs text-muted-foreground font-kabel">
@@ -369,7 +438,7 @@ export function StatsDashboard({
                   </div>
                   <span>More</span>
                 </div>
-                
+
                 <div className="text-sm text-muted-foreground font-kabel">
                   {stats.contributions} contributions in the last year
                 </div>
@@ -383,11 +452,16 @@ export function StatsDashboard({
       {showActivity && (
         <Card variant="glass" padding="lg">
           <CardTitle className="font-basement">Recent Activity</CardTitle>
-          <CardDescription className="font-kabel">Latest GitHub activity and contributions</CardDescription>
+          <CardDescription className="font-kabel">
+            Latest GitHub activity and contributions
+          </CardDescription>
           <CardContent>
             <div className="space-y-3">
               {stats.recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-start space-x-3 p-3 glass-card rounded-lg">
+                <div
+                  key={index}
+                  className="flex items-start space-x-3 p-3 glass-card rounded-lg"
+                >
                   <div className="flex-shrink-0 mt-0.5">
                     {getActivityIcon(activity.type)}
                   </div>
@@ -427,9 +501,7 @@ export function StatsDashboard({
             <div className="text-3xl font-bold font-basement text-white mb-2">
               +{Math.round((stats.contributions / 365) * 100)}%
             </div>
-            <div className="text-white/80 font-kabel">
-              Productivity Growth
-            </div>
+            <div className="text-white/80 font-kabel">Productivity Growth</div>
             <div className="text-xs text-white/60 font-kabel mt-1">
               vs last year
             </div>
@@ -479,15 +551,19 @@ export function StatsDashboard({
               <Github className="w-8 h-8 text-primary-400" />
             </div>
             <div>
-              <h3 className="font-basement text-foreground text-lg">GitHub Profile</h3>
-              <p className="text-muted-foreground font-kabel">@{githubUsername}</p>
+              <h3 className="font-basement text-foreground text-lg">
+                GitHub Profile
+              </h3>
+              <p className="text-muted-foreground font-kabel">
+                @{githubUsername}
+              </p>
               <div className="flex items-center space-x-4 mt-2 text-sm text-muted-foreground font-kabel">
                 <span>{stats.followers} followers</span>
                 <span>{stats.following} following</span>
               </div>
             </div>
           </div>
-          
+
           <Button variant="gradient" className="flex items-center gap-2">
             <Github size={16} />
             View Profile

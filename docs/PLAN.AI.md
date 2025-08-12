@@ -198,6 +198,8 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
   - Creates both JPEG and WebP formats for better performance
   - Integrated into build process with `npm run build:images`
   - Updated portfolio pages to use optimized images in production
+  - Smart folder-level skipping to avoid re-processing existing images
+  - Added to .gitignore for clean source control
 - ✅ **i18n System Complete**: Implemented context-based internationalization system
   - Clean URLs without language codes (e.g., `/portfolio/040-fm` not `/en/portfolio/040-fm`)
   - Context-based language switching with LanguageProvider

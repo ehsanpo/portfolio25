@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
-import { Card } from './Card';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { User, MapPin, Calendar, ExternalLink, Mail, Twitter, Linkedin, Github, Globe, Users, BookOpen, Award, Heart, MessageCircle, FolderDown as Follow, UserPlus, UserCheck } from 'lucide-react';
-import { cn } from '../../utils/cn';
+"use client";
+
+import React, { useState } from "react";
+import { Card } from "./Card";
+import { Button } from "./Button";
+import { Badge } from "./Badge";
+import {
+  User,
+  MapPin,
+  Calendar,
+  ExternalLink,
+  Mail,
+  Twitter,
+  Linkedin,
+  Github,
+  Globe,
+  Users,
+  BookOpen,
+  Award,
+  Heart,
+  MessageCircle,
+  FolderDown as Follow,
+  UserPlus,
+  UserCheck,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface AuthorCardProps {
   name: string;
@@ -30,7 +50,7 @@ interface AuthorCardProps {
   achievements?: string[];
   featured?: boolean;
   verified?: boolean;
-  variant?: 'default' | 'glass' | 'gradient' | 'minimal' | 'compact';
+  variant?: "default" | "glass" | "gradient" | "minimal" | "compact";
   showStats?: boolean;
   showSocial?: boolean;
   showFollow?: boolean;
@@ -53,7 +73,7 @@ export function AuthorCard({
   achievements = [],
   featured = false,
   verified = false,
-  variant = 'default',
+  variant = "default",
   showStats = true,
   showSocial = true,
   showFollow = true,
@@ -64,29 +84,49 @@ export function AuthorCard({
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
     });
   };
 
   const socialLinks = [
-    { platform: 'twitter', icon: Twitter, url: social.twitter, color: 'hover:text-blue-400' },
-    { platform: 'linkedin', icon: Linkedin, url: social.linkedin, color: 'hover:text-blue-600' },
-    { platform: 'github', icon: Github, url: social.github, color: 'hover:text-gray-600' },
-  ].filter(link => link.url);
+    {
+      platform: "twitter",
+      icon: Twitter,
+      url: social.twitter,
+      color: "hover:text-blue-400",
+    },
+    {
+      platform: "linkedin",
+      icon: Linkedin,
+      url: social.linkedin,
+      color: "hover:text-blue-600",
+    },
+    {
+      platform: "github",
+      icon: Github,
+      url: social.github,
+      color: "hover:text-gray-600",
+    },
+  ].filter((link) => link.url);
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
-      <div className={cn('flex items-center space-x-3 p-3 glass-card rounded-lg', className)}>
+      <div
+        className={cn(
+          "flex items-center space-x-3 p-3 glass-card rounded-lg",
+          className
+        )}
+      >
         {avatar ? (
           <img
             src={avatar}
@@ -100,7 +140,7 @@ export function AuthorCard({
             </span>
           </div>
         )}
-        
+
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-2">
             <h4 className="font-basement text-foreground truncate">{name}</h4>
@@ -111,10 +151,12 @@ export function AuthorCard({
             )}
           </div>
           {role && (
-            <p className="text-sm text-muted-foreground font-kabel truncate">{role}</p>
+            <p className="text-sm text-muted-foreground font-kabel truncate">
+              {role}
+            </p>
           )}
         </div>
-        
+
         {showFollow && (
           <Button
             variant={isFollowing ? "outline" : "primary"}
@@ -123,16 +165,16 @@ export function AuthorCard({
             className="flex items-center gap-1"
           >
             {isFollowing ? <UserCheck size={14} /> : <UserPlus size={14} />}
-            {isFollowing ? 'Following' : 'Follow'}
+            {isFollowing ? "Following" : "Follow"}
           </Button>
         )}
       </div>
     );
   }
 
-  if (variant === 'minimal') {
+  if (variant === "minimal") {
     return (
-      <div className={cn('flex items-start space-x-3', className)}>
+      <div className={cn("flex items-start space-x-3", className)}>
         {avatar ? (
           <img
             src={avatar}
@@ -146,7 +188,7 @@ export function AuthorCard({
             </span>
           </div>
         )}
-        
+
         <div>
           <div className="flex items-center space-x-2">
             <h4 className="font-basement text-foreground text-sm">{name}</h4>
@@ -165,10 +207,10 @@ export function AuthorCard({
   }
 
   return (
-    <Card 
-      variant={featured ? 'gradient' : variant} 
-      hover 
-      className={cn('overflow-hidden', className)}
+    <Card
+      variant={featured ? "gradient" : variant}
+      hover
+      className={cn("overflow-hidden", className)}
     >
       <div className="p-6">
         {/* Header */}
@@ -187,7 +229,7 @@ export function AuthorCard({
                 </span>
               </div>
             )}
-            
+
             {verified && (
               <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center border-2 border-white">
                 <span className="text-white text-xs">✓</span>
@@ -198,29 +240,37 @@ export function AuthorCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className={cn(
-                  'font-basement text-xl mb-1',
-                  featured ? 'text-white' : 'text-foreground'
-                )}>
+                <h3
+                  className={cn(
+                    "font-basement text-xl mb-1",
+                    featured ? "text-white" : "text-foreground"
+                  )}
+                >
                   {name}
                 </h3>
                 {role && (
-                  <p className={cn(
-                    'text-sm font-kabel mb-1',
-                    featured ? 'text-white/90' : 'text-muted-foreground'
-                  )}>
+                  <p
+                    className={cn(
+                      "text-sm font-kabel mb-1",
+                      featured ? "text-white/90" : "text-muted-foreground"
+                    )}
+                  >
                     {role}
                     {company && (
                       <>
                         <span className="mx-1">at</span>
-                        <span className={featured ? 'text-white' : 'text-primary-500'}>
+                        <span
+                          className={
+                            featured ? "text-white" : "text-primary-500"
+                          }
+                        >
                           {company}
                         </span>
                       </>
                     )}
                   </p>
                 )}
-                
+
                 {/* Location and Join Date */}
                 <div className="flex items-center space-x-3 text-xs text-muted-foreground font-kabel">
                   {location && (
@@ -237,16 +287,22 @@ export function AuthorCard({
                   )}
                 </div>
               </div>
-              
+
               {showFollow && (
                 <Button
-                  variant={isFollowing ? "outline" : featured ? "glass" : "primary"}
+                  variant={
+                    isFollowing ? "outline" : featured ? "glass" : "primary"
+                  }
                   size="sm"
                   onClick={() => setIsFollowing(!isFollowing)}
                   className="flex items-center gap-2"
                 >
-                  {isFollowing ? <UserCheck size={16} /> : <UserPlus size={16} />}
-                  {isFollowing ? 'Following' : 'Follow'}
+                  {isFollowing ? (
+                    <UserCheck size={16} />
+                  ) : (
+                    <UserPlus size={16} />
+                  )}
+                  {isFollowing ? "Following" : "Follow"}
                 </Button>
               )}
             </div>
@@ -254,25 +310,33 @@ export function AuthorCard({
         </div>
 
         {/* Bio */}
-        <p className={cn(
-          'text-sm font-kabel leading-relaxed mb-4',
-          featured ? 'text-white/90' : 'text-muted-foreground'
-        )}>
+        <p
+          className={cn(
+            "text-sm font-kabel leading-relaxed mb-4",
+            featured ? "text-white/90" : "text-muted-foreground"
+          )}
+        >
           {bio}
         </p>
 
         {/* Specialties */}
         {specialties.length > 0 && (
           <div className="mb-4">
-            <h4 className={cn(
-              'text-sm font-basement mb-2',
-              featured ? 'text-white' : 'text-foreground'
-            )}>
+            <h4
+              className={cn(
+                "text-sm font-basement mb-2",
+                featured ? "text-white" : "text-foreground"
+              )}
+            >
               Specialties
             </h4>
             <div className="flex flex-wrap gap-1">
               {specialties.map((specialty, index) => (
-                <Badge key={index} variant={featured ? "glass" : "neutral"} className="text-xs">
+                <Badge
+                  key={index}
+                  variant={featured ? "glass" : "neutral"}
+                  className="text-xs"
+                >
                   {specialty}
                 </Badge>
               ))}
@@ -283,21 +347,30 @@ export function AuthorCard({
         {/* Achievements */}
         {achievements.length > 0 && (
           <div className="mb-4">
-            <h4 className={cn(
-              'text-sm font-basement mb-2',
-              featured ? 'text-white' : 'text-foreground'
-            )}>
+            <h4
+              className={cn(
+                "text-sm font-basement mb-2",
+                featured ? "text-white" : "text-foreground"
+              )}
+            >
               Achievements
             </h4>
             <div className="flex flex-wrap gap-1">
               {achievements.slice(0, 2).map((achievement, index) => (
-                <Badge key={index} variant={featured ? "glass" : "success"} className="text-xs">
+                <Badge
+                  key={index}
+                  variant={featured ? "glass" : "success"}
+                  className="text-xs"
+                >
                   <Award className="w-3 h-3 mr-1" />
                   {achievement}
                 </Badge>
               ))}
               {achievements.length > 2 && (
-                <Badge variant={featured ? "glass" : "neutral"} className="text-xs">
+                <Badge
+                  variant={featured ? "glass" : "neutral"}
+                  className="text-xs"
+                >
                   +{achievements.length - 2}
                 </Badge>
               )}
@@ -310,67 +383,83 @@ export function AuthorCard({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {stats.articles && (
               <div className="text-center">
-                <div className={cn(
-                  'text-lg font-bold font-basement',
-                  featured ? 'text-white' : 'text-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-lg font-bold font-basement",
+                    featured ? "text-white" : "text-foreground"
+                  )}
+                >
                   {stats.articles}
                 </div>
-                <div className={cn(
-                  'text-xs font-kabel',
-                  featured ? 'text-white/70' : 'text-muted-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-xs font-kabel",
+                    featured ? "text-white/70" : "text-muted-foreground"
+                  )}
+                >
                   Articles
                 </div>
               </div>
             )}
-            
+
             {stats.followers && (
               <div className="text-center">
-                <div className={cn(
-                  'text-lg font-bold font-basement',
-                  featured ? 'text-white' : 'text-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-lg font-bold font-basement",
+                    featured ? "text-white" : "text-foreground"
+                  )}
+                >
                   {stats.followers}
                 </div>
-                <div className={cn(
-                  'text-xs font-kabel',
-                  featured ? 'text-white/70' : 'text-muted-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-xs font-kabel",
+                    featured ? "text-white/70" : "text-muted-foreground"
+                  )}
+                >
                   Followers
                 </div>
               </div>
             )}
-            
+
             {stats.likes && (
               <div className="text-center">
-                <div className={cn(
-                  'text-lg font-bold font-basement',
-                  featured ? 'text-white' : 'text-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-lg font-bold font-basement",
+                    featured ? "text-white" : "text-foreground"
+                  )}
+                >
                   {stats.likes}
                 </div>
-                <div className={cn(
-                  'text-xs font-kabel',
-                  featured ? 'text-white/70' : 'text-muted-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-xs font-kabel",
+                    featured ? "text-white/70" : "text-muted-foreground"
+                  )}
+                >
                   Likes
                 </div>
               </div>
             )}
-            
+
             {stats.views && (
               <div className="text-center">
-                <div className={cn(
-                  'text-lg font-bold font-basement',
-                  featured ? 'text-white' : 'text-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-lg font-bold font-basement",
+                    featured ? "text-white" : "text-foreground"
+                  )}
+                >
                   {stats.views}
                 </div>
-                <div className={cn(
-                  'text-xs font-kabel',
-                  featured ? 'text-white/70' : 'text-muted-foreground'
-                )}>
+                <div
+                  className={cn(
+                    "text-xs font-kabel",
+                    featured ? "text-white/70" : "text-muted-foreground"
+                  )}
+                >
                   Views
                 </div>
               </div>
@@ -391,8 +480,8 @@ export function AuthorCard({
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      'p-2 rounded-lg glass-card transition-all duration-300 hover:scale-110',
-                      'text-muted-foreground',
+                      "p-2 rounded-lg glass-card transition-all duration-300 hover:scale-110",
+                      "text-muted-foreground",
                       link.color
                     )}
                     aria-label={`${name}'s ${link.platform}`}
@@ -401,7 +490,7 @@ export function AuthorCard({
                   </a>
                 );
               })}
-              
+
               {website && (
                 <a
                   href={website}
@@ -413,7 +502,7 @@ export function AuthorCard({
                   <Globe className="w-4 h-4" />
                 </a>
               )}
-              
+
               {email && (
                 <a
                   href={`mailto:${email}`}
@@ -425,7 +514,7 @@ export function AuthorCard({
               )}
             </div>
           )}
-          
+
           <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
@@ -433,14 +522,15 @@ export function AuthorCard({
               onClick={() => setIsLiked(!isLiked)}
               className="p-2"
             >
-              <Heart className={cn('w-4 h-4', isLiked && 'fill-current text-error-500')} />
+              <Heart
+                className={cn(
+                  "w-4 h-4",
+                  isLiked && "fill-current text-error-500"
+                )}
+              />
             </Button>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              className="p-2"
-            >
+
+            <Button variant="ghost" size="sm" className="p-2">
               <MessageCircle className="w-4 h-4" />
             </Button>
           </div>
