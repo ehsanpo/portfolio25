@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
-import { LocaleToggle } from "./LocaleToggle";
 import { Badge } from "./Badge";
 import {
   Menu,
@@ -28,6 +27,7 @@ interface HeaderProps {
   sticky?: boolean;
   showBadge?: boolean;
   className?: string;
+  locale?: string;
 }
 
 interface NavItem {
@@ -175,10 +175,31 @@ export function Header({
   sticky = true,
   showBadge = true,
   className,
+  locale = "en",
 }: Readonly<HeaderProps>) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  // Build navigation items with locale prefix
+  const buildLocalizedNavItems = (
+    items: NavItem[],
+    localePrefix: string
+  ): NavItem[] => {
+    return items.map((item) => ({
+      ...item,
+      href: `${localePrefix}${item.href}`,
+      children: item.children
+        ? buildLocalizedNavItems(item.children, localePrefix)
+        : undefined,
+    }));
+  };
+
+  // Get localized navigation items
+  const localizedNavItems = buildLocalizedNavItems(
+    navigationItems,
+    `/${locale}`
+  );
 
   // Handle scroll effect
   useEffect(() => {
@@ -446,7 +467,7 @@ export function Header({
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {navigationItems.map((item) => renderNavItem(item, true))}
+            {localizedNavItems.map((item) => renderNavItem(item, true))}
           </nav>
 
           {/* Right Side Actions */}
@@ -464,8 +485,8 @@ export function Header({
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Locale Toggle */}
-            <LocaleToggle />
+            {/* Language Switcher - Temporarily disabled */}
+            {/* <LanguageSwitcher /> */}
 
             {/* Mobile Menu Button */}
             <button
@@ -489,7 +510,7 @@ export function Header({
           )}
         >
           <nav className="py-4 space-y-2">
-            {navigationItems.map((item) => renderNavItem(item, false))}
+            {localizedNavItems.map((item) => renderNavItem(item, false))}
 
             {/* Mobile CTA */}
             <div className="pt-4 border-t border-border/50">

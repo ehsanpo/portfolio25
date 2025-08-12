@@ -34,6 +34,7 @@ interface FooterProps {
   showStats?: boolean;
   onSectionChange?: (section: string) => void;
   className?: string;
+  locale?: string;
 }
 
 const socialLinks = [
@@ -115,7 +116,30 @@ export function Footer({
   showStats = true,
   onSectionChange,
   className,
+  locale = "en",
 }: FooterProps) {
+  const buildLocalizedNavSections = (locale: string) => {
+    return navigationSections.map((section) => ({
+      ...section,
+      links: section.links.map((link) => {
+        if ("href" in link) {
+          // Handle external links (keep as is)
+          if (link.href.startsWith("http") || link.href.startsWith("mailto:")) {
+            return link;
+          }
+          // Handle internal links (add locale prefix)
+          return {
+            ...link,
+            href: `/${locale}${link.href === "/" ? "" : link.href}`,
+          };
+        }
+        // Handle id-based navigation (keep as is for section navigation)
+        return link;
+      }),
+    }));
+  };
+
+  const localizedNavSections = buildLocalizedNavSections(locale);
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -244,7 +268,7 @@ export function Footer({
 
           {/* Navigation Sections */}
           {showNavigation &&
-            navigationSections.map((section, index) => (
+            localizedNavSections.map((section) => (
               <div key={section.title}>
                 <h3 className="font-basement text-foreground text-lg mb-4">
                   {section.title}
@@ -254,16 +278,26 @@ export function Footer({
                     const Icon = link.icon;
                     return (
                       <li key={link.name}>
-                        {link.href ? (
+                        {"href" in link ? (
                           <a
                             href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target={
+                              link.href.startsWith("http")
+                                ? "_blank"
+                                : undefined
+                            }
+                            rel={
+                              link.href.startsWith("http")
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
                             className="flex items-center text-sm text-muted-foreground hover:text-primary-500 transition-colors font-kabel group"
                           >
                             <Icon className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
                             {link.name}
-                            <ExternalLink className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            {link.href.startsWith("http") && (
+                              <ExternalLink className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            )}
                           </a>
                         ) : (
                           <button
