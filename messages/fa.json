@@ -1,12 +1,24 @@
 {
   "navigation": {
     "home": "خانه",
-    "about": "درباره من",
+    "about": "درباره من", 
     "portfolio": "نمونه کارها",
     "blog": "وبلاگ",
     "services": "خدمات",
     "contact": "تماس",
-    "design-system": "سیستم طراحی"
+    "design-system": "سیستم طراحی",
+    "skills": "مهارت‌ها",
+    "about-overview": "نمای کلی",
+    "about-experience": "تجربه",
+    "about-education": "تحصیلات",
+    "about-certifications": "گواهینامه‌ها",
+    "portfolio-overview": "نمای کلی",
+    "portfolio-case-studies": "مطالعات موردی",
+    "portfolio-categories": "دسته‌بندی‌ها",
+    "ds-colors": "رنگ‌ها",
+    "ds-typography": "تایپوگرافی",
+    "ds-components": "کامپوننت‌ها",
+    "ds-patterns": "الگوها"
   },
   "common": {
     "loading": "در حال بارگذاری...",

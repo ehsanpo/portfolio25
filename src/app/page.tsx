@@ -1,31 +1,33 @@
+"use client";
+
 import React from "react";
+import { useTranslations } from "@/hooks/useTranslations";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, Star, Users, Award } from "lucide-react";
 
 export default function HomePage() {
+  const t = useTranslations('hero');
+  const nav = useTranslations('navigation');
   return (
     <div className="min-h-screen p-6 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-16">
         {/* Hero Section */}
         <div className="text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="gradient-text">Design System</span>
-            <br />
-            Portfolio
+            {t('greeting')} <span className="gradient-text">{t('title')}</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Full-stack developer and design system architect specializing in
-            scalable UI components, brand consistency, and developer experience.
+            {t('description')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="group">
-              View Portfolio
+              {t('cta')}
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button variant="outline" size="lg">
-              Design System
+              {nav('design-system')}
             </Button>
           </div>
         </div>

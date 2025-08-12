@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@/hooks/useTranslations";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import {
@@ -34,7 +35,6 @@ interface FooterProps {
   showStats?: boolean;
   onSectionChange?: (section: string) => void;
   className?: string;
-  locale?: string;
 }
 
 const socialLinks = [
@@ -116,30 +116,27 @@ export function Footer({
   showStats = true,
   onSectionChange,
   className,
-  locale = "en",
-}: FooterProps) {
-  const buildLocalizedNavSections = (locale: string) => {
-    return navigationSections.map((section) => ({
+}: Readonly<FooterProps>) {
+  const t = useTranslations('navigation');
+  const buildLocalizedNavSections = () => {
+    return navigationSections.map(section => ({
       ...section,
-      links: section.links.map((link) => {
-        if ("href" in link) {
+      links: section.links.map(link => {
+        if ('href' in link) {
           // Handle external links (keep as is)
-          if (link.href.startsWith("http") || link.href.startsWith("mailto:")) {
+          if (link.href.startsWith('http') || link.href.startsWith('mailto:')) {
             return link;
           }
-          // Handle internal links (add locale prefix)
-          return {
-            ...link,
-            href: `/${locale}${link.href === "/" ? "" : link.href}`,
-          };
+          // Handle internal links (no locale prefix needed)
+          return link;
         }
         // Handle id-based navigation (keep as is for section navigation)
         return link;
-      }),
+      })
     }));
   };
 
-  const localizedNavSections = buildLocalizedNavSections(locale);
+  const localizedNavSections = buildLocalizedNavSections();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

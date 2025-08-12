@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslations";
 import { Button } from "./Button";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Badge } from "./Badge";
 import {
   Menu,
@@ -27,7 +29,6 @@ interface HeaderProps {
   sticky?: boolean;
   showBadge?: boolean;
   className?: string;
-  locale?: string;
 }
 
 interface NavItem {
@@ -175,31 +176,24 @@ export function Header({
   sticky = true,
   showBadge = true,
   className,
-  locale = "en",
 }: Readonly<HeaderProps>) {
+  const t = useTranslations('navigation');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  // Build navigation items with locale prefix
-  const buildLocalizedNavItems = (
-    items: NavItem[],
-    localePrefix: string
-  ): NavItem[] => {
+  // Build navigation items with translations
+  const buildLocalizedNavItems = (items: NavItem[]): NavItem[] => {
     return items.map((item) => ({
       ...item,
-      href: `${localePrefix}${item.href}`,
-      children: item.children
-        ? buildLocalizedNavItems(item.children, localePrefix)
-        : undefined,
+      name: t(item.id) || item.name, // Use translation if available, fallback to original
+      href: item.href,
+      children: item.children ? buildLocalizedNavItems(item.children) : undefined,
     }));
   };
 
   // Get localized navigation items
-  const localizedNavItems = buildLocalizedNavItems(
-    navigationItems,
-    `/${locale}`
-  );
+  const localizedNavItems = buildLocalizedNavItems(navigationItems);
 
   // Handle scroll effect
   useEffect(() => {
@@ -485,8 +479,8 @@ export function Header({
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Language Switcher - Temporarily disabled */}
-            {/* <LanguageSwitcher /> */}
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Mobile Menu Button */}
             <button
@@ -512,8 +506,13 @@ export function Header({
           <nav className="py-4 space-y-2">
             {localizedNavItems.map((item) => renderNavItem(item, false))}
 
-            {/* Mobile CTA */}
-            <div className="pt-4 border-t border-border/50">
+            {/* Mobile Language & Theme Controls */}
+            <div className="pt-4 border-t border-border/50 space-y-3">
+              <div className="flex items-center justify-between">
+                <LanguageSwitcher />
+                <ThemeToggle />
+              </div>
+              
               <Button
                 variant="gradient"
                 className="w-full flex items-center justify-center gap-2"

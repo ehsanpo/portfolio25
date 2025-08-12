@@ -6,7 +6,19 @@
     "blog": "Blogg",
     "services": "Tjänster",
     "contact": "Kontakt",
-    "design-system": "Designsystem"
+    "design-system": "Designsystem",
+    "skills": "Färdigheter",
+    "about-overview": "Översikt",
+    "about-experience": "Erfarenhet",
+    "about-education": "Utbildning",
+    "about-certifications": "Certifieringar",
+    "portfolio-overview": "Översikt",
+    "portfolio-case-studies": "Fallstudier",
+    "portfolio-categories": "Kategorier",
+    "ds-colors": "Färger",
+    "ds-typography": "Typografi",
+    "ds-components": "Komponenter",
+    "ds-patterns": "Mönster"
   },
   "common": {
     "loading": "Laddar...",

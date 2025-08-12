@@ -1,14 +1,41 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslations";
+import { usePortfolioContent } from "@/hooks/useContent";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Filter, Grid, List, Calendar, Clock } from "lucide-react";
-import { getPortfolioContent } from "@/utils/contentParser";
 
 export default function PortfolioPage() {
-  // Get portfolio content from markdown files
-  const portfolioItems = getPortfolioContent();
+  const t = useTranslations('portfolio');
+  const { content: portfolioItems, loading, error } = usePortfolioContent();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen p-6 lg:p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading portfolio...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen p-6 lg:p-8 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">Error loading portfolio: {error}</p>
+          <Button onClick={() => window.location.reload()}>
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6 lg:p-8">
@@ -16,11 +43,10 @@ export default function PortfolioPage() {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            My <span className="gradient-text">Portfolio</span>
+            {t('title')} <span className="gradient-text"></span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A collection of projects showcasing my expertise in design systems,
-            web development, and user experience design.
+            {t('description')}
           </p>
         </div>
 
@@ -33,10 +59,10 @@ export default function PortfolioPage() {
               className="flex items-center gap-2"
             >
               <Filter className="w-4 h-4" />
-              Filter
+              {t('filter')}
             </Button>
             <div className="flex gap-2">
-              <Badge variant="secondary">All ({portfolioItems.length})</Badge>
+              <Badge variant="secondary">{t('all')} ({portfolioItems.length})</Badge>
               <Badge variant="neutral">Design Systems</Badge>
               <Badge variant="neutral">Web Development</Badge>
               <Badge variant="neutral">Mobile</Badge>

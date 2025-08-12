@@ -2,11 +2,23 @@
   "navigation": {
     "home": "Home",
     "about": "About",
-    "portfolio": "Portfolio",
+    "portfolio": "Portfolio", 
     "blog": "Blog",
     "services": "Services",
     "contact": "Contact",
-    "design-system": "Design System"
+    "design-system": "Design System",
+    "skills": "Skills",
+    "about-overview": "Overview",
+    "about-experience": "Experience", 
+    "about-education": "Education",
+    "about-certifications": "Certifications",
+    "portfolio-overview": "Overview",
+    "portfolio-case-studies": "Case Studies",
+    "portfolio-categories": "Categories",
+    "ds-colors": "Colors",
+    "ds-typography": "Typography",
+    "ds-components": "Components",
+    "ds-patterns": "Patterns"
   },
   "common": {
     "loading": "Loading...",
