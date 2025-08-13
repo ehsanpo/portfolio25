@@ -1,7 +1,9 @@
-import React from 'react';
-import { Button } from './Button';
-import { Play } from 'lucide-react';
-import { useAudio } from './GlobalAudioPlayer';
+"use client";
+
+import React from "react";
+import { Button } from "./Button";
+import { Play } from "lucide-react";
+import { useAudio } from "./GlobalAudioPlayer";
 
 interface Track {
   id: string;
@@ -13,18 +15,24 @@ interface Track {
 
 interface PlayButtonProps {
   track: Track;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gradient' | 'glass';
-  size?: 'sm' | 'md' | 'lg';
+  variant?:
+    | "primary"
+    | "secondary"
+    | "outline"
+    | "ghost"
+    | "gradient"
+    | "glass";
+  size?: "sm" | "md" | "lg";
   className?: string;
   children?: React.ReactNode;
 }
 
-export function PlayButton({ 
-  track, 
-  variant = 'glass', 
-  size = 'sm', 
+export function PlayButton({
+  track,
+  variant = "glass",
+  size = "sm",
   className,
-  children 
+  children,
 }: PlayButtonProps) {
   const { playTrack } = useAudio();
 

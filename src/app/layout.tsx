@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AudioProvider } from "@/components/ui/GlobalAudioPlayer";
 import { Header } from "@/components/ui/Header";
 import { Footer } from "@/components/ui/Footer";
 import "../index.css";
@@ -33,14 +34,16 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <LanguageProvider>
-          <div className="min-h-screen bg-background text-foreground">
-            <div className="fixed inset-0 bg-gradient-to-br from-primary-500/10 via-background to-secondary-500/10 animate-gradient" />
-            <div className="relative z-10 flex flex-col min-h-screen">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
+          <AudioProvider>
+            <div className="min-h-screen bg-background text-foreground">
+              <div className="fixed inset-0 bg-gradient-to-br from-primary-500/10 via-background to-secondary-500/10 animate-gradient" />
+              <div className="relative z-10 flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
             </div>
-          </div>
+          </AudioProvider>
         </LanguageProvider>
       </body>
     </html>

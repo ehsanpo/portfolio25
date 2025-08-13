@@ -1,9 +1,26 @@
-import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
-import dynamic from 'next/dynamic';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Minimize2, Maximize2 } from 'lucide-react';
-import { cn } from '../../utils/cn';
+"use client";
+
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  createContext,
+  useContext,
+} from "react";
+import dynamic from "next/dynamic";
+import { Button } from "./Button";
+import { Badge } from "./Badge";
+import {
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX,
+  Minimize2,
+  Maximize2,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface Track {
   id: string;
@@ -30,7 +47,7 @@ const AudioContext = createContext<AudioContextType | null>(null);
 export const useAudio = () => {
   const context = useContext(AudioContext);
   if (!context) {
-    throw new Error('useAudio must be used within AudioProvider');
+    throw new Error("useAudio must be used within AudioProvider");
   }
   return context;
 };
@@ -48,13 +65,13 @@ export function AudioProvider({ children }: AudioProviderProps) {
   const playTrack = (track: Track) => {
     setCurrentTrack(track);
     setIsPlaying(true);
-    
+
     // Find track in playlist or add it
-    const trackIndex = playlist.findIndex(t => t.id === track.id);
+    const trackIndex = playlist.findIndex((t) => t.id === track.id);
     if (trackIndex >= 0) {
       setCurrentIndex(trackIndex);
     } else {
-      setPlaylist(prev => [...prev, track]);
+      setPlaylist((prev) => [...prev, track]);
       setCurrentIndex(playlist.length);
     }
   };
@@ -86,17 +103,19 @@ export function AudioProvider({ children }: AudioProviderProps) {
   };
 
   return (
-    <AudioContext.Provider value={{
-      currentTrack,
-      isPlaying,
-      playTrack,
-      pauseTrack,
-      resumeTrack,
-      nextTrack,
-      prevTrack,
-      playlist,
-      setPlaylist,
-    }}>
+    <AudioContext.Provider
+      value={{
+        currentTrack,
+        isPlaying,
+        playTrack,
+        pauseTrack,
+        resumeTrack,
+        nextTrack,
+        prevTrack,
+        playlist,
+        setPlaylist,
+      }}
+    >
       {children}
       <GlobalAudioPlayer />
     </AudioContext.Provider>
@@ -104,13 +123,21 @@ export function AudioProvider({ children }: AudioProviderProps) {
 }
 
 function GlobalAudioPlayer() {
-  const { currentTrack, isPlaying, pauseTrack, resumeTrack, nextTrack, prevTrack, playlist } = useAudio();
+  const {
+    currentTrack,
+    isPlaying,
+    pauseTrack,
+    resumeTrack,
+    nextTrack,
+    prevTrack,
+    playlist,
+  } = useAudio();
   const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  
+
   // Visual equalizer state
   const [audioData, setAudioData] = useState<number[]>(new Array(20).fill(0));
   const animationRef = useRef<number>();
@@ -119,9 +146,10 @@ function GlobalAudioPlayer() {
   useEffect(() => {
     if (isPlaying && currentTrack) {
       const interval = setInterval(() => {
-        setCurrentTime(prev => {
+        setCurrentTime((prev) => {
           const newTime = prev + 1;
-          if (newTime >= 180) { // 3 minutes demo duration
+          if (newTime >= 180) {
+            // 3 minutes demo duration
             pauseTrack();
             return 0;
           }
@@ -131,9 +159,7 @@ function GlobalAudioPlayer() {
 
       // Simulate equalizer animation
       const animateEqualizer = () => {
-        setAudioData(prev => 
-          prev.map(() => Math.random() * 100)
-        );
+        setAudioData((prev) => prev.map(() => Math.random() * 100));
         animationRef.current = requestAnimationFrame(animateEqualizer);
       };
       animateEqualizer();
@@ -173,7 +199,7 @@ function GlobalAudioPlayer() {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
@@ -181,14 +207,16 @@ function GlobalAudioPlayer() {
   if (!currentTrack) return null;
 
   return (
-    <div className={cn(
-      'fixed bottom-0 left-0 right-0 z-50 glass-card border-t border-border/50 transition-all duration-300',
-      isMinimized ? 'h-2' : 'h-16'
-    )}>
+    <div
+      className={cn(
+        "fixed bottom-0 left-0 right-0 z-50 glass-card border-t border-border/50 transition-all duration-300",
+        isMinimized ? "h-2" : "h-16"
+      )}
+    >
       {isMinimized ? (
         // Minimized view - just progress bar
         <div className="relative h-full">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
@@ -260,9 +288,9 @@ function GlobalAudioPlayer() {
               <div
                 key={index}
                 className="w-1 bg-gradient-to-t from-primary-500 to-secondary-500 rounded-full transition-all duration-75"
-                style={{ 
+                style={{
                   height: `${Math.max(2, height * 0.3)}px`,
-                  opacity: isPlaying ? 1 : 0.3
+                  opacity: isPlaying ? 1 : 0.3,
                 }}
               />
             ))}
@@ -281,7 +309,7 @@ function GlobalAudioPlayer() {
                 {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
               </Button>
               <div className="w-16 h-1 bg-muted rounded-full">
-                <div 
+                <div
                   className="h-full bg-primary-500 rounded-full transition-all"
                   style={{ width: `${isMuted ? 0 : volume * 100}%` }}
                 />
@@ -309,7 +337,7 @@ function GlobalAudioPlayer() {
       {/* Progress bar at bottom */}
       {!isMinimized && (
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-muted/30">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-300"
             style={{ width: `${progress}%` }}
           />

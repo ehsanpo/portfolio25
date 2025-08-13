@@ -136,6 +136,12 @@ const navigationItems: NavItem[] = [
         icon: Settings,
         href: "/design-system/accessibility",
       },
+      {
+        id: "ds-audio-player-demo",
+        name: "Audio Player Demo",
+        icon: Settings,
+        href: "/design-system/audio-player-demo",
+      },
     ],
   },
   { id: "contact", name: "Contact", icon: Phone, href: "/contact" },
