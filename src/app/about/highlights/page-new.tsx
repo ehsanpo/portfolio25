@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   Card,
@@ -10,7 +8,13 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { WorkExperience } from "@/components/ui/WorkExperience";
 import { EducationTimeline } from "@/components/ui/EducationTimeline";
-import { Trophy, ExternalLink, Award, CheckCircle } from "lucide-react";
+import {
+  Trophy,
+  Calendar,
+  ExternalLink,
+  Award,
+  CheckCircle,
+} from "lucide-react";
 import portfolioData from "@/data/portfolio.json";
 
 export default function AboutHighlightsPage() {
@@ -22,11 +26,12 @@ export default function AboutHighlightsPage() {
       company: exp.org,
       position: exp.title,
       startDate: exp.year.includes("-") ? exp.year.split(" - ")[0] : exp.year,
-      endDate: (() => {
-        if (!exp.year.includes("-")) return undefined;
-        if (exp.year.includes("Present")) return undefined;
-        return exp.year.split(" - ")[1];
-      })(),
+      endDate:
+        exp.year.includes("-") && exp.year.includes("Present")
+          ? undefined
+          : exp.year.includes("-")
+          ? exp.year.split(" - ")[1]
+          : undefined,
       location: "Sweden", // Default location based on portfolio context
       employmentType: "full-time" as const,
       description: exp.description,
@@ -168,7 +173,7 @@ export default function AboutHighlightsPage() {
                   <div className="space-y-2">
                     {achievement.details.map((detail, index) => (
                       <div
-                        key={`${achievement.id}-detail-${index}`}
+                        key={index}
                         className="flex items-start gap-2 text-sm"
                       >
                         <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0" />
@@ -192,9 +197,9 @@ export default function AboutHighlightsPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {portfolioData.awards.map((award) => (
+            {portfolioData.awards.map((award, index) => (
               <Card
-                key={`award-${award.name.toLowerCase().replace(/\s+/g, "-")}`}
+                key={index}
                 className="group hover:shadow-lg transition-all duration-300"
               >
                 <CardContent className="p-6">
@@ -233,11 +238,9 @@ export default function AboutHighlightsPage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {portfolioData.certifications.map((cert) => (
+            {portfolioData.certifications.map((cert, index) => (
               <Card
-                key={`cert-${cert.name.toLowerCase().replace(/\s+/g, "-")}-${
-                  cert.year
-                }`}
+                key={index}
                 className="group hover:shadow-lg transition-all duration-300 aspect-square"
               >
                 <CardContent className="p-4 flex flex-col items-center justify-center text-center h-full">
@@ -251,7 +254,7 @@ export default function AboutHighlightsPage() {
                   <h3 className="font-medium text-xs leading-tight mb-1">
                     {cert.name}
                   </h3>
-                  <Badge variant="neutral" className="text-xs">
+                  <Badge variant="outline" className="text-xs">
                     {cert.year}
                   </Badge>
                 </CardContent>

@@ -4,6 +4,11 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CaseStudyLayout } from "@/components/ui/CaseStudyLayout";
+import {
+  getOptimizedImagePath,
+  getPortfolioHeroImage,
+  getPortfolioGalleryImages,
+} from "@/utils/portfolioImages";
 import { ArrowLeft } from "lucide-react";
 import fs from "fs";
 import path from "path";
@@ -77,43 +82,11 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
     notFound();
   }
 
-  // Prepare image URLs using optimized images or fallback to placeholders
-  const getImageUrl = (imageName: string, size: 'thumbnail' | 'medium' | 'large' | 'hero' = 'medium') => {
-    // In development, use placeholder images
-    // In production, this would use the optimized images from build process
-    if (process.env.NODE_ENV === 'development') {
-      const dimensions = {
-        thumbnail: 'w=300&h=200',
-        medium: 'w=800&h=600',
-        large: 'w=1200&h=900',
-        hero: 'w=1600&h=900'
-      };
-      return `https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&${dimensions[size]}`;
-    }
-    
-    // TODO: Use imageUtils.getOptimizedImageUrl in production
-    return `/optimized/portfolio/${slug}/${imageName.replace(/\.[^/.]+$/, '')}-${size}.webp`;
-  };
-
-  // Get current locale from context for content localization
-  // Note: URLs remain clean, language affects content rendering only
-
   // Prepare hero image
-  const heroImage = project.meta.background_image
-    ? getImageUrl(project.meta.background_image, 'hero')
-    : undefined;
+  const heroImage = getPortfolioHeroImage(slug, project.meta);
 
   // Prepare gallery images
-  const galleryImages =
-    project.meta.images && Array.isArray(project.meta.images)
-      ? project.meta.images.map((imageName: string, index: number) => ({
-          id: `image-${index}`,
-          src: getImageUrl(imageName, 'large'),
-          alt: `${project.meta.title} - Image ${index + 1}`,
-          title: `${project.meta.title} - Image ${index + 1}`,
-          description: `Project image ${index + 1}`,
-        }))
-      : [];
+  const galleryImages = getPortfolioGalleryImages(slug, project.meta);
 
   // Prepare sections from content
   const sections = [

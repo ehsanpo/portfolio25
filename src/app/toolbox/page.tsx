@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -21,10 +23,8 @@ import {
   BookOpen,
   ArrowRight,
 } from "lucide-react";
-import portfolioData from "@/data/portfolio.json";
 
 export default function ToolboxPage() {
-  const { stacks, contact } = portfolioData;
   const toolCategories = [
     {
       id: "development",

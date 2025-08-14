@@ -7,6 +7,10 @@ import { usePortfolioContent } from "@/hooks/useContent";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import {
+  getPortfolioPreviewImage,
+  getImageSrcSet,
+} from "@/utils/portfolioImages";
 import { ArrowRight, Filter, Grid, List, Calendar, Clock } from "lucide-react";
 
 export default function PortfolioPage() {
@@ -86,16 +90,17 @@ export default function PortfolioPage() {
               className="group hover:shadow-lg transition-all duration-300"
             >
               {/* Project Image/Preview */}
-              <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-t-lg flex items-center justify-center mb-6">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg mb-4 mx-auto opacity-50"></div>
-                  <span className="text-sm text-muted-foreground">
-                    Project Preview
-                  </span>
-                </div>
+              <div className="aspect-video bg-gradient-to-br from-primary-500/10 to-secondary-500/10 rounded-t-lg overflow-hidden">
+                <img
+                  src={getPortfolioPreviewImage(item.slug, item.meta)}
+                  alt={item.meta.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
 
-              <div className="p-6 pt-0">
+              <div className="p-6 pt-6">
+                {/* Changed pt-0 to pt-6 */}
                 {/* Project Category */}
                 <div className="flex items-center justify-between mb-3">
                   <Badge variant="secondary" className="text-xs">

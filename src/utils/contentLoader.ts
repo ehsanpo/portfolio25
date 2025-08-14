@@ -1,4 +1,4 @@
-import contentIndex from "../data/content-index.json";
+import portfolioData from "../data/portfolio.json";
 
 export interface ContentMeta {
   title: string;
@@ -19,14 +19,31 @@ export interface ContentItem {
   excerpt?: string;
 }
 
-// Get all portfolio content
+// Get all portfolio content from portfolio.json experience section (highlighted projects)
 export function getPortfolioContent(): ContentItem[] {
-  return contentIndex.portfolio || [];
+  return portfolioData.experience
+    .filter((item) => item.highlighted && item.project?.title)
+    .map((exp) => ({
+      slug: exp.org.toLowerCase().replace(/\s+/g, "-"),
+      meta: {
+        title: exp.project.title || exp.title,
+        description: exp.project.description || exp.description,
+        excerpt: exp.description,
+        publishDate: exp.year,
+        category: exp.type,
+        tags: exp.tags,
+        featured: exp.highlighted,
+        image: exp.image,
+      },
+      excerpt: exp.description,
+    }));
 }
 
-// Get all blog content
+// Get all blog content (placeholder - can be extended when blog content is added)
 export function getBlogContent(): ContentItem[] {
-  return contentIndex.blog || [];
+  // For now, return empty array as blog content is not yet in portfolio.json
+  // This can be extended when blog content structure is added
+  return [];
 }
 
 // Get content by slug and type
