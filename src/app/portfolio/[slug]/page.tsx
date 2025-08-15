@@ -12,6 +12,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { type ContentItem } from "@/utils/localizedContent";
+import { DynamicSEO } from "@/components/seo/DynamicSEO";
 
 interface PortfolioPageProps {
   params: Promise<{
@@ -127,6 +128,7 @@ export default function PortfolioPage({ params }: PortfolioPageProps) {
 
   return (
     <div className="min-h-screen p-6 lg:p-8">
+      <DynamicSEO content={project} type="portfolio" />
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Back Button */}
         <Link href="/portfolio">
