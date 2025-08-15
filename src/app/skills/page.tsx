@@ -13,6 +13,7 @@ import { StatsDashboard } from "@/components/ui/StatsDashboard";
 import { WorkExperience } from "@/components/ui/WorkExperience";
 import { EducationTimeline } from "@/components/ui/EducationTimeline";
 import { CertificationCard } from "@/components/ui/CertificationCard";
+import { getCertificationImage } from "@/utils/publicImages";
 import {
   Code2,
   Palette,
@@ -334,7 +335,10 @@ export default function SkillsPage() {
                 issuer="Professional Certification"
                 issueDate={cert.year}
                 description={`Certified in ${cert.name}`}
-                logo={cert.img}
+                logo={getCertificationImage(
+                  cert.img.replace("img/cert/", ""),
+                  "medium"
+                )}
               />
             ))}
           </div>

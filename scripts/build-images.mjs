@@ -97,6 +97,52 @@ async function processImage(inputPath, outputDir, slug, filename) {
 }
 
 /**
+ * Process images in public/img subdirectories (tools, testimonials, stacks, etc.)
+ */
+async function processPublicImages() {
+  const publicImageCategories = [
+    "tools",
+    "testimonial",
+    "stacks",
+    "cert",
+    "awards",
+  ];
+
+  for (const category of publicImageCategories) {
+    const categoryDir = path.join(PUBLIC_DIR, "img", category);
+
+    if (!(await fs.pathExists(categoryDir))) {
+      log(`Public image category not found: ${category}`);
+      continue;
+    }
+
+    const outputDir = path.join(OUTPUT_DIR, "img", category);
+
+    // Check if output directory already exists - if so, skip entire category
+    if (await fs.pathExists(outputDir)) {
+      log(`⏭️  Skipping ${category} - output directory already exists`);
+      continue;
+    }
+
+    log(`Processing ${category} images...`);
+
+    const files = await fs.readdir(categoryDir);
+    const imageFiles = files.filter((file) =>
+      SUPPORTED_FORMATS.includes(path.extname(file).toLowerCase())
+    );
+
+    if (imageFiles.length > 0) {
+      log(`📁 Processing ${category} (${imageFiles.length} images)`);
+
+      for (const file of imageFiles) {
+        const imagePath = path.join(categoryDir, file);
+        await processImage(imagePath, outputDir, category, file);
+      }
+    }
+  }
+}
+
+/**
  * Process all images in a content directory (portfolio or blog)
  */
 async function processContentType(contentType) {
@@ -182,6 +228,28 @@ async function generateImageManifest() {
     }
   }
 
+  // Process public image categories
+  for (const category of ["tools", "testimonial", "stacks", "cert", "awards"]) {
+    const categoryDir = path.join(OUTPUT_DIR, "img", category);
+
+    if (await fs.pathExists(categoryDir)) {
+      if (!manifest.img) manifest.img = {};
+
+      const images = await fs.readdir(categoryDir);
+      manifest.img[category] = {
+        images: images.reduce((acc, img) => {
+          const basename = path.basename(img, path.extname(img));
+          const ext = path.extname(img);
+
+          if (!acc[basename]) acc[basename] = {};
+          acc[basename][ext.slice(1)] = `/optimized/img/${category}/${img}`;
+
+          return acc;
+        }, {}),
+      };
+    }
+  }
+
   await fs.writeJson(manifestPath, manifest, { spaces: 2 });
   log(`✓ Generated image manifest: ${manifestPath}`);
 }
@@ -215,6 +283,9 @@ async function main() {
     // Process content types
     await processContentType("portfolio");
     await processContentType("blog");
+
+    // Process public image categories
+    await processPublicImages();
 
     // Generate manifest
     await generateImageManifest();

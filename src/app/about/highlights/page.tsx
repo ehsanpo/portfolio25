@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/Badge";
 import { WorkExperience } from "@/components/ui/WorkExperience";
 import { EducationTimeline } from "@/components/ui/EducationTimeline";
 import { Trophy, ExternalLink, Award, CheckCircle } from "lucide-react";
+import { getAwardImage, getCertificationImage } from "@/utils/publicImages";
 import portfolioData from "@/data/portfolio.json";
 
 export default function AboutHighlightsPage() {
@@ -200,7 +201,10 @@ export default function AboutHighlightsPage() {
                 <CardContent className="p-6">
                   <div className="aspect-video mb-4 bg-muted/20 rounded-lg overflow-hidden">
                     <img
-                      src={award.images}
+                      src={getAwardImage(
+                        award.images.replace("img/awards/", ""),
+                        "medium"
+                      )}
                       alt={award.name}
                       className="w-full h-full object-contain"
                     />
@@ -243,7 +247,10 @@ export default function AboutHighlightsPage() {
                 <CardContent className="p-4 flex flex-col items-center justify-center text-center h-full">
                   <div className="w-12 h-12 mb-3 bg-muted/20 rounded-lg overflow-hidden flex-shrink-0">
                     <img
-                      src={cert.img}
+                      src={getCertificationImage(
+                        cert.img.replace("img/cert/", ""),
+                        "thumbnail"
+                      )}
                       alt={cert.name}
                       className="w-full h-full object-contain"
                     />
