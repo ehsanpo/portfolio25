@@ -42,10 +42,12 @@ export default function PortfolioPage({ params }: PortfolioPageProps) {
     const loadProject = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
-        const response = await fetch(`/api/content?type=portfolio&slug=${slug}&locale=${currentLocale}`);
-        
+        const response = await fetch(
+          `/api/content?type=portfolio&slug=${slug}&locale=${currentLocale}`
+        );
+
         if (!response.ok) {
           if (response.status === 404) {
             setError("Project not found");
@@ -55,7 +57,7 @@ export default function PortfolioPage({ params }: PortfolioPageProps) {
           setProject(null);
           return;
         }
-        
+
         const projectData = await response.json();
         setProject(projectData);
       } catch (err) {

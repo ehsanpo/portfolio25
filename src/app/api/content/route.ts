@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { getLocalizedContent, getAllLocalizedContent, type Locale } from "@/utils/localizedContent";
+import {
+  getLocalizedContent,
+  getAllLocalizedContent,
+  type Locale,
+} from "@/utils/localizedContent";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -18,14 +22,14 @@ export async function GET(request: Request) {
     // Single content item request
     if (slug) {
       const content = await getLocalizedContent(type, slug, locale);
-      
+
       if (!content) {
         return NextResponse.json(
           { error: "Content not found" },
           { status: 404 }
         );
       }
-      
+
       return NextResponse.json(content);
     }
 

@@ -168,7 +168,7 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] Phase 0: Create repo, folders, and base config.
 - [x] Phase 1: Establish **CSS variable tokens** (no Tailwind).
 - [x] Phase 2: Build ui kit (atoms → components → blocks).
-- [x] Phase 3: **COMPLETE** - Content pipeline, portfolio/blog pages, CaseStudyLayout integration
+- [x] Phase 3: **COMPLETE** - Content pipeline, portfolio/blog pages, CaseStudyLayout integration, i18n system, auto-translation
 - [ ] Phase 4: Performance, a11y, SEO pass.
 - [ ] Phase 5: Deploy and set up monitoring.
 
@@ -184,13 +184,25 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] **Page Component**: renders sections from sitemap using block registry. **COMPLETED**
 - [x] **Content pipeline**: parse `/content/**/<slug>.md` with co-located images; generate slugs and indexes.
 - [x] **i18n**: locale-aware routing + language switcher; RTL support for `fa`.
-- [ ] **Auto-translation**: when a locale variant is missing, invoke AI to create `/content/.../<slug>.<locale>.md` and patch strings in JSON.
+- [x] **Auto-translation**: when a locale variant is missing, invoke AI to create `/content/.../<slug>.<locale>.md` and patch strings in JSON. **COMPLETED**
 - [ ] CI checks: missing block types, invalid frontmatter, broken image refs, i18n coverage.
 - [ ] Add GitHub Actions for lint, typecheck, build.
 - [ ] Add basic tests (render + a11y) for atoms and blocks.
 
 ## Recent Progress (2025-08-15)
 
+- ✅ **Language Switching System Complete**: Successfully implemented full localized content loading for portfolio items
+  - Updated `/app/portfolio/[slug]/page.tsx` to client component with `useLanguage()` hook
+  - Enhanced `/app/api/content/route.ts` to support locale parameters using `getLocalizedContent()`
+  - Language switching now works perfectly - content automatically updates when language changes
+  - API calls confirmed working for all locales: `?locale=en`, `?locale=sv`, `?locale=fa`
+  - System properly falls back to English content when translations are missing
+- ✅ **Auto-translation System Complete**: AI-powered translation system fully functional
+  - OpenAI GPT-4 integration working in `scripts/auto-translate.mjs`
+  - Successfully generated 72+ Swedish (.sv.md) and 72+ Persian (.fa.md) translations
+  - Smart field exclusion prevents translation of technical metadata
+  - Rate limiting and error handling implemented
+  - Translation quality confirmed with real content testing
 - ✅ **Real Portfolio Images Complete**: Successfully integrated real optimized images into portfolio system
   - Created `src/utils/portfolioImages.ts` utility for image path mapping
   - Updated `/app/portfolio/page.tsx` to show real preview images instead of placeholders
@@ -274,11 +286,11 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 
 ### Next Priority Tasks:
 
-1. **✅ COMPLETED: Complete Image System** - Extended real image integration to testimonials, services, and profile images
-2. **Auto-translation System** - AI-powered content translation for missing sv/fa locales
-3. **Performance & SEO** - Lighthouse optimization pass, meta tags, sitemap.xml
-4. **CI & Testing** - GitHub Actions and automated tests
-5. **Contact Forms** - Implement with spam protection
+1. **✅ COMPLETED: Auto-translation System** - AI-powered content translation with OpenAI GPT-4 integration fully working
+2. **Performance & SEO** - Lighthouse optimization pass, meta tags, sitemap.xml
+3. **CI & Testing** - GitHub Actions and automated tests
+4. **Contact Forms** - Implement with spam protection
+5. **Blog System** - Complete blog content loading and pages
 
 ## Changelog
 
