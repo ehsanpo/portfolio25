@@ -1,30 +1,24 @@
 import fs from "fs-extra";
 import path from "path";
 import matter from "gray-matter";
+import OpenAI from "openai";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 /**
  * Auto-translation script for portfolio content
- * Generates missing locale variants for markdown content and JSON str  try {
-    const entries = await fs.readdir(portfolioDir, { withFileTypes: true });
+ * Generates missing locale variants for markdown content and JSON strings
+ */
 
-    for (const entry of entries) {
-      if (entry.isDirectory()) {
-        const subDir = path.join(portfolioDir, entry.name);
-        const files = await fs.readdir(subDir);
-
-        for (const file of files) {
-          if (file.endsWith('.md')) {
-            const fullPath = path.join(subDir, file);
-            await generateMissingLocales(fullPath, 'portfolio');
-          }
-        }
-      }
-    }
-  } catch (error) {ed locales
-
-  */
-
+// Supported locales
 const LOCALES = ["en", "sv", "fa"];
+
+// Initialize OpenAI client
+const openai = new OpenAI({
+  apiKey: process.env.OPENAIKEY || process.env.OPENAI_API_KEY,
+});
 
 // Fields that should NOT be translated (technical fields, URLs, file paths, etc.)
 const SKIP_TRANSLATION_FIELDS = [
@@ -61,17 +55,100 @@ const SKIP_TRANSLATION_FIELDS = [
   "client_logo",
   "agency_logo",
   "agency",
+  "title",
 ];
 
+// Language names for OpenAI prompts
+const LANGUAGE_NAMES = {
+  sv: "Swedish",
+  fa: "Persian/Farsi",
+};
+
 /**
- * Mock AI translation function
- * In production, this would call an actual AI service like OpenAI, Claude, etc.
+ * Real AI translation function using OpenAI
  */
 async function translateWithAI(text, targetLocale, contentType) {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 10));
+  // Skip if no API key is provided
+  if (!process.env.OPENAIKEY && !process.env.OPENAI_API_KEY) {
+    console.warn("⚠️  No OpenAI API key found. Using mock translations.");
+    return getMockTranslation(text, targetLocale);
+  }
 
-  // Mock translations for demonstration
+  // Don't translate empty or very short technical strings
+  if (!text || text.trim().length < 2) {
+    return text;
+  }
+
+  const languageName = LANGUAGE_NAMES[targetLocale];
+  if (!languageName) {
+    return text;
+  }
+
+  try {
+    let systemPrompt = "";
+
+    switch (contentType) {
+      case "frontmatter":
+        systemPrompt = `You are a professional translator. Translate the following portfolio frontmatter field to ${languageName}. Keep it concise and professional. Only return the translated text, nothing else.`;
+        break;
+      case "portfolio":
+        systemPrompt = `You are a professional translator specializing in portfolio and technical content. Translate the following portfolio content to ${languageName}. Maintain the original formatting (HTML tags, markdown), preserve technical terms, URLs, and code blocks exactly as they are. Keep the professional tone and technical accuracy.`;
+        break;
+      case "blog":
+        systemPrompt = `You are a professional translator specializing in technical blog content. Translate the following blog content to ${languageName}. Maintain the original formatting (HTML tags, markdown), preserve technical terms, URLs, and code blocks exactly as they are. Keep the conversational yet professional tone.`;
+        break;
+      default:
+        systemPrompt = `You are a professional translator. Translate the following text to ${languageName}. Maintain the original tone and formatting.`;
+    }
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        {
+          role: "user",
+          content: text,
+        },
+      ],
+      max_tokens: 2000,
+      temperature: 0.3, // Lower temperature for more consistent translations
+    });
+
+    const translation = completion.choices[0]?.message?.content?.trim();
+
+    if (translation) {
+      console.log(
+        `    ✅ Translated: "${text.substring(
+          0,
+          50
+        )}..." → "${translation.substring(0, 50)}..."`
+      );
+      return translation;
+    } else {
+      console.warn(
+        `    ⚠️  No translation returned for: "${text.substring(0, 50)}..."`
+      );
+      return text;
+    }
+  } catch (error) {
+    console.error(`    ❌ Translation error: ${error.message}`);
+    console.log(
+      `    🔄 Falling back to mock translation for: "${text.substring(
+        0,
+        50
+      )}..."`
+    );
+    return getMockTranslation(text, targetLocale);
+  }
+}
+
+/**
+ * Fallback mock translations for when OpenAI is unavailable
+ */
+function getMockTranslation(text, targetLocale) {
   const mockTranslations = {
     sv: {
       "Welcome to my portfolio": "Välkommen till min portfölj",
@@ -92,6 +169,9 @@ async function translateWithAI(text, targetLocale, contentType) {
       "Mobile app": "Mobilapp",
       "E-commerce": "E-handel",
       "Brand identity": "Varumärkesidentitet",
+      Freelance: "Frilansare",
+      Agency: "Byrå",
+      Client: "Klient",
     },
     fa: {
       "Welcome to my portfolio": "به نمونه کارهای من خوش آمدید",
@@ -112,20 +192,18 @@ async function translateWithAI(text, targetLocale, contentType) {
       "Mobile app": "اپلیکیشن موبایل",
       "E-commerce": "تجارت الکترونیک",
       "Brand identity": "هویت برند",
+      Freelance: "آزاد کار",
+      Agency: "آژانس",
+      Client: "مشتری",
     },
   };
 
-  // Return mock translation or indicate that AI translation is needed
   const translation = mockTranslations[targetLocale]?.[text];
   if (translation) {
     return translation;
   }
 
-  // For longer texts, return a simplified mock translation without brackets
-  if (text && text.trim()) {
-    return `${text} (${targetLocale.toUpperCase()})`;
-  }
-
+  // Return original text if no mock translation found
   return text;
 }
 
@@ -164,7 +242,7 @@ async function generateMissingLocales(contentPath, contentType) {
       if (locale === "en") continue; // Skip English (assumed to be the default)
 
       if (!hasLocaleVariant(contentPath, locale)) {
-        console.log(`  Generating ${locale} variant...`);
+        console.log(`  🌍 Generating ${locale} variant...`);
 
         const dir = path.dirname(contentPath);
         const filename = path.basename(contentPath, ".md");
@@ -177,6 +255,7 @@ async function generateMissingLocales(contentPath, contentType) {
           if (SKIP_TRANSLATION_FIELDS.includes(key)) {
             translatedData[key] = value;
           } else if (typeof value === "string" && value.trim()) {
+            console.log(`    🔄 Translating field: ${key}`);
             translatedData[key] = await translateWithAI(
               value,
               locale,
@@ -190,24 +269,32 @@ async function generateMissingLocales(contentPath, contentType) {
         // Translate content body
         let translatedContent = parsed.content;
         if (parsed.content && parsed.content.trim()) {
-          translatedContent = await translateWithAI(
-            parsed.content,
-            locale,
-            contentType
-          );
+          try {
+            console.log(`    📝 Translating content body...`);
+            translatedContent = await translateWithAI(
+              parsed.content,
+              locale,
+              contentType
+            );
+          } catch (error) {
+            console.error(
+              `    ❌ Error translating content body:`,
+              error.message
+            );
+          }
         }
 
         // Create new file with translated content
         const newContent = matter.stringify(translatedContent, translatedData);
         await fs.writeFile(localeFile, newContent, "utf-8");
 
-        console.log(`    Created: ${localeFile}`);
+        console.log(`    ✅ Created: ${localeFile}`);
       } else {
-        console.log(`  ${locale} variant already exists`);
+        console.log(`  ⭐ ${locale} variant already exists`);
       }
     }
   } catch (error) {
-    console.error(`Error processing ${contentPath}:`, error.message);
+    console.error(`❌ Error processing ${contentPath}:`, error.message);
   }
 }
 
@@ -215,7 +302,7 @@ async function generateMissingLocales(contentPath, contentType) {
  * Process all portfolio content files
  */
 async function processPortfolioContent() {
-  console.log("Processing portfolio content...");
+  console.log("📁 Processing portfolio content...");
 
   const portfolioDir = path.join(process.cwd(), "src", "content", "portfolio");
 
@@ -241,7 +328,7 @@ async function processPortfolioContent() {
       }
     }
   } catch (error) {
-    console.error("Error processing portfolio content:", error.message);
+    console.error("❌ Error processing portfolio content:", error.message);
   }
 }
 
@@ -249,7 +336,7 @@ async function processPortfolioContent() {
  * Process all blog content files
  */
 async function processBlogContent() {
-  console.log("Processing blog content...");
+  console.log("📝 Processing blog content...");
 
   const blogDir = path.join(process.cwd(), "src", "content", "blog");
 
@@ -268,7 +355,7 @@ async function processBlogContent() {
       }
     }
   } catch (error) {
-    console.error("Error processing blog content:", error.message);
+    console.error("❌ Error processing blog content:", error.message);
   }
 }
 
@@ -276,7 +363,7 @@ async function processBlogContent() {
  * Generate translations for JSON strings in portfolio.json
  */
 async function generateJSONTranslations() {
-  console.log("Processing JSON translations...");
+  console.log("🔧 Processing JSON translations...");
 
   const portfolioJsonPath = path.join(
     process.cwd(),
@@ -305,7 +392,7 @@ async function generateJSONTranslations() {
       );
 
       if (!fs.existsSync(localeJsonPath)) {
-        console.log(`  Generating ${locale} JSON translations...`);
+        console.log(`  🌍 Generating ${locale} JSON translations...`);
 
         // Clone the original data
         const translatedData = JSON.parse(JSON.stringify(portfolioData));
@@ -352,13 +439,13 @@ async function generateJSONTranslations() {
 
         // Save translated JSON
         await fs.writeJson(localeJsonPath, translatedData, { spaces: 2 });
-        console.log(`    Created: ${localeJsonPath}`);
+        console.log(`    ✅ Created: ${localeJsonPath}`);
       } else {
-        console.log(`  ${locale} JSON already exists`);
+        console.log(`  ⭐ ${locale} JSON already exists`);
       }
     }
   } catch (error) {
-    console.error("Error processing JSON translations:", error.message);
+    console.error("❌ Error processing JSON translations:", error.message);
   }
 }
 
@@ -366,8 +453,16 @@ async function generateJSONTranslations() {
  * Main function to run auto-translation
  */
 export async function autoTranslate() {
-  console.log("🌍 Starting auto-translation process...");
-  console.log(`Supported locales: ${LOCALES.join(", ")}`);
+  console.log("🚀 Starting AI-powered auto-translation process...");
+  console.log(`🌍 Supported locales: ${LOCALES.join(", ")}`);
+
+  if (process.env.OPENAIKEY || process.env.OPENAI_API_KEY) {
+    console.log("🤖 Using OpenAI GPT-4 for translations");
+  } else {
+    console.log("⚠️  No OpenAI API key found - using mock translations");
+    console.log("   Add OPENAIKEY to your .env file for real AI translations");
+  }
+
   console.log("");
 
   try {
@@ -383,12 +478,14 @@ export async function autoTranslate() {
 
     console.log("✅ Auto-translation process completed!");
     console.log("");
-    console.log(
-      "📝 Note: This script uses mock translations for demonstration."
-    );
-    console.log(
-      "   In production, integrate with a real AI translation service."
-    );
+
+    if (process.env.OPENAIKEY || process.env.OPENAI_API_KEY) {
+      console.log("🎉 All content has been translated using OpenAI GPT-4!");
+    } else {
+      console.log(
+        "📝 Mock translations generated. Add OPENAIKEY for real AI translations."
+      );
+    }
   } catch (error) {
     console.error("❌ Auto-translation failed:", error.message);
     process.exit(1);
@@ -397,7 +494,7 @@ export async function autoTranslate() {
 
 // Run the script
 console.log("🚀 Starting auto-translate script...");
-console.log("Current working directory:", process.cwd());
+console.log("📁 Current working directory:", process.cwd());
 
 try {
   await autoTranslate();

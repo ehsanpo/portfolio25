@@ -3,9 +3,14 @@
  * (tools, testimonials, stacks, certifications, awards)
  */
 
-export type PublicImageCategory = 'tools' | 'testimonial' | 'stacks' | 'cert' | 'awards';
-export type ImageSize = 'thumbnail' | 'medium' | 'large' | 'hero';
-export type ImageFormat = 'jpg' | 'webp' | 'png';
+export type PublicImageCategory =
+  | "tools"
+  | "testimonial"
+  | "stacks"
+  | "cert"
+  | "awards";
+export type ImageSize = "thumbnail" | "medium" | "large" | "hero";
+export type ImageFormat = "jpg" | "webp" | "png";
 
 /**
  * Get optimized image path for public images
@@ -13,17 +18,17 @@ export type ImageFormat = 'jpg' | 'webp' | 'png';
 export function getOptimizedPublicImage(
   category: PublicImageCategory,
   imageName: string,
-  size: ImageSize = 'medium',
-  format: ImageFormat = 'webp'
+  size: ImageSize = "medium",
+  format: ImageFormat = "webp"
 ): string {
   // Remove file extension from image name
-  const nameWithoutExt = imageName.replace(/\.(jpg|jpeg|png|webp|svg)$/i, '');
-  
+  const nameWithoutExt = imageName.replace(/\.(jpg|jpeg|png|webp|svg)$/i, "");
+
   // For SVG files (like icons), return original path
-  if (imageName.toLowerCase().endsWith('.svg')) {
+  if (imageName.toLowerCase().endsWith(".svg")) {
     return `/img/${category}/${imageName}`;
   }
-  
+
   return `/optimized/img/${category}/${nameWithoutExt}-${size}.${format}`;
 }
 
@@ -32,9 +37,9 @@ export function getOptimizedPublicImage(
  */
 export function getTestimonialImage(
   imageName: string,
-  size: ImageSize = 'medium'
+  size: ImageSize = "medium"
 ): string {
-  return getOptimizedPublicImage('testimonial', imageName, size);
+  return getOptimizedPublicImage("testimonial", imageName, size);
 }
 
 /**
@@ -42,9 +47,9 @@ export function getTestimonialImage(
  */
 export function getCertificationImage(
   imageName: string,
-  size: ImageSize = 'medium'
+  size: ImageSize = "medium"
 ): string {
-  return getOptimizedPublicImage('cert', imageName, size);
+  return getOptimizedPublicImage("cert", imageName, size);
 }
 
 /**
@@ -52,17 +57,15 @@ export function getCertificationImage(
  */
 export function getAwardImage(
   imageName: string,
-  size: ImageSize = 'medium'
+  size: ImageSize = "medium"
 ): string {
-  return getOptimizedPublicImage('awards', imageName, size);
+  return getOptimizedPublicImage("awards", imageName, size);
 }
 
 /**
  * Get stack/technology icon path
  */
-export function getStackIcon(
-  iconName: string
-): string {
+export function getStackIcon(iconName: string): string {
   // Stack icons are SVGs, so return original path
   return `/img/stacks/${iconName}`;
 }
@@ -70,9 +73,7 @@ export function getStackIcon(
 /**
  * Get tool icon path
  */
-export function getToolIcon(
-  iconName: string
-): string {
+export function getToolIcon(iconName: string): string {
   // Tool icons are SVGs, so return original path
   return `/img/tools/${iconName}`;
 }
@@ -83,17 +84,17 @@ export function getToolIcon(
 export function getPublicImageSrcSet(
   category: PublicImageCategory,
   imageName: string,
-  format: ImageFormat = 'webp'
+  format: ImageFormat = "webp"
 ): string {
-  const nameWithoutExt = imageName.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+  const nameWithoutExt = imageName.replace(/\.(jpg|jpeg|png|webp)$/i, "");
   const basePath = `/optimized/img/${category}/${nameWithoutExt}`;
-  
+
   return [
     `${basePath}-thumbnail.${format} 300w`,
     `${basePath}-medium.${format} 800w`,
     `${basePath}-large.${format} 1200w`,
     `${basePath}-hero.${format} 1600w`,
-  ].join(', ');
+  ].join(", ");
 }
 
 /**
@@ -101,12 +102,12 @@ export function getPublicImageSrcSet(
  */
 export function getFallbackImage(category: PublicImageCategory): string {
   const fallbacks = {
-    tools: '/img/placeholder-tool.svg',
-    testimonial: '/img/placeholder-profile.svg',
-    stacks: '/img/placeholder-stack.svg',
-    cert: '/img/placeholder-cert.svg',
-    awards: '/img/placeholder-award.svg',
+    tools: "/img/placeholder-tool.svg",
+    testimonial: "/img/placeholder-profile.svg",
+    stacks: "/img/placeholder-stack.svg",
+    cert: "/img/placeholder-cert.svg",
+    awards: "/img/placeholder-award.svg",
   };
-  
-  return fallbacks[category] || '/img/placeholder-project.svg';
+
+  return fallbacks[category] || "/img/placeholder-project.svg";
 }
