@@ -1,85 +1,101 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
+
 import { Button } from "@/components/ui/Button";
 import { CaseStudyLayout } from "@/components/ui/CaseStudyLayout";
 import {
-  getOptimizedImagePath,
   getPortfolioHeroImage,
   getPortfolioGalleryImages,
 } from "@/utils/portfolioImages";
 import { ArrowLeft } from "lucide-react";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-
-interface ContentMeta {
-  title: string;
-  description?: string;
-  excerpt?: string;
-  publishDate?: string;
-  readTime?: string;
-  category?: string;
-  tags?: string[];
-  featured?: boolean;
-  image?: string;
-  date?: string;
-  author?: string;
-  agency?: string;
-  client?: string;
-  background_image?: string;
-  logo?: string;
-  tagline?: string;
-  case_link_url?: string;
-  [key: string]: string | number | boolean | string[] | undefined;
-}
-
-interface PortfolioItem {
-  slug: string;
-  meta: ContentMeta;
-  content: string;
-  filePath: string;
-}
+import { useLanguage } from "@/contexts/LanguageContext";
+import { type ContentItem } from "@/utils/localizedContent";
 
 interface PortfolioPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-// Server-side data fetching - direct file system access
-async function getPortfolioItem(slug: string): Promise<PortfolioItem | null> {
-  try {
-    const contentDir = path.join(process.cwd(), "src", "content", "portfolio");
-    const projectDir = path.join(contentDir, slug);
-    const projectFile = path.join(projectDir, `${slug}.md`);
+export default function PortfolioPage({ params }: PortfolioPageProps) {
+  const { currentLocale } = useLanguage();
+  const [project, setProject] = useState<ContentItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [slug, setSlug] = useState<string>("");
 
-    if (!fs.existsSync(projectFile)) {
-      return null;
-    }
-
-    const fileContent = fs.readFileSync(projectFile, "utf8");
-    const { data, content } = matter(fileContent);
-
-    return {
-      slug,
-      meta: data as ContentMeta,
-      content,
-      filePath: projectFile,
+  // Get slug from params
+  useEffect(() => {
+    const getSlug = async () => {
+      const resolvedParams = await params;
+      setSlug(resolvedParams.slug);
     };
-  } catch (error) {
-    console.error("Error fetching portfolio item:", error);
-    return null;
+    getSlug();
+  }, [params]);
+
+  // Load project data when slug or locale changes
+  useEffect(() => {
+    if (!slug) return;
+
+    const loadProject = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const response = await fetch(`/api/content?type=portfolio&slug=${slug}&locale=${currentLocale}`);
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError("Project not found");
+          } else {
+            setError("Failed to load project");
+          }
+          setProject(null);
+          return;
+        }
+        
+        const projectData = await response.json();
+        setProject(projectData);
+      } catch (err) {
+        setError("Failed to load project");
+        console.error("Error loading project:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProject();
+  }, [slug, currentLocale]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen p-6 lg:p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading project...</p>
+        </div>
+      </div>
+    );
   }
-}
 
-export default async function PortfolioPage({ params }: PortfolioPageProps) {
-  const { slug } = await params;
-  const project = await getPortfolioItem(slug);
-
-  if (!project) {
-    notFound();
+  // Show error or not found
+  if (error || !project) {
+    return (
+      <div className="min-h-screen p-6 lg:p-8 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Project Not Found</h1>
+          <p className="text-muted-foreground mb-6">
+            The project "{slug}" could not be found.
+          </p>
+          <Link href="/portfolio">
+            <Button>Back to Portfolio</Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   // Prepare hero image
@@ -142,114 +158,8 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
           sections={sections}
         />
 
-        {/* Related Projects Section */}
-        <RelatedProjects currentSlug={slug} />
+        {/* Related Projects Section - Will be added later as a client component */}
       </div>
     </div>
   );
-}
-
-// Related Projects Component
-async function RelatedProjects({ currentSlug }: { currentSlug: string }) {
-  try {
-    const contentDir = path.join(process.cwd(), "src", "content", "portfolio");
-    const files = fs.readdirSync(contentDir);
-    const portfolioItems: PortfolioItem[] = [];
-
-    for (const file of files) {
-      const filePath = path.join(contentDir, file);
-      const stat = fs.statSync(filePath);
-
-      if (stat.isDirectory() && file !== currentSlug) {
-        const projectFile = path.join(filePath, `${file}.md`);
-        if (fs.existsSync(projectFile)) {
-          const fileContent = fs.readFileSync(projectFile, "utf8");
-          const { data, content } = matter(fileContent);
-          portfolioItems.push({
-            slug: file,
-            meta: data as ContentMeta,
-            content,
-            filePath: projectFile,
-          });
-        }
-      }
-    }
-
-    const relatedProjects = portfolioItems.slice(0, 2);
-
-    if (relatedProjects.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="space-y-6 pt-12 border-t border-border">
-        <h2 className="text-2xl font-bold">Related Projects</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {relatedProjects.map((relatedProject: PortfolioItem) => (
-            <Link
-              key={relatedProject.slug}
-              href={`/portfolio/${relatedProject.slug}`}
-              className="group"
-            >
-              <div className="p-6 border border-border rounded-lg hover:border-primary-500/50 transition-colors">
-                <Badge variant="secondary" className="mb-3">
-                  {relatedProject.meta.category || "Project"}
-                </Badge>
-                <h3 className="font-semibold mb-2 group-hover:text-primary-500 transition-colors">
-                  {relatedProject.meta.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  {relatedProject.meta.excerpt ||
-                    relatedProject.meta.description}
-                </p>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                  {relatedProject.meta.publishDate && (
-                    <span>
-                      {new Date(
-                        relatedProject.meta.publishDate
-                      ).toLocaleDateString()}
-                    </span>
-                  )}
-                  {relatedProject.meta.readTime && (
-                    <span>{relatedProject.meta.readTime}</span>
-                  )}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    );
-  } catch (error) {
-    console.error("Error fetching related projects:", error);
-    return null;
-  }
-}
-
-// Generate static params for all portfolio projects
-export async function generateStaticParams() {
-  try {
-    const contentDir = path.join(process.cwd(), "src", "content", "portfolio");
-    const files = fs.readdirSync(contentDir);
-    const slugs: string[] = [];
-
-    for (const file of files) {
-      const filePath = path.join(contentDir, file);
-      const stat = fs.statSync(filePath);
-
-      if (stat.isDirectory()) {
-        const projectFile = path.join(filePath, `${file}.md`);
-        if (fs.existsSync(projectFile)) {
-          slugs.push(file);
-        }
-      }
-    }
-
-    return slugs.map((slug: string) => ({
-      slug: slug,
-    }));
-  } catch (error) {
-    console.error("Error generating static params:", error);
-    return [];
-  }
 }
