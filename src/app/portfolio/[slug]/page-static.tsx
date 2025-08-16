@@ -6,9 +6,9 @@ import { type Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { ProseBlock } from "@/components/blocks/ProseBlock";
 import { ArrowLeft } from "lucide-react";
-import { 
-  getAllPortfolioSlugs, 
-  getPortfolioItem
+import {
+  getAllPortfolioSlugs,
+  getPortfolioItem,
 } from "@/utils/portfolioContent";
 
 interface PortfolioPageProps {
@@ -20,14 +20,16 @@ interface PortfolioPageProps {
 // Generate static params for all portfolio items
 export async function generateStaticParams() {
   const slugs = getAllPortfolioSlugs();
-  
+
   return slugs.map((slug) => ({
     slug,
   }));
 }
 
 // Generate metadata for each portfolio item
-export async function generateMetadata({ params }: PortfolioPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PortfolioPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const project = getPortfolioItem(resolvedParams.slug);
 
@@ -45,14 +47,16 @@ export async function generateMetadata({ params }: PortfolioPageProps): Promise<
       title: project.title,
       description: project.description,
       type: "article",
-      images: project.image ? [
-        {
-          url: `/optimized/portfolio/${project.slug}/${project.image}`,
-          width: 1200,
-          height: 630,
-          alt: project.title,
-        }
-      ] : [],
+      images: project.image
+        ? [
+            {
+              url: `/optimized/portfolio/${project.slug}/${project.image}`,
+              width: 1200,
+              height: 630,
+              alt: project.title,
+            },
+          ]
+        : [],
     },
   };
 }
@@ -87,7 +91,7 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
             <p className="text-xl text-muted-foreground mb-8">
               {project.description}
             </p>
-            
+
             {/* Project Meta */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               {project.client && (
@@ -127,14 +131,22 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
             {/* Links */}
             <div className="flex gap-4 justify-center">
               {project.website && (
-                <a href={project.website} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={project.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Button variant="gradient" size="lg">
                     View Live Site
                   </Button>
                 </a>
               )}
               {project.github && (
-                <a href={project.github} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Button variant="outline" size="lg">
                     View Code
                   </Button>

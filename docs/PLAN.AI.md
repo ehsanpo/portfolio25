@@ -209,6 +209,7 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 ## New Architecture Requirements (2025-08-16)
 
 ### **Component Architecture Hierarchy**
+
 - **UI → Component → Blocks → Page** structure required
 - Each block must be in a separate file
 - Blocks should only use components (not directly UI)
@@ -216,12 +217,14 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - Pages should pass all data down to blocks
 
 ### **Static Website Conversion**
+
 - **Remove all API calls** for portfolio/slug
 - Make everything **fully static**
 - Generate all portfolio pages at **build time** instead of dynamic API calls
 - Eliminate `/app/api/content/route.ts` dependency for static content
 
 ### **Implementation Tasks**
+
 - [ ] **Refactor Block Architecture**: Separate each block into individual files under `/src/components/blocks/`
 - [ ] **Remove API Dependencies**: Convert `/app/portfolio/[slug]/page.tsx` from API-based to static generation
 - [ ] **Data Flow Refactor**: Move all data ownership to page level, make blocks purely presentational
