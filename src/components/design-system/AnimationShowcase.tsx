@@ -226,14 +226,14 @@ export function AnimationShowcase() {
                   <div className="flex space-x-4 shrink-0">
                     <Badge variant="primary">Marquee Item 1</Badge>
                     <Badge variant="secondary">Marquee Item 2</Badge>
-                    <Badge variant="accent">Marquee Item 3</Badge>
+                    <Badge variant="gradient">Marquee Item 3</Badge>
                     <Badge variant="success">Marquee Item 4</Badge>
                     <Badge variant="warning">Marquee Item 5</Badge>
                   </div>
                   <div className="flex space-x-4 shrink-0">
                     <Badge variant="primary">Marquee Item 1</Badge>
                     <Badge variant="secondary">Marquee Item 2</Badge>
-                    <Badge variant="accent">Marquee Item 3</Badge>
+                    <Badge variant="gradient">Marquee Item 3</Badge>
                     <Badge variant="success">Marquee Item 4</Badge>
                     <Badge variant="warning">Marquee Item 5</Badge>
                   </div>

@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
-import { Card } from './Card';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { ShareButtons } from './ShareButtons';
-import { 
-  ExternalLink, 
-  Github, 
-  Play, 
-  Calendar, 
-  Users, 
+import React, { useState } from "react";
+import { Card } from "./Card";
+import { Button } from "./Button";
+import { Badge } from "./Badge";
+import { ShareButtons } from "./ShareButtons";
+import {
+  ExternalLink,
+  Github,
+  Calendar,
+  Users,
   Star,
   Eye,
   Heart,
   MoreHorizontal,
   Code,
   Palette,
-  Smartphone
-} from 'lucide-react';
-import { cn } from '../../utils/cn';
+  Smartphone,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface ProjectCardProps {
   title: string;
@@ -25,7 +24,7 @@ interface ProjectCardProps {
   image?: string;
   technologies: string[];
   category?: string;
-  status?: 'completed' | 'in-progress' | 'concept';
+  status?: "completed" | "in-progress" | "concept";
   demoUrl?: string;
   githubUrl?: string;
   caseStudyUrl?: string;
@@ -34,8 +33,8 @@ interface ProjectCardProps {
   featured?: boolean;
   likes?: number;
   views?: number;
-  variant?: 'default' | 'glass' | 'gradient' | 'minimal';
-  size?: 'small' | 'medium' | 'large';
+  variant?: "default" | "glass" | "gradient" | "neon";
+  size?: "small" | "medium" | "large";
   showShare?: boolean;
   className?: string;
 }
@@ -46,7 +45,7 @@ export function ProjectCard({
   image,
   technologies,
   category,
-  status = 'completed',
+  status = "completed",
   demoUrl,
   githubUrl,
   caseStudyUrl,
@@ -55,8 +54,8 @@ export function ProjectCard({
   featured = false,
   likes = 0,
   views = 0,
-  variant = 'default',
-  size = 'medium',
+  variant = "default",
+  size = "medium",
   showShare = true,
   className,
 }: ProjectCardProps) {
@@ -65,11 +64,11 @@ export function ProjectCard({
 
   const getStatusBadge = () => {
     switch (status) {
-      case 'completed':
+      case "completed":
         return <Badge variant="success">Completed</Badge>;
-      case 'in-progress':
+      case "in-progress":
         return <Badge variant="warning">In Progress</Badge>;
-      case 'concept':
+      case "concept":
         return <Badge variant="neutral">Concept</Badge>;
       default:
         return null;
@@ -78,11 +77,11 @@ export function ProjectCard({
 
   const getCategoryIcon = () => {
     switch (category?.toLowerCase()) {
-      case 'web':
+      case "web":
         return <Code className="w-4 h-4" />;
-      case 'mobile':
+      case "mobile":
         return <Smartphone className="w-4 h-4" />;
-      case 'design':
+      case "design":
         return <Palette className="w-4 h-4" />;
       default:
         return <Code className="w-4 h-4" />;
@@ -90,17 +89,17 @@ export function ProjectCard({
   };
 
   const sizeClasses = {
-    small: 'aspect-video',
-    medium: 'aspect-[4/3]',
-    large: 'aspect-[3/2]',
+    small: "aspect-video",
+    medium: "aspect-[4/3]",
+    large: "aspect-[3/2]",
   };
 
   return (
-    <Card 
-      variant={variant} 
-      hover 
-      padding="lg" 
-      className={cn('relative overflow-hidden group', className)}
+    <Card
+      variant={variant}
+      hover
+      padding="lg"
+      className={cn("relative overflow-hidden group", className)}
     >
       {/* Featured Badge */}
       {featured && (
@@ -114,13 +113,18 @@ export function ProjectCard({
 
       {/* Project Image */}
       {image && (
-        <div className={cn('relative overflow-hidden rounded-lg mb-4', sizeClasses[size])}>
+        <div
+          className={cn(
+            "relative overflow-hidden rounded-lg mb-4",
+            sizeClasses[size]
+          )}
+        >
           <img
             src={image}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
-          
+
           {/* Overlay with actions */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
             <div className="flex items-center space-x-3">
@@ -158,11 +162,11 @@ export function ProjectCard({
               )}
               {getStatusBadge()}
             </div>
-            
+
             <h3 className="font-semibold font-basement text-foreground text-lg mb-2 truncate">
               {title}
             </h3>
-            
+
             <p className="text-sm text-muted-foreground font-kabel leading-relaxed line-clamp-3">
               {description}
             </p>
@@ -178,7 +182,7 @@ export function ProjectCard({
             >
               <MoreHorizontal size={16} />
             </Button>
-            
+
             {showShareMenu && showShare && (
               <div className="absolute right-0 top-full mt-2 z-20">
                 <div className="glass-card p-4 rounded-lg border border-border/50 min-w-[200px]">
@@ -188,7 +192,7 @@ export function ProjectCard({
                     description={description}
                     variant="minimal"
                     showLabels={false}
-                    platforms={['twitter', 'linkedin', 'copy']}
+                    platforms={["twitter", "linkedin", "copy"]}
                   />
                 </div>
               </div>
@@ -222,11 +226,13 @@ export function ProjectCard({
             {team && team.length > 0 && (
               <div className="flex items-center space-x-1">
                 <Users className="w-3 h-3" />
-                <span>{team.length} member{team.length > 1 ? 's' : ''}</span>
+                <span>
+                  {team.length} member{team.length > 1 ? "s" : ""}
+                </span>
               </div>
             )}
           </div>
-          
+
           <div className="flex items-center space-x-3">
             {views > 0 && (
               <div className="flex items-center space-x-1">
@@ -238,7 +244,12 @@ export function ProjectCard({
               onClick={() => setIsLiked(!isLiked)}
               className="flex items-center space-x-1 hover:text-error-500 transition-colors"
             >
-              <Heart className={cn('w-3 h-3', isLiked && 'fill-current text-error-500')} />
+              <Heart
+                className={cn(
+                  "w-3 h-3",
+                  isLiked && "fill-current text-error-500"
+                )}
+              />
               <span>{likes + (isLiked ? 1 : 0)}</span>
             </button>
           </div>
@@ -247,19 +258,31 @@ export function ProjectCard({
         {/* Action Buttons */}
         <div className="flex items-center space-x-2 pt-2">
           {demoUrl && (
-            <Button variant="gradient" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="gradient"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <ExternalLink size={14} />
               Live Demo
             </Button>
           )}
           {githubUrl && (
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <Github size={14} />
               Code
             </Button>
           )}
           {caseStudyUrl && (
-            <Button variant="ghost" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <Eye size={14} />
               Case Study
             </Button>

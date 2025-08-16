@@ -12,10 +12,8 @@ import {
   ZoomOut,
   Download,
   Share2,
-  Heart,
-  Grid3X3,
-  Maximize2,
-} from "lucide-react";
+  Heart, 
+  Maximize2} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface GalleryImage {

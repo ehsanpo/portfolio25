@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { Button } from '../ui/Button';
+
 import { Smartphone, Tablet, Monitor, Laptop } from 'lucide-react';
 
 export function Responsiveness() {
@@ -19,8 +19,7 @@ export function Responsiveness() {
         'Simplified navigation patterns',
         'Optimized content hierarchy',
         'Thumb-friendly interactions',
-      ],
-    },
+      ]},
     {
       name: 'Tablet',
       key: 'tablet',
@@ -32,8 +31,7 @@ export function Responsiveness() {
         'Contextual navigation',
         'Optimized for both touch and cursor',
         'Efficient use of screen space',
-      ],
-    },
+      ]},
     {
       name: 'Laptop',
       key: 'laptop',
@@ -45,8 +43,7 @@ export function Responsiveness() {
         'Multi-column content layouts',
         'Hover states and interactions',
         'Keyboard navigation support',
-      ],
-    },
+      ]},
     {
       name: 'Desktop',
       key: 'desktop',
@@ -58,8 +55,7 @@ export function Responsiveness() {
         'Advanced interaction patterns',
         'Rich hover and focus states',
         'Optimized for productivity',
-      ],
-    },
+      ]},
   ];
 
   const responsivePatterns = [
@@ -67,26 +63,22 @@ export function Responsiveness() {
       name: 'Stacked to Horizontal',
       description: 'Elements stack vertically on mobile, arrange horizontally on larger screens',
       mobile: 'flex-col',
-      desktop: 'md:flex-row',
-    },
+      desktop: 'md:flex-row'},
     {
       name: 'Hidden on Mobile',
       description: 'Secondary content hidden on mobile, visible on larger screens',
       mobile: 'hidden',
-      desktop: 'md:block',
-    },
+      desktop: 'md:block'},
     {
       name: 'Responsive Grid',
       description: 'Grid columns adapt based on screen size',
       mobile: 'grid-cols-1',
-      desktop: 'md:grid-cols-2 lg:grid-cols-3',
-    },
+      desktop: 'md:grid-cols-2 lg:grid-cols-3'},
     {
       name: 'Responsive Text',
       description: 'Text sizes scale appropriately across devices',
       mobile: 'text-sm',
-      desktop: 'md:text-base lg:text-lg',
-    },
+      desktop: 'md:text-base lg:text-lg'},
   ];
 
   const designPrinciples = [
@@ -98,8 +90,7 @@ export function Responsiveness() {
         'Ensures performance on slower devices',
         'Creates progressive enhancement',
         'Simplifies development process',
-      ],
-    },
+      ]},
     {
       title: 'Content Priority',
       description: 'Most important content should be accessible at all screen sizes',
@@ -108,8 +99,7 @@ export function Responsiveness() {
         'Reduces cognitive load',
         'Ensures accessibility',
         'Supports SEO goals',
-      ],
-    },
+      ]},
     {
       title: 'Touch Optimization',
       description: 'Design for touch interactions on mobile and tablet devices',
@@ -118,8 +108,7 @@ export function Responsiveness() {
         'Reduces user errors',
         'Enhances accessibility',
         'Supports diverse input methods',
-      ],
-    },
+      ]},
     {
       title: 'Performance Focus',
       description: 'Optimize for fast loading across all devices and connections',
@@ -128,8 +117,7 @@ export function Responsiveness() {
         'Improved conversion rates',
         'Better search rankings',
         'Reduced bounce rates',
-      ],
-    },
+      ]},
   ];
 
   const testingChecklist = [
@@ -141,8 +129,7 @@ export function Responsiveness() {
         'Check image scaling and quality',
         'Ensure readable text sizes',
         'Validate color contrast ratios',
-      ],
-    },
+      ]},
     {
       category: 'Interaction Testing',
       items: [
@@ -151,8 +138,7 @@ export function Responsiveness() {
         'Check keyboard navigation',
         'Test form interactions',
         'Validate modal and dropdown behavior',
-      ],
-    },
+      ]},
     {
       category: 'Performance Testing',
       items: [
@@ -161,8 +147,7 @@ export function Responsiveness() {
         'Check for layout shifts',
         'Test with throttled CPU',
         'Validate offline functionality',
-      ],
-    },
+      ]},
     {
       category: 'Accessibility Testing',
       items: [
@@ -171,8 +156,7 @@ export function Responsiveness() {
         'Check focus indicators',
         'Test with zoom up to 200%',
         'Validate ARIA attributes',
-      ],
-    },
+      ]},
   ];
 
   return (

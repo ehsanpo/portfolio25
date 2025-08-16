@@ -1,40 +1,41 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../ui/Card';
-import { Button } from '../../ui/Button';
-import { Badge } from '../ui/Badge';
-import { Section } from '../../ui/Section';
-import { SkillsRadarChart } from '../../ui/SkillsRadarChart';
-import { 
-  Layout, 
-  BarChart3, 
-  Zap, 
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
+import { Button } from "../../ui/Button";
+import { Section } from "../../ui/Section";
+import { SkillsRadarChart } from "../../ui/SkillsRadarChart";
+import {
+  Layout,
+  BarChart3,
+  Zap,
   Target,
   Users,
   Code,
   Palette,
   Smartphone,
   Server,
-  Settings
-} from 'lucide-react';
+  Settings,
+} from "lucide-react";
 
 export function SectionShowcase() {
-  const [selectedView, setSelectedView] = useState<'sections' | 'radar'>('sections');
+  const [selectedView, setSelectedView] = useState<"sections" | "radar">(
+    "sections"
+  );
 
   return (
     <div className="space-y-8">
       {/* Navigation */}
       <div className="flex gap-4 mb-8">
         <Button
-          variant={selectedView === 'sections' ? 'default' : 'outline'}
-          onClick={() => setSelectedView('sections')}
+          variant={selectedView === "sections" ? "primary" : "outline"}
+          onClick={() => setSelectedView("sections")}
           className="flex items-center gap-2"
         >
           <Layout className="w-4 h-4" />
           Sections
         </Button>
         <Button
-          variant={selectedView === 'radar' ? 'default' : 'outline'}
-          onClick={() => setSelectedView('radar')}
+          variant={selectedView === "radar" ? "primary" : "outline"}
+          onClick={() => setSelectedView("radar")}
           className="flex items-center gap-2"
         >
           <BarChart3 className="w-4 h-4" />
@@ -42,7 +43,7 @@ export function SectionShowcase() {
         </Button>
       </div>
 
-      {selectedView === 'sections' && (
+      {selectedView === "sections" && (
         <div className="space-y-12">
           {/* Section Component Overview */}
           <Card>
@@ -54,30 +55,37 @@ export function SectionShowcase() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-6">
-                Flexible layout component for creating beautiful content sections with title/text or image/text combinations.
+                Flexible layout component for creating beautiful content
+                sections with title/text or image/text combinations.
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Layout className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Flexible Layouts</h4>
-                  <p className="text-sm text-muted-foreground">Title left/right, image combinations</p>
+                  <p className="text-sm text-muted-foreground">
+                    Title left/right, image combinations
+                  </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Palette className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Multiple Variants</h4>
-                  <p className="text-sm text-muted-foreground">Default, glass, gradient, minimal</p>
+                  <p className="text-sm text-muted-foreground">
+                    Default, glass, gradient, minimal
+                  </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Zap className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Interactive</h4>
-                  <p className="text-sm text-muted-foreground">Animations, CTAs, responsive</p>
+                  <p className="text-sm text-muted-foreground">
+                    Animations, CTAs, responsive
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -86,15 +94,15 @@ export function SectionShowcase() {
           {/* Section Examples */}
           <div className="space-y-8">
             <h3 className="text-2xl font-bold">Section Examples</h3>
-            
+
             {/* Title Left Example */}
             <Section
               title="About Our Mission"
               titlePosition="left"
               content="We believe in creating digital experiences that not only look beautiful but also solve real problems. Our approach combines cutting-edge technology with human-centered design to deliver solutions that make a difference."
-              badges={['Innovation', 'Design', 'Technology']}
+              badges={["Innovation", "Design", "Technology"]}
               ctaText="Learn More"
-              ctaAction={() => console.log('CTA clicked')}
+              ctaAction={() => console.log("CTA clicked")}
             />
 
             {/* Title Right Example */}
@@ -103,7 +111,7 @@ export function SectionShowcase() {
               titlePosition="right"
               variant="glass"
               content="From initial concept to final deployment, we follow a proven methodology that ensures quality, efficiency, and client satisfaction. Every project is unique, but our process remains consistent."
-              badges={['Strategy', 'Design', 'Development', 'Launch']}
+              badges={["Strategy", "Design", "Development", "Launch"]}
             />
 
             {/* Image Left Example */}
@@ -122,7 +130,7 @@ export function SectionShowcase() {
               imagePosition="right"
               image="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=600"
               content="Collaboration is at the heart of everything we do. Our diverse team brings together different perspectives and expertise to create solutions that exceed expectations."
-              badges={['Teamwork', 'Innovation', 'Excellence']}
+              badges={["Teamwork", "Innovation", "Excellence"]}
             />
 
             {/* Minimal Example */}
@@ -135,7 +143,7 @@ export function SectionShowcase() {
         </div>
       )}
 
-      {selectedView === 'radar' && (
+      {selectedView === "radar" && (
         <div className="space-y-12">
           {/* Radar Chart Overview */}
           <Card>
@@ -147,37 +155,46 @@ export function SectionShowcase() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-6">
-                Interactive radar chart for visualizing skill proficiency across different technology categories with filtering and animations.
+                Interactive radar chart for visualizing skill proficiency across
+                different technology categories with filtering and animations.
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Target className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Interactive</h4>
-                  <p className="text-sm text-muted-foreground">Hover for details</p>
+                  <p className="text-sm text-muted-foreground">
+                    Hover for details
+                  </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Settings className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Filterable</h4>
-                  <p className="text-sm text-muted-foreground">Category filtering</p>
+                  <p className="text-sm text-muted-foreground">
+                    Category filtering
+                  </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Zap className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Animated</h4>
-                  <p className="text-sm text-muted-foreground">Smooth transitions</p>
+                  <p className="text-sm text-muted-foreground">
+                    Smooth transitions
+                  </p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-2">
                     <Users className="w-6 h-6 text-primary" />
                   </div>
                   <h4 className="font-medium">Professional</h4>
-                  <p className="text-sm text-muted-foreground">Portfolio ready</p>
+                  <p className="text-sm text-muted-foreground">
+                    Portfolio ready
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -186,7 +203,7 @@ export function SectionShowcase() {
           {/* Radar Chart Examples */}
           <div className="space-y-8">
             <h3 className="text-2xl font-bold">Radar Chart Examples</h3>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Default Size */}
               <Card>

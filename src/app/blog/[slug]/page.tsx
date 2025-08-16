@@ -27,9 +27,9 @@ interface BlogItem {
 }
 
 interface BlogPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // Server-side data fetching

@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardTitle } from "./Card";
+import { Card, CardContent,  CardTitle } from "./Card";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { ShareButtons } from "./ShareButtons";
 import { ImageGallery } from "./ImageGallery";
 import {
   ExternalLink,
-  Github,
-  Calendar,
+  Github, 
   Users,
   Clock,
   Target,
@@ -22,8 +21,7 @@ import {
   Smartphone,
   Database,
   ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+  ChevronUp} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface CaseStudySection {

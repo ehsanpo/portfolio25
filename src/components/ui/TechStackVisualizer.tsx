@@ -11,15 +11,9 @@ import {
   Smartphone,
   Database,
   Cloud,
-  Zap,
-  Star,
-  TrendingUp,
-  Award,
-  Eye,
-  EyeOff,
-  Filter,
-  RotateCcw,
-} from "lucide-react";
+  Zap, 
+  TrendingUp, 
+  RotateCcw} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface TechSkill {

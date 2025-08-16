@@ -86,10 +86,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
   };
 
   const t = (key: string): string => {
-    return (
-      translations[locale][key as keyof (typeof translations)[typeof locale]] ||
-      key
-    );
+    return (translations[locale] as any)?.[key] || key;
   };
 
   return (

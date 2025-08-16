@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
-import { Card } from './Card';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { ShareButtons } from './ShareButtons';
-import { 
-  Calendar, 
-  Clock, 
-  User, 
-  Eye, 
-  Heart, 
-  MessageCircle, 
+import React, { useState } from "react";
+import { Card } from "./Card";
+import { Button } from "./Button";
+import { Badge } from "./Badge";
+import { ShareButtons } from "./ShareButtons";
+import {
+  Calendar,
+  Clock,
+  Eye,
+  Heart,
+  MessageCircle,
   Share2,
   Bookmark,
   BookmarkCheck,
   Tag,
   ArrowRight,
-  ExternalLink,
-  Star
-} from 'lucide-react';
-import { cn } from '../../utils/cn';
+  Star,
+} from "lucide-react";
+import { cn } from "../../utils/cn";
 
 interface BlogCardProps {
   title: string;
@@ -40,8 +38,8 @@ interface BlogCardProps {
   likes?: number;
   comments?: number;
   featured?: boolean;
-  variant?: 'default' | 'glass' | 'gradient' | 'minimal' | 'horizontal';
-  size?: 'small' | 'medium' | 'large';
+  variant?: "default" | "glass" | "gradient" | "neon" | "horizontal";
+  size?: "small" | "medium" | "large";
   showAuthor?: boolean;
   showStats?: boolean;
   showShare?: boolean;
@@ -63,8 +61,8 @@ export function BlogCard({
   likes = 0,
   comments = 0,
   featured = false,
-  variant = 'default',
-  size = 'medium',
+  variant = "default",
+  size = "medium",
   showAuthor = true,
   showStats = true,
   showShare = true,
@@ -75,34 +73,34 @@ export function BlogCard({
   const [showShareMenu, setShowShareMenu] = useState(false);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
 
   const sizeClasses = {
-    small: 'aspect-[4/3]',
-    medium: 'aspect-video',
-    large: 'aspect-[3/2]',
+    small: "aspect-[4/3]",
+    medium: "aspect-video",
+    large: "aspect-[3/2]",
   };
 
-  if (variant === 'horizontal') {
+  if (variant === "horizontal") {
     return (
-      <Card 
-        variant={featured ? 'gradient' : 'glass'} 
-        hover 
-        className={cn('overflow-hidden', className)}
+      <Card
+        variant={featured ? "gradient" : "glass"}
+        hover
+        className={cn("overflow-hidden", className)}
       >
         <div className="flex flex-col md:flex-row">
           {/* Image */}
@@ -144,7 +142,7 @@ export function BlogCard({
                     <span>{readTime}</span>
                   </div>
                 </div>
-                
+
                 <button
                   onClick={() => setIsBookmarked(!isBookmarked)}
                   className="p-2 rounded-lg hover:bg-muted/50 transition-colors"
@@ -159,16 +157,20 @@ export function BlogCard({
 
               {/* Title and Excerpt */}
               <div>
-                <h3 className={cn(
-                  'font-basement text-xl mb-3 line-clamp-2',
-                  featured ? 'text-white' : 'text-foreground'
-                )}>
+                <h3
+                  className={cn(
+                    "font-basement text-xl mb-3 line-clamp-2",
+                    featured ? "text-white" : "text-foreground"
+                  )}
+                >
                   {title}
                 </h3>
-                <p className={cn(
-                  'text-sm font-kabel leading-relaxed line-clamp-3',
-                  featured ? 'text-white/90' : 'text-muted-foreground'
-                )}>
+                <p
+                  className={cn(
+                    "text-sm font-kabel leading-relaxed line-clamp-3",
+                    featured ? "text-white/90" : "text-muted-foreground"
+                  )}
+                >
                   {excerpt}
                 </p>
               </div>
@@ -190,17 +192,21 @@ export function BlogCard({
                     </div>
                   )}
                   <div>
-                    <p className={cn(
-                      'text-sm font-basement',
-                      featured ? 'text-white' : 'text-foreground'
-                    )}>
+                    <p
+                      className={cn(
+                        "text-sm font-basement",
+                        featured ? "text-white" : "text-foreground"
+                      )}
+                    >
                       {author.name}
                     </p>
                     {author.role && (
-                      <p className={cn(
-                        'text-xs font-kabel',
-                        featured ? 'text-white/70' : 'text-muted-foreground'
-                      )}>
+                      <p
+                        className={cn(
+                          "text-xs font-kabel",
+                          featured ? "text-white/70" : "text-muted-foreground"
+                        )}
+                      >
                         {author.role}
                       </p>
                     )}
@@ -222,7 +228,12 @@ export function BlogCard({
                       onClick={() => setIsLiked(!isLiked)}
                       className="flex items-center space-x-1 hover:text-error-500 transition-colors"
                     >
-                      <Heart className={cn('w-3 h-3', isLiked && 'fill-current text-error-500')} />
+                      <Heart
+                        className={cn(
+                          "w-3 h-3",
+                          isLiked && "fill-current text-error-500"
+                        )}
+                      />
                       <span>{likes + (isLiked ? 1 : 0)}</span>
                     </button>
                     {comments > 0 && (
@@ -233,7 +244,7 @@ export function BlogCard({
                     )}
                   </div>
                 )}
-                
+
                 <Button
                   variant={featured ? "glass" : "gradient"}
                   size="sm"
@@ -250,24 +261,36 @@ export function BlogCard({
     );
   }
 
+  // Map variant to valid Card variants
+  const getCardVariant = () => {
+    if (featured) return "gradient";
+    // Handle the custom BlogCard variants that don't exist on Card
+    const variantStr = variant as string;
+    if (variantStr === "horizontal") return "glass";
+    if (variantStr === "neon") return "neon";
+    if (variantStr === "gradient") return "gradient";
+    if (variantStr === "glass") return "glass";
+    return "default";
+  };
+
   return (
-    <Card 
-      variant={featured ? 'gradient' : variant} 
-      hover 
-      className={cn('overflow-hidden group', className)}
+    <Card
+      variant={getCardVariant()}
+      hover
+      className={cn("overflow-hidden group", className)}
     >
       {/* Featured Image */}
       {featuredImage && (
-        <div className={cn('relative overflow-hidden', sizeClasses[size])}>
+        <div className={cn("relative overflow-hidden", sizeClasses[size])}>
           <img
             src={featuredImage}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
-          
+
           {/* Overlay with category */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          
+
           {/* Category and Featured badges */}
           <div className="absolute top-4 left-4 flex items-center space-x-2">
             {category && (
@@ -308,18 +331,22 @@ export function BlogCard({
       {/* Content */}
       <div className="p-6 space-y-4">
         {/* Title */}
-        <h3 className={cn(
-          'font-basement text-xl leading-tight line-clamp-2',
-          featured ? 'text-white' : 'text-foreground'
-        )}>
+        <h3
+          className={cn(
+            "font-basement text-xl leading-tight line-clamp-2",
+            featured ? "text-white" : "text-foreground"
+          )}
+        >
           {title}
         </h3>
 
         {/* Excerpt */}
-        <p className={cn(
-          'text-sm font-kabel leading-relaxed line-clamp-3',
-          featured ? 'text-white/90' : 'text-muted-foreground'
-        )}>
+        <p
+          className={cn(
+            "text-sm font-kabel leading-relaxed line-clamp-3",
+            featured ? "text-white/90" : "text-muted-foreground"
+          )}
+        >
           {excerpt}
         </p>
 
@@ -327,13 +354,20 @@ export function BlogCard({
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {tags.slice(0, 3).map((tag, index) => (
-              <Badge key={index} variant={featured ? "glass" : "neutral"} className="text-xs">
+              <Badge
+                key={index}
+                variant={featured ? "glass" : "neutral"}
+                className="text-xs"
+              >
                 <Tag className="w-3 h-3 mr-1" />
                 {tag}
               </Badge>
             ))}
             {tags.length > 3 && (
-              <Badge variant={featured ? "glass" : "neutral"} className="text-xs">
+              <Badge
+                variant={featured ? "glass" : "neutral"}
+                className="text-xs"
+              >
                 +{tags.length - 3}
               </Badge>
             )}
@@ -357,17 +391,21 @@ export function BlogCard({
               </div>
             )}
             <div className="flex-1">
-              <p className={cn(
-                'text-sm font-basement',
-                featured ? 'text-white' : 'text-foreground'
-              )}>
+              <p
+                className={cn(
+                  "text-sm font-basement",
+                  featured ? "text-white" : "text-foreground"
+                )}
+              >
                 {author.name}
               </p>
               {author.role && (
-                <p className={cn(
-                  'text-xs font-kabel',
-                  featured ? 'text-white/70' : 'text-muted-foreground'
-                )}>
+                <p
+                  className={cn(
+                    "text-xs font-kabel",
+                    featured ? "text-white/70" : "text-muted-foreground"
+                  )}
+                >
                   {author.role}
                 </p>
               )}
@@ -392,7 +430,12 @@ export function BlogCard({
                 onClick={() => setIsLiked(!isLiked)}
                 className="flex items-center space-x-1 hover:text-error-500 transition-colors"
               >
-                <Heart className={cn('w-3 h-3', isLiked && 'fill-current text-error-500')} />
+                <Heart
+                  className={cn(
+                    "w-3 h-3",
+                    isLiked && "fill-current text-error-500"
+                  )}
+                />
                 <span>{likes + (isLiked ? 1 : 0)}</span>
               </button>
               {comments > 0 && (
@@ -403,7 +446,7 @@ export function BlogCard({
               )}
             </div>
           )}
-          
+
           <div className="flex items-center space-x-2">
             {showShare && (
               <div className="relative">
@@ -415,7 +458,7 @@ export function BlogCard({
                 >
                   <Share2 size={16} />
                 </Button>
-                
+
                 {showShareMenu && (
                   <div className="absolute right-0 bottom-full mb-2 z-20">
                     <div className="glass-card p-4 rounded-lg border border-border/50 min-w-[200px]">
@@ -425,14 +468,14 @@ export function BlogCard({
                         hashtags={tags}
                         variant="minimal"
                         showLabels={false}
-                        platforms={['twitter', 'linkedin', 'copy']}
+                        platforms={["twitter", "linkedin", "copy"]}
                       />
                     </div>
                   </div>
                 )}
               </div>
             )}
-            
+
             <Button
               variant={featured ? "glass" : "gradient"}
               size="sm"

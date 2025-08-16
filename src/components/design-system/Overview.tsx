@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardTitle } from '../ui/Card';
+import { Card,  CardDescription, CardTitle } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Palette, Type, Layers, Grid, Zap, Shield, Smartphone } from 'lucide-react';
@@ -9,38 +9,31 @@ export function Overview() {
     {
       icon: Palette,
       title: 'Color System',
-      description: 'Comprehensive color palette with semantic meaning and accessibility in mind.',
-    },
+      description: 'Comprehensive color palette with semantic meaning and accessibility in mind.'},
     {
       icon: Type,
       title: 'Typography',
-      description: 'Carefully crafted type scale with optimal readability and visual hierarchy.',
-    },
+      description: 'Carefully crafted type scale with optimal readability and visual hierarchy.'},
     {
       icon: Layers,
       title: 'Components',
-      description: 'Reusable components with consistent styling and interactive states.',
-    },
+      description: 'Reusable components with consistent styling and interactive states.'},
     {
       icon: Grid,
       title: 'Spacing System',
-      description: '8px-based spacing system for consistent rhythm and alignment.',
-    },
+      description: '8px-based spacing system for consistent rhythm and alignment.'},
     {
       icon: Zap,
       title: 'Interactive States',
-      description: 'Smooth animations and micro-interactions for enhanced user experience.',
-    },
+      description: 'Smooth animations and micro-interactions for enhanced user experience.'},
     {
       icon: Shield,
       title: 'Accessibility',
-      description: 'WCAG compliant with proper contrast ratios and keyboard navigation.',
-    },
+      description: 'WCAG compliant with proper contrast ratios and keyboard navigation.'},
     {
       icon: Smartphone,
       title: 'Responsive Design',
-      description: 'Mobile-first approach with breakpoints optimized for all devices.',
-    },
+      description: 'Mobile-first approach with breakpoints optimized for all devices.'},
   ];
 
   return (

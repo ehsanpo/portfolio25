@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../../ui/Card';
 import { EducationTimeline } from '../../ui/EducationTimeline';
 import { WorkExperience } from '../../ui/WorkExperience';
-import { GraduationCap, Briefcase, Calendar, MapPin } from 'lucide-react';
+import { GraduationCap, Briefcase, Calendar } from 'lucide-react';
 
 export function ProfessionalShowcase() {
   // Sample education data

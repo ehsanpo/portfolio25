@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
-import { Input } from '../ui/Input';
+
+
 import { Search, Filter, MoreHorizontal, ChevronDown, Star, Heart, Share } from 'lucide-react';
 
 export function UIPatterns() {

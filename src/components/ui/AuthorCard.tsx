@@ -4,25 +4,19 @@ import React, { useState } from "react";
 import { Card } from "./Card";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
-import {
-  User,
-  MapPin,
-  Calendar,
-  ExternalLink,
+import { MapPin,
+  Calendar, 
   Mail,
   Twitter,
   Linkedin,
   Github,
-  Globe,
-  Users,
-  BookOpen,
+  Globe, 
   Award,
   Heart,
   MessageCircle,
   FolderDown as Follow,
   UserPlus,
-  UserCheck,
-} from "lucide-react";
+  UserCheck} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface AuthorCardProps {

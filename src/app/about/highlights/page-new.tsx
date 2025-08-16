@@ -8,13 +8,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { WorkExperience } from "@/components/ui/WorkExperience";
 import { EducationTimeline } from "@/components/ui/EducationTimeline";
-import {
-  Trophy,
-  Calendar,
-  ExternalLink,
-  Award,
-  CheckCircle,
-} from "lucide-react";
+import { Trophy, ExternalLink, Award, CheckCircle } from "lucide-react";
 import portfolioData from "@/data/portfolio.json";
 
 export default function AboutHighlightsPage() {
@@ -254,7 +248,7 @@ export default function AboutHighlightsPage() {
                   <h3 className="font-medium text-xs leading-tight mb-1">
                     {cert.name}
                   </h3>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="neutral" className="text-xs">
                     {cert.year}
                   </Badge>
                 </CardContent>

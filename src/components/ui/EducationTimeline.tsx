@@ -1,23 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardTitle } from "./Card";
+import { Card} from "./Card";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import {
   GraduationCap,
   Calendar,
-  MapPin,
-  Award,
-  BookOpen,
+  MapPin, 
   ExternalLink,
-  Star,
-  Clock,
+  Star, 
   Users,
   Trophy,
   ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+  ChevronUp} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface EducationItem {

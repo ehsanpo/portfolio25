@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../ui/Card';
 import { Badge } from '../ui/Badge';
-import { MessageCircle, Heart, Lightbulb, Users, Zap, Target } from 'lucide-react';
+import {  Heart, Lightbulb, Users, Zap, Target } from 'lucide-react';
 
 export function ToneOfVoice() {
   const toneAttributes = [
@@ -10,36 +10,31 @@ export function ToneOfVoice() {
       title: 'Friendly & Approachable',
       description: 'We talk like real humans, not corporate robots',
       examples: ['Hey there!', 'Let\'s dive in', 'Pretty cool, right?'],
-      avoid: ['Please be advised', 'We regret to inform', 'As per our policy'],
-    },
+      avoid: ['Please be advised', 'We regret to inform', 'As per our policy']},
     {
       icon: Lightbulb,
       title: 'Clear & Direct',
       description: 'No fluff, just the good stuff you actually need',
       examples: ['Here\'s how it works', 'Quick tip:', 'The short version:'],
-      avoid: ['Leverage synergistic solutions', 'Utilize best practices', 'Implement methodologies'],
-    },
+      avoid: ['Leverage synergistic solutions', 'Utilize best practices', 'Implement methodologies']},
     {
       icon: Users,
       title: 'Inclusive & Welcoming',
       description: 'Everyone belongs here, whether you\'re a pro or just starting out',
       examples: ['Whether you\'re new to this or...', 'No matter your experience', 'We\'ve all been there'],
-      avoid: ['Obviously', 'Everyone knows', 'It\'s simple'],
-    },
+      avoid: ['Obviously', 'Everyone knows', 'It\'s simple']},
     {
       icon: Zap,
       title: 'Enthusiastic & Motivating',
       description: 'We genuinely get excited about good design and want to share that energy',
       examples: ['This is where it gets interesting', 'You\'re gonna love this', 'Let\'s make something awesome'],
-      avoid: ['As required', 'Standard procedure', 'Basic functionality'],
-    },
+      avoid: ['As required', 'Standard procedure', 'Basic functionality']},
     {
       icon: Target,
       title: 'Honest & Authentic',
       description: 'We admit when things are tricky and celebrate when they work well',
       examples: ['This part can be tricky', 'We\'re still figuring this out', 'Honestly, this just works better'],
-      avoid: ['Perfect solution', 'Seamless integration', 'Effortless implementation'],
-    },
+      avoid: ['Perfect solution', 'Seamless integration', 'Effortless implementation']},
   ];
 
   const contentTypes = [
@@ -47,32 +42,27 @@ export function ToneOfVoice() {
       type: 'Welcome Messages',
       tone: 'Warm and encouraging',
       example: 'Welcome! Ready to build something amazing? We\'re here to help you every step of the way.',
-      avoid: 'Welcome to our platform. Please complete the onboarding process.',
-    },
+      avoid: 'Welcome to our platform. Please complete the onboarding process.'},
     {
       type: 'Error Messages',
       tone: 'Helpful and reassuring',
       example: 'Oops! Something went sideways. Let\'s get this sorted out together.',
-      avoid: 'Error 404: The requested resource could not be found.',
-    },
+      avoid: 'Error 404: The requested resource could not be found.'},
     {
       type: 'Success Messages',
       tone: 'Celebratory but not overwhelming',
       example: 'Nice work! Your changes are live and looking great.',
-      avoid: 'Operation completed successfully. Status: 200 OK.',
-    },
+      avoid: 'Operation completed successfully. Status: 200 OK.'},
     {
       type: 'Loading States',
       tone: 'Patient and informative',
       example: 'Hang tight, we\'re working on it... This usually takes about 30 seconds.',
-      avoid: 'Processing request. Please wait.',
-    },
+      avoid: 'Processing request. Please wait.'},
     {
       type: 'Feature Descriptions',
       tone: 'Excited but practical',
       example: 'This feature is a game-changer for busy teams. Here\'s why you\'ll love it...',
-      avoid: 'This feature provides enhanced functionality for improved user experience.',
-    },
+      avoid: 'This feature provides enhanced functionality for improved user experience.'},
   ];
 
   const writingPrinciples = [

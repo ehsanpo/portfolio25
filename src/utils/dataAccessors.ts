@@ -63,7 +63,7 @@ function contentToBlogPost(content: ContentItem): BlogPost {
     title: content.meta.title,
     excerpt: content.meta.excerpt || content.meta.description || "",
     author: {
-      name: portfolioData.site.author,
+      name: portfolioData.meta.author,
       avatar:
         "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
     },
@@ -124,7 +124,7 @@ const sampleBlogPosts: BlogPost[] = [
     excerpt:
       "Learn how to create design systems that scale with your team and product. This comprehensive guide covers tokens, components, and documentation strategies.",
     author: {
-      name: portfolioData.site.author,
+      name: portfolioData.meta.author,
       avatar:
         "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
     },
@@ -141,7 +141,7 @@ const sampleBlogPosts: BlogPost[] = [
     excerpt:
       "Discover advanced techniques for optimizing React applications, including code splitting, memoization, and bundle analysis.",
     author: {
-      name: portfolioData.site.author,
+      name: portfolioData.meta.author,
       avatar:
         "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
     },
@@ -253,7 +253,7 @@ export function getSkills(): SkillItem[] {
 
 // Get site data
 export function getSiteData() {
-  return portfolioData.site;
+  return portfolioData.meta;
 }
 
 // Get navigation items
@@ -263,7 +263,26 @@ export function getNavigationItems() {
 
 // Get hero data
 export function getHeroData() {
-  return portfolioData.hero;
+  const contact = portfolioData.contact;
+  return {
+    title: `Hello, I'm ${contact.name}`,
+    subtitle: contact.description,
+    name: contact.name,
+    role: contact.role,
+    location: contact.location,
+    yearsOfExperience: contact.yearsOfExperience,
+    profilePic: contact.profilePic,
+    cta: {
+      primary: {
+        label: "View My Work",
+        href: "/portfolio",
+      },
+      secondary: {
+        label: "Get In Touch",
+        href: "/contact",
+      },
+    },
+  };
 }
 
 // Get contact data

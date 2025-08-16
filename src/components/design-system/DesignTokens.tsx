@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { colors } from '../../tokens/colors';
-import { typography } from '../../tokens/typography';
+
 import { spacing, shadows } from '../../tokens/spacing';
 
 export function DesignTokens() {
@@ -212,8 +212,7 @@ export function DesignTokens() {
                   <code className="text-sm font-mono text-foreground">
                     {`colors: {
   primary: colors.primary,
-  secondary: colors.secondary,
-}`}
+  secondary: colors.secondary}`}
                   </code>
                 </div>
               </div>
@@ -226,8 +225,7 @@ export function DesignTokens() {
 
 const buttonStyle = {
   backgroundColor: colors.primary[500],
-  padding: spacing[4],
-};`}
+  padding: spacing[4]};`}
                   </code>
                 </div>
               </div>

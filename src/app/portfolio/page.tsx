@@ -7,10 +7,7 @@ import { usePortfolioContent } from "@/hooks/useContent";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import {
-  getPortfolioPreviewImage,
-  getImageSrcSet,
-} from "@/utils/portfolioImages";
+import { getPortfolioPreviewImage } from "@/utils/portfolioImages";
 import { ArrowRight, Filter, Grid, List, Calendar, Clock } from "lucide-react";
 
 export default function PortfolioPage() {
@@ -92,7 +89,7 @@ export default function PortfolioPage() {
               {/* Project Image/Preview */}
               <div className="aspect-video bg-gradient-to-br from-primary-500/10 to-secondary-500/10 rounded-t-lg overflow-hidden">
                 <img
-                  src={getPortfolioPreviewImage(item.slug, item.meta)}
+                  src={getPortfolioPreviewImage(item.slug, item.meta as any)}
                   alt={item.meta.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"

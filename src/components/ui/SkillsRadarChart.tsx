@@ -459,7 +459,7 @@ export function SkillsRadarChart({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2">
             <Button
-              variant={filter === "all" ? "default" : "outline"}
+              variant={filter === "all" ? "primary" : "outline"}
               size="sm"
               onClick={() => setFilter("all")}
             >
@@ -470,7 +470,7 @@ export function SkillsRadarChart({
               return (
                 <Button
                   key={category}
-                  variant={filter === category ? "default" : "outline"}
+                  variant={filter === category ? "primary" : "outline"}
                   size="sm"
                   onClick={() => setFilter(category)}
                   className="flex items-center gap-1 capitalize"

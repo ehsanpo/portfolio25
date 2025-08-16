@@ -1,74 +1,76 @@
-import { type ContentMeta } from '@/utils/localizedContent';
+import { type ContentMeta } from "@/utils/localizedContent";
 
 interface StructuredDataProps {
-  type: 'website' | 'portfolio' | 'person';
+  type: "website" | "portfolio" | "person";
   data?: ContentMeta;
 }
 
 export function StructuredData({ type, data }: Readonly<StructuredDataProps>) {
-  const baseUrl = 'https://ehsanpourhadi.com';
+  const baseUrl = "https://ehsanpourhadi.com";
 
   const getStructuredData = () => {
     switch (type) {
-      case 'website':
+      case "website":
         return {
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: 'Ehsan Pourhadi Portfolio',
-          description: 'Full-stack developer and design system architect portfolio',
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Ehsan Pourhadi Portfolio",
+          description:
+            "Full-stack developer and design system architect portfolio",
           url: baseUrl,
           author: {
-            '@type': 'Person',
-            name: 'Ehsan Pourhadi',
-            jobTitle: 'Full-stack Developer',
+            "@type": "Person",
+            name: "Ehsan Pourhadi",
+            jobTitle: "Full-stack Developer",
             url: baseUrl,
           },
           potentialAction: {
-            '@type': 'SearchAction',
+            "@type": "SearchAction",
             target: `${baseUrl}/search?q={search_term_string}`,
-            'query-input': 'required name=search_term_string',
+            "query-input": "required name=search_term_string",
           },
         };
 
-      case 'person':
+      case "person":
         return {
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          name: 'Ehsan Pourhadi',
-          jobTitle: 'Full-stack Developer & Design System Architect',
-          description: 'Experienced full-stack developer specializing in React, Next.js, TypeScript, and modern web technologies',
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Ehsan Pourhadi",
+          jobTitle: "Full-stack Developer & Design System Architect",
+          description:
+            "Experienced full-stack developer specializing in React, Next.js, TypeScript, and modern web technologies",
           url: baseUrl,
           sameAs: [
-            'https://github.com/ehsanpo',
-            'https://linkedin.com/in/ehsanpo',
-            'https://twitter.com/ehsanpourhadi',
+            "https://github.com/ehsanpo",
+            "https://linkedin.com/in/ehsanpo",
+            "https://twitter.com/ehsanpourhadi",
           ],
           knowsAbout: [
-            'React',
-            'Next.js',
-            'TypeScript',
-            'JavaScript',
-            'Node.js',
-            'Design Systems',
-            'Frontend Development',
-            'Full-stack Development',
+            "React",
+            "Next.js",
+            "TypeScript",
+            "JavaScript",
+            "Node.js",
+            "Design Systems",
+            "Frontend Development",
+            "Full-stack Development",
           ],
         };
 
-      case 'portfolio':
+      case "portfolio":
         if (!data) return null;
-        
+
         return {
-          '@context': 'https://schema.org',
-          '@type': 'CreativeWork',
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
           name: data.title,
           description: data.description || data.excerpt,
           author: {
-            '@type': 'Person',
-            name: 'Ehsan Pourhadi',
+            "@type": "Person",
+            name: "Ehsan Pourhadi",
           },
           dateCreated: data.date || data.publishDate,
-          keywords: data.tags?.join(', '),
+          keywords: data.tags?.join(", "),
           category: data.category,
           ...(data.case_link_url && { url: data.case_link_url }),
         };

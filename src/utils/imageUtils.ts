@@ -124,8 +124,6 @@ export function generatePictureElement(
   className?: string,
   sizes?: string
 ): string {
-  const baseImageName = imageName.replace(/\.[^/.]+$/, "");
-
   const srcSet = {
     webp: {
       thumbnail: getOptimizedImageUrl(
@@ -236,7 +234,7 @@ export function hasOptimizedImages(
       manifest[type]?.[slug]?.images &&
       Object.keys(manifest[type][slug].images).length > 0
     );
-  } catch (error) {
+  } catch {
     return false;
   }
 }

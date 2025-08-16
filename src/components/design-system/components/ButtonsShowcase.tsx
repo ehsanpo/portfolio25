@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../../ui/Card';
 import { Button } from '../../ui/Button';
-import { Heart, Star, ShoppingCart, Download, Play, Pause } from 'lucide-react';
+import { Heart, Star, ShoppingCart, Download, Play } from 'lucide-react';
 
 export function ButtonsShowcase() {
   const [isLoading, setIsLoading] = useState(false);

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardTitle } from '../../ui/Card';
 import { Input } from '../../ui/Input';
 import { Button } from '../../ui/Button';
-import { Badge } from '../../ui/Badge';
 import { Search, Mail, Lock, User, Phone, Calendar, Eye, EyeOff } from 'lucide-react';
 
 export function FormsShowcase() {

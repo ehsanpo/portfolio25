@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardTitle } from './Card';
+import { Card} from './Card';
 import { Button } from './Button';
 import { Badge } from './Badge';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, Shuffle, Heart, MoreHorizontal } from 'lucide-react';

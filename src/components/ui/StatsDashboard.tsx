@@ -10,8 +10,7 @@ import {
   GitBranch,
   GitCommit,
   Star,
-  Users,
-  Calendar,
+  Users, 
   TrendingUp,
   Activity,
   Code,
@@ -19,12 +18,8 @@ import {
   Zap,
   Target,
   Award,
-  Clock,
-  BarChart3,
-  PieChart,
-  LineChart,
-  RefreshCw,
-} from "lucide-react";
+  Clock, 
+  RefreshCw} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface GitHubStats {

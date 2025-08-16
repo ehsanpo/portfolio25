@@ -24,6 +24,7 @@ const cardVariants = {
   glass: "glass-card shadow-2xl",
   gradient:
     "bg-gradient-to-br from-primary-500/20 to-secondary-500/20 border border-primary-500/30 shadow-xl",
+  neon: "bg-card border-2 border-accent-500/50 shadow-lg shadow-accent-500/20 animate-pulse",
 };
 
 export function Card({

@@ -10,22 +10,25 @@ import "../index.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ehsanpourhadi.com'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://ehsanpourhadi.com"
+  ),
   title: {
     default: "Ehsan Pourhadi - Design System Portfolio",
-    template: "%s | Ehsan Pourhadi"
+    template: "%s | Ehsan Pourhadi",
   },
-  description: "Full-stack developer and design system architect. Specialized in React, Next.js, TypeScript, and modern web technologies. View my portfolio and case studies.",
+  description:
+    "Full-stack developer and design system architect. Specialized in React, Next.js, TypeScript, and modern web technologies. View my portfolio and case studies.",
   keywords: [
     "Full-stack developer",
-    "Design system architect", 
+    "Design system architect",
     "React developer",
     "Next.js",
     "TypeScript",
     "Frontend developer",
     "UI/UX developer",
     "Portfolio",
-    "Web development"
+    "Web development",
   ],
   authors: [{ name: "Ehsan Pourhadi" }],
   creator: "Ehsan Pourhadi",
@@ -36,7 +39,8 @@ export const metadata: Metadata = {
     url: "https://ehsanpourhadi.com",
     siteName: "Ehsan Pourhadi Portfolio",
     title: "Ehsan Pourhadi - Design System Portfolio",
-    description: "Full-stack developer and design system architect. Specialized in React, Next.js, TypeScript, and modern web technologies.",
+    description:
+      "Full-stack developer and design system architect. Specialized in React, Next.js, TypeScript, and modern web technologies.",
     images: [
       {
         url: "/og-image.png",

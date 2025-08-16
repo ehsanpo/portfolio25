@@ -15,16 +15,14 @@ import {
   Heart,
   Coffee,
   Code,
-  Palette,
-  Home,
+  Palette, 
   User,
   Briefcase,
   FileText,
   Phone,
   MapPin,
   Calendar,
-  ArrowUp,
-} from "lucide-react";
+  ArrowUp} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface FooterProps {

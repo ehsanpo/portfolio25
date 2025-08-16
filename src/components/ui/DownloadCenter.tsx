@@ -4,22 +4,16 @@ import { Badge } from './Badge';
 import { Button } from './Button';
 import { 
   Download, 
-  FileText, 
-  Image, 
+  FileText,  
   Code, 
   Palette, 
-  File,
-  ExternalLink,
+  File, 
   Eye,
-  Calendar,
-  User,
+  Calendar, 
   Briefcase,
   Award,
   BookOpen,
-  Folder,
-  Archive,
-  CheckCircle,
-  Clock,
+  Folder, 
   Star
 } from 'lucide-react';
 import { cn } from '../../utils/cn';

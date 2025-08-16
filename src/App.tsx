@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import dynamic from "next/dynamic";
 import { AudioProvider } from "./components/ui/GlobalAudioPlayer";
 import { Layout } from "./components/Layout";
 import { Overview } from "./components/design-system/Overview";
@@ -28,7 +27,6 @@ import { Page } from "./components/pages/Page";
 import { getPageByPath } from "./utils/sitemapParser";
 import { I18nDemo } from "./components/demo/I18nDemo";
 import { NavigationDemo } from "./components/demo/NavigationDemo";
-import { useI18n } from "./hooks/useI18n";
 
 function App() {
   const [activeSection, setActiveSection] = useState("overview");

@@ -1,25 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardTitle } from "./Card";
+import { Card} from "./Card";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import {
   Briefcase,
   Calendar,
   MapPin,
-  ExternalLink,
-  Building,
-  Star,
-  Clock,
+  ExternalLink, 
+  Star, 
   Users,
-  Target,
-  TrendingUp,
+  Target, 
   Award,
   ChevronDown,
   ChevronUp,
-  Zap,
-} from "lucide-react";
+  Zap} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface WorkExperienceItem {

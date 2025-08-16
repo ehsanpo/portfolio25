@@ -8,7 +8,6 @@ import {
   Grid,
   Home,
   Menu,
-  X,
   Heart,
   Layout as LayoutIcon,
   Coins,
@@ -24,8 +23,6 @@ import {
   Volume2,
   FileText,
   Smartphone,
-} from "lucide-react";
-import {
   MousePointer,
   CreditCard,
   Image as ImageIcon,
@@ -36,13 +33,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "../utils/cn";
-import { ThemeToggle } from "./ui/ThemeToggle";
 
 interface LayoutProps {
-  children: React.ReactNode;
-  activeSection: string;
-  activeComponentSection?: string;
-  onSectionChange: (section: string) => void;
+  readonly children: React.ReactNode;
+  readonly activeSection: string;
+  readonly activeComponentSection?: string;
+  readonly onSectionChange: (section: string) => void;
 }
 
 const componentSubSections = [
@@ -231,9 +227,16 @@ export function Layout({
 
         {/* Overlay for mobile */}
         {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden"
+          <button
+            type="button"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden cursor-default"
             onClick={() => setIsSidebarOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setIsSidebarOpen(false);
+              }
+            }}
+            aria-label="Close sidebar"
           />
         )}
 
