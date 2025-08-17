@@ -1,11 +1,11 @@
 import { MetadataRoute } from "next";
-import { getAllLocalizedContent } from "@/utils/localizedContent";
+import { getAllPortfolioItems } from "@/utils/portfolioContent";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://ehsanpourhadi.com";
 
   // Get all portfolio content
-  const portfolioItems = await getAllLocalizedContent("portfolio", "en");
+  const portfolioItems = getAllPortfolioItems();
 
   // Static pages
   const staticPages = [
@@ -35,12 +35,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Portfolio pages
+  // Portfolio pages - use a safe approach for date
   const portfolioPages = portfolioItems.map((item) => ({
     url: `${baseUrl}/portfolio/${item.slug}`,
-    lastModified: new Date(
-      item.meta.date || item.meta.publishDate || new Date()
-    ),
+    lastModified: new Date(), // Use current date since our items don't have reliable date fields
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));

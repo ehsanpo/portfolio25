@@ -170,7 +170,9 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] Phase 2: Build ui kit (atoms → components → blocks).
 - [x] Phase 3: **COMPLETE** - Content pipeline, portfolio/blog pages, CaseStudyLayout integration, i18n system, auto-translation
 - [x] Phase 4: **COMPLETE** - Performance, a11y, SEO pass with comprehensive metadata, structured data, sitemap, security headers.
-- [ ] Phase 5: Deploy and set up monitoring.
+- [x] Phase 6: **COMPLETE** - Architecture refactor with static generation and new component hierarchy.
+- [ ] Phase 7: Codebase cleanup and organization.
+- [ ] Phase 8: Deploy and set up monitoring.
 
 ## Next Actions (detailed)
 
@@ -188,11 +190,18 @@ _Last updated:_ 2025-08-09 (Europe/Stockholm)
 - [x] **Performance & SEO**: comprehensive metadata, structured data, sitemap generation, security headers, performance optimizations. **COMPLETED**
 - [x] **CI & Testing**: GitHub Actions workflows, content/i18n/image validation scripts, automated testing pipeline. **COMPLETED**
 - [x] **ESLint Resolution**: Fixed 100+ ESLint errors, achieved production-ready build status. **COMPLETED**
-- [ ] **PHASE 6 - ARCHITECTURE REFACTOR**: Implement new component hierarchy and static generation
-  - [ ] Refactor blocks into separate files (UI → Component → Blocks → Page)
-  - [ ] Remove API dependencies, convert to static generation
-  - [ ] Make components/blocks data-agnostic
-  - [ ] Implement build-time content loading
+- [x] **PHASE 6 - ARCHITECTURE REFACTOR**: Implement new component hierarchy and static generation ✅
+  - [x] Refactor blocks into separate files (UI → Component → Blocks → Page) ✅
+  - [x] Remove API dependencies, convert to static generation ✅
+  - [x] Make components/blocks data-agnostic ✅
+  - [x] Implement build-time content loading ✅
+- [ ] **PHASE 7 - CODEBASE CLEANUP**: Remove unused files and organize project structure
+  - [ ] Remove unused/legacy files (old API routes, backup files, unused components)
+  - [ ] Move files to correct directories according to architecture
+  - [ ] Check and configure sitemap generation plugin
+  - [ ] Clean up import statements and remove dead code
+  - [ ] Validate all file paths and fix broken imports
+  - [ ] Remove duplicate or conflicting files
 - [ ] Deploy to production (Vercel) and set up monitoring.
 - [ ] Add Lighthouse performance monitoring and alerting.
 - [ ] Set up uptime monitoring and automated dependency updates.

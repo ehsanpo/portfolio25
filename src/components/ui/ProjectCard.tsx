@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Card } from "./Card";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
@@ -30,6 +31,7 @@ interface ProjectCardProps {
   demoUrl?: string;
   githubUrl?: string;
   caseStudyUrl?: string;
+  href?: string; // Link to portfolio detail page
   date?: string;
   team?: string[];
   featured?: boolean;
@@ -51,6 +53,7 @@ export function ProjectCard({
   demoUrl,
   githubUrl,
   caseStudyUrl,
+  href,
   date,
   team,
   featured = false,
@@ -60,7 +63,7 @@ export function ProjectCard({
   size = "medium",
   showShare = true,
   className,
-}: ProjectCardProps) {
+}: Readonly<ProjectCardProps>) {
   const [isLiked, setIsLiked] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
 
@@ -96,7 +99,7 @@ export function ProjectCard({
     large: "aspect-[3/2]",
   };
 
-  return (
+  const cardContent = (
     <Card
       variant={variant}
       hover
@@ -295,5 +298,14 @@ export function ProjectCard({
       {/* Glossy overlay effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
     </Card>
+  );
+
+  // Return the card wrapped in Link if href is provided
+  return href ? (
+    <Link href={href} className="block">
+      {cardContent}
+    </Link>
+  ) : (
+    cardContent
   );
 }

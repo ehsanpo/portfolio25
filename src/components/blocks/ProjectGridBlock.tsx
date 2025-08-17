@@ -8,6 +8,7 @@ export interface Project {
   title: string;
   description: string;
   image?: string;
+  href?: string; // Link to portfolio detail page
   caseStudyUrl?: string;
   demoUrl?: string;
   githubUrl?: string;
@@ -57,6 +58,7 @@ export function ProjectGridBlock({
               caseStudyUrl={project.caseStudyUrl}
               demoUrl={project.demoUrl}
               githubUrl={project.githubUrl}
+              href={project.href} // Add href for portfolio detail page links
               technologies={project.technologies || []}
               category={project.category}
               variant="default"

@@ -107,7 +107,7 @@ export default function RootLayout({
                 <StructuredData type="website" />
                 <StructuredData type="person" />
                 <Header />
-                <main className="flex-1">{children}</main>
+                <main className="flex-1 max-w-6xl mx-auto">{children}</main>
                 <Footer />
               </div>
             </div>

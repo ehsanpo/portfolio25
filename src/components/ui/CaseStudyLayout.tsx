@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent,  CardTitle } from "./Card";
+import { Card, CardContent, CardTitle } from "./Card";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { ShareButtons } from "./ShareButtons";
 import { ImageGallery } from "./ImageGallery";
 import {
   ExternalLink,
-  Github, 
+  Github,
   Users,
   Clock,
   Target,
@@ -21,7 +21,8 @@ import {
   Smartphone,
   Database,
   ChevronDown,
-  ChevronUp} from "lucide-react";
+  ChevronUp,
+} from "lucide-react";
 import { cn } from "../../utils/cn";
 
 interface CaseStudySection {
@@ -49,7 +50,7 @@ interface CaseStudyLayoutProps {
   duration: string;
   team?: string[];
   technologies: string[];
-  category: string;
+  category: string | string[]; // Allow both string and array
   status: "completed" | "in-progress" | "concept";
   demoUrl?: string;
   githubUrl?: string;
@@ -101,7 +102,12 @@ export function CaseStudyLayout({
   };
 
   const getCategoryIcon = () => {
-    switch (category.toLowerCase()) {
+    // Handle both string and array categories
+    const primaryCategory = Array.isArray(category)
+      ? category[0]?.toLowerCase() || ""
+      : category?.toLowerCase() || "";
+
+    switch (primaryCategory) {
       case "web":
         return <Code className="w-5 h-5 text-blue-500" />;
       case "mobile":
@@ -441,7 +447,13 @@ export function CaseStudyLayout({
         <ShareButtons
           title={title}
           description={description}
-          hashtags={["portfolio", "casestudy", category.toLowerCase()]}
+          hashtags={[
+            "portfolio",
+            "casestudy",
+            Array.isArray(category)
+              ? category[0]?.toLowerCase() || "web"
+              : category?.toLowerCase() || "web",
+          ]}
           platforms={["twitter", "linkedin", "copy"]}
           variant="minimal"
         />

@@ -2,6 +2,7 @@ import React from "react";
 import { type Metadata } from "next";
 
 import { HeroBlock } from "@/components/blocks/HeroBlock";
+import { ProjectGridBlock } from "@/components/blocks/ProjectGridBlock";
 import {
   getAllPortfolioItems,
   getFeaturedPortfolioItems,
@@ -24,6 +25,29 @@ export default function PortfolioPage() {
   const allProjects = getAllPortfolioItems();
   const featuredProjects = getFeaturedPortfolioItems();
 
+  // Convert portfolio items to the format expected by ProjectGridBlock
+  const projectsForGrid = allProjects.map((project) => ({
+    id: project.slug,
+    title: project.title,
+    description: project.description,
+    image: project.image
+      ? `/optimized/portfolio/${project.slug}/${project.image}`
+      : undefined,
+    href: `/portfolio/${project.slug}`,
+    tags: project.tags,
+  }));
+
+  const featuredProjectsForGrid = featuredProjects.map((project) => ({
+    id: project.slug,
+    title: project.title,
+    description: project.description,
+    image: project.image
+      ? `/optimized/portfolio/${project.slug}/${project.image}`
+      : undefined,
+    href: `/portfolio/${project.slug}`,
+    tags: project.tags,
+  }));
+
   return (
     <div className="min-h-screen bg-background">
       {/* Portfolio Hero */}
@@ -40,34 +64,25 @@ export default function PortfolioPage() {
         }}
       />
 
-      {/* Simple list for debugging */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold font-basement text-center mb-12">
-            Portfolio Projects ({allProjects.length})
-          </h2>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {allProjects.slice(0, 6).map((project) => (
-              <div key={project.slug} className="p-6 border rounded-lg">
-                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground mb-4">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags?.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-muted rounded text-xs"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Featured Projects */}
+      {featuredProjectsForGrid.length > 0 && (
+        <div id="featured">
+          <ProjectGridBlock
+            title="Featured Projects"
+            projects={featuredProjectsForGrid}
+            columns={3}
+          />
         </div>
-      </section>
+      )}
+
+      {/* All Projects */}
+      <div id="all-projects">
+        <ProjectGridBlock
+          title="All Projects"
+          projects={projectsForGrid}
+          columns={3}
+        />
+      </div>
     </div>
   );
 }
